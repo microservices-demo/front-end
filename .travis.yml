@@ -1,0 +1,24 @@
+language: node_js
+
+sudo: required
+
+node_js:
+  - "0.10.32"
+
+services:
+  - docker
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -o Dpkg::Options::="--force-confnew" -y docker-engine
+  - sudo rm -f /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - sudo apt-get install -y make
+  - make compose image container networks
+  - make deps
+
+script:
+  - make test
+  - make e2e
