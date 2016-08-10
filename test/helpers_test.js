@@ -188,7 +188,6 @@
             helpers.simpleHttpRequest("http://example.org/fail", res, function(err) {
               expect(err).not.to.be.null;
               expect(err.message).to.equal("Something went wrong");
-              console.log(err);
               request.get.restore();
               done();
             });

@@ -27,12 +27,16 @@
 
     // Add some items to the cart and verify
     casper.then(function() {
-      this.clickLabel("Add to cart");
+      this.waitForText("Add to cart", function() {
+        this.clickLabel("Add to cart");
+      }, function() {
+        test.fail("Catalogue items did not show up");
+      }, 1000)
+
       this.waitForText("1 item(s) in cart", function() {
         test.pass("cart gets updated with user selection");
       }, function() {
         test.fail("cart was not updated");
-        // timeout
       }, 1000);
     });
 
