@@ -15,7 +15,7 @@ var request      = require("request")
   , app          = express()
 
 app.use(session(config.session));
-app.use(express.static(__dirname + "/"));
+app.use(express.static(__dirname + "public"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helpers.errorHandler);
