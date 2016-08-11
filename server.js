@@ -1,5 +1,6 @@
 var request      = require("request")
   , express      = require("express")
+  , morgan       = require("morgan")
   , path         = require("path")
   , bodyParser   = require("body-parser")
   , async        = require("async")
@@ -14,11 +15,12 @@ var request      = require("request")
   , orders       = require("./api/orders")
   , app          = express()
 
+app.use(express.static("public"));
 app.use(session(config.session));
-app.use(express.static(__dirname + "/"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helpers.errorHandler);
+app.use(morgan("dev", {}));
 
 var domain = "";
 process.argv.forEach(function (val, index, array) {
