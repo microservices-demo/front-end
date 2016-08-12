@@ -16,8 +16,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - sudo apt-get install -y make
-  - make compose image container networks
-  - make deps
+  - make compose test-image deps server
 
 script:
   - make test

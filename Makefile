@@ -1,40 +1,63 @@
+IMAGE=frontend
+IMAGE=frontend
+
 .PHONY: test coverage
 
-dev: clean image container networks logs
+dev: clean image server networks
 
+# Brings the backend services up using Docker Compose
 compose:
 	@docker-compose -f test/docker-compose.yml up -d
 
+# Installs Node.js project dependencies
 deps:
-	@npm install
+	@docker run               \
+		-it                     \
+		--rm                    \
+		-v $$PWD:/usr/src/app   \
+		$(IMAGE) /usr/local/bin/npm install
 
-image:
-	@docker build -t dev/frontend .
+# Builds the base docker image for development
+dist:
+	@docker build -t $(IMAGE) .
 
-container:
-	@docker run -it -d --name devfrontend -P -e NODE_ENV=development -e PORT=8080 -p 8080:8080 dev/frontend
+# Runs the Node.js applicaiton in a Docker container
+server:
+	@docker run               \
+		-d                      \
+		--name $(IMAGE)     \
+		-v $$PWD:/usr/src/app   \
+		-P                      \
+		-e NODE_ENV=development \
+		-e PORT=8080            \
+		-p 8080:8080            \
+		--network test_default  \
+		$(IMAGE) /usr/local/bin/npm start
 
-networks:
-	@docker network connect test_default devfrontend
-
+# Removes the development container & image
 clean:
-	@if [ $$(docker ps -a -q -f name=devfrontend | wc -l) -ge 1 ]; then docker rm -f devfrontend; fi
-	@if [ $$(docker images -q dev/frontend | wc -l) -ge 1 ]; then docker rmi dev/frontend; fi
+	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi
+	@if [ $$(docker images -q $(IMAGE) | wc -l) -ge 1 ]; then docker rmi $(IMAGE); fi
 
-test:
-	@$$(npm bin)/istanbul cover $$(npm bin)/_mocha -- test/*_test.js test/api/*_test.js
+# Builds the Docker image used for running tests
+test-image:
+	@docker build -t $(IMAGE) -f test/Dockerfile .
 
-test-w:
-	@$$(npm bin)/mocha -w --recursive test/{api,*_test.js}
+# Runs unit tests in Docker
+test: test-image
+	@docker run --rm -it test-image /usr/local/bin/npm test
 
-coverage:
-	@open coverage/lcov-report/index.html
+# Runs integration tests in Docker
+e2e: test-image
+	@docker run               \
+		--rm                   \
+		-it                    \
+		--network test_default \
+		-v $$PWD:/usr/src/app  \
+		$(IMAGE) /usr/src/app/test/e2e/runner.sh
 
-browser:
-	@open http://$$(docker-machine ip):8080
+kill-compose:
+	@docker-compose -f test/docker-compose.yml down
 
-logs:
-	@docker logs -f devfrontend
-
-e2e:
-	@./test/e2e/runner.sh
+kill-server:
+	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi

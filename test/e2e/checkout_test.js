@@ -7,7 +7,7 @@
 
   casper.test.begin("User buys some socks", TESTS, function(test) {
     // initial load and login
-    casper.start("http://localhost:8080/", function() {
+    casper.start("http://frontend:8080/", function() {
       this.clickLabel("Login");
       this.fill("#login-modal form", {
         "username": "Eve_Berger",

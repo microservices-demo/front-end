@@ -1,12 +1,6 @@
 version: '2'
 
 services:
-  front-end:
-    image: weaveworksdemos/front-end
-    hostname: front-end
-    restart: always
-    environment:
-      - reschedule:on-node-failure
   edge-router:
     image: weaveworksdemos/edge-router
     ports:
