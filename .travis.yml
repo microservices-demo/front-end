@@ -17,6 +17,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - sudo apt-get install -y make
   - make compose test-image deps server
+  - sleep 30
 
 script:
   - make test

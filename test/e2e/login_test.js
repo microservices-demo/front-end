@@ -16,14 +16,16 @@
         }, false);
       }, function() {
         test.fail("login dialogue never showed up");
-      }, 1000);
+      }, 3000);
     });
 
     casper.then(function() {
       this.click("#login-modal form button.btn.btn-primary");
-      this.wait(1000, function() {
-        test.assertTextExists("Logged in as Eve Berger", "user is logged in");
-      });
+      this.waitForText("Logged in as Eve Berger", function() {
+        test.pass("user is logged in");
+      }, function() {
+        test.fail("user login failed");
+      }, 3000);
     });
 
     casper.run(function() {

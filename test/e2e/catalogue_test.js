@@ -2,15 +2,13 @@
   'use strict';
   require("./config");
 
-  var TESTS = 2;
-
-  casper.test.begin("User interacts with the catalogue", TESTS, function(test) {
+  casper.test.begin("User interacts with the catalogue", 2, function(test) {
     casper.start("http://frontend:8080/", function() {
       this.waitForText("Catalogue", function() {
         this.clickLabel("Catalogue");
       }, function() {
         test.error("page not yet initialised");
-      }, 2000);
+      }, 3000);
     });
 
     casper.then(function() {
@@ -19,7 +17,7 @@
         test.assertElementCount("#products div.product", 6, "user is presented with 6 products by default");
       }, function() {
         test.fail("catalogue page did not load")
-      }, 1000);
+      }, 3000);
     });
 
     casper.run(function() {

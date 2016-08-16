@@ -1,5 +1,4 @@
 IMAGE=frontend
-IMAGE=frontend
 
 .PHONY: test coverage
 
@@ -45,11 +44,15 @@ test-image:
 
 # Runs unit tests in Docker
 test: test-image
-	@docker run --rm -it test-image /usr/local/bin/npm test
+	@docker run              \
+		--rm                   \
+		-it                    \
+		-v $$PWD:/usr/src/app  \
+		$(IMAGE) /usr/local/bin/npm test
 
 # Runs integration tests in Docker
 e2e: test-image
-	@docker run               \
+	@docker run              \
 		--rm                   \
 		-it                    \
 		--network test_default \
