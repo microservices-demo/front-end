@@ -3,11 +3,10 @@
   require("./config");
 
   var __utils__ = require("clientutils").create();
-  var TESTS = 6;
 
-  casper.test.begin("User buys some socks", TESTS, function(test) {
+  casper.test.begin("User buys some socks", 5, function(test) {
     // initial load and login
-    casper.start("http://localhost:8080/", function() {
+    casper.start("http://frontend:8080/", function() {
       this.clickLabel("Login");
       this.fill("#login-modal form", {
         "username": "Eve_Berger",
@@ -18,7 +17,7 @@
         test.comment("user logged in");
       }, function() {
         test.fail("login failed");
-      }, 1000);
+      }, 3000);
     });
 
     // TODO: Test that "Proceed to checkout" button is disabled when the cart is empty
@@ -41,7 +40,7 @@
         this.clickLabel("1 item(s) in cart");
       }, function() {
         test.fail("cart was not updated");
-      }, 1000);
+      }, 3000);
     });
 
     casper.then(function() {
@@ -53,28 +52,28 @@
       casper.waitFor(function() {
         return this.evaluate(function() {
           var b = __utils__.findOne("button#orderButton");
-          if (b) return b.getAttribute("disabled") == undefined; // wait until the "disabled" attribute has been removed means that the button is now enabled
+          if (b) return b.getAttribute("disabled") == undefined; // waiting until the "disabled" attribute has been removed means that the button is now enabled
           return false;
         });
       }, function() {
         test.pass("the checkout button is enabled");
+        this.click("button#orderButton");
       }, function() {
         test.fail("checkout button was not enabled");
-      }, 1000);
-    });
-
-    casper.then(function() {
-      this.click("button#orderButton");
+      }, 3000);
     });
 
     // actually checkout
     casper.then(function() {
       this.waitForText("My orders", function() {
         test.pass("user is taken to the orders page");
-        test.assertTextExists("0 items in cart", "cart gets emptied");
       }, function() {
+        console.log("dumping page screenshot as PNG")
+        var cap = casper.captureBase64("png");
+        console.log(cap);
+        console.log("DONE");
         test.fail("user was not taken to the orders page");
-      }, 2000);
+      }, 3000);
     });
 
     casper.run(function() {

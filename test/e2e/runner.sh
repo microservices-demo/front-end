@@ -11,8 +11,8 @@ fi
 
 for test in $files
 do
-  docker exec -it test_cart-db_1 mongo data} --eval '["cart", "item"].forEach(function(col) { db[col].remove({}); });'
-  $(npm bin)/casperjs test $test
+  node test/e2e/test_helper.js
+  casperjs test $test
   ret=$?
   if [ ! $ret == "0" ]; then code=1; fi
 done

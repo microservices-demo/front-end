@@ -2,11 +2,9 @@
   'use strict';
   require("./config");
 
-  var TESTS = 1;
-
-  casper.test.begin("User interacts with the cart", TESTS, function(test) {
+  casper.test.begin("User interacts with the cart", 1, function(test) {
     // initial load and login
-    casper.start("http://localhost:8080/", function() {
+    casper.start("http://frontend:8080/", function() {
       this.clickLabel("Login");
       this.fill("#login-modal form", {
         "username": "Eve_Berger",
@@ -14,10 +12,9 @@
       }, true);
       this.click("#login-modal form button.btn.btn-primary");
       this.waitForText("Logged in", function() {
-        // then
       }, function() {
         test.fail("login failed");
-      }, 1000);
+      }, 3000);
     });
 
     // access the catalogue
@@ -31,13 +28,13 @@
         this.clickLabel("Add to cart");
       }, function() {
         test.fail("Catalogue items did not show up");
-      }, 1000)
+      }, 3000)
 
       this.waitForText("1 item(s) in cart", function() {
         test.pass("cart gets updated with user selection");
       }, function() {
         test.fail("cart was not updated");
-      }, 1000);
+      }, 3000);
     });
 
 
