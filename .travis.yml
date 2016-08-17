@@ -15,5 +15,13 @@ before_install:
   - make test-image deps
   - sleep 30
 
+env:
+  - GROUP=weaveworksdemos COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG;
+
 script:
   - make test
+
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS;
+  - ./scripts/build.sh
+  - ./scripts/push.sh
