@@ -16,11 +16,7 @@ deps:
 		-v $$PWD:/usr/src/app   \
 		$(IMAGE) /usr/local/bin/npm install
 
-# Builds the base docker image for development
-dist:
-	@docker build -t $(IMAGE) .
-
-# Runs the Node.js applicaiton in a Docker container
+# Runs the Node.js application in a Docker container
 server:
 	@docker run               \
 		-d                      \

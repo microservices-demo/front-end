@@ -13,7 +13,16 @@ before_install:
   - sudo apt-get install -o Dpkg::Options::="--force-confnew" -y docker-engine
   - sudo apt-get install -y make
   - make test-image deps
-  - sleep 30
+
+env:
+  - GROUP=weaveworksdemos COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG;
 
 script:
   - make test
+
+after_success:
+  - set -e
+  - if [ -z "$DOCKER_PASS" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS;
+  - ./scripts/build.sh
+  - ./scripts/push.sh
