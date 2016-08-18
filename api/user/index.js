@@ -14,7 +14,7 @@
   // Create Customer - TO BE USED FOR TESTING ONLY (for now)
   app.post("/user/customers", function(req, res, next) {
     var options = {
-      uri: endpoints.customersUrl,
+      uri: endpoints.userCustUrl,
       method: 'POST',
       json: true,
       body: req.body
@@ -33,7 +33,7 @@
   // Create Address - TO BE USED FOR TESTING ONLY (for now)
   app.post("/user/addresses", function(req, res, next) {
     var options = {
-      uri: endpoints.addressUrl,
+      uri: endpoints.userAddrUrl,
       method: 'POST',
       json: true,
       body: req.body
@@ -50,7 +50,7 @@
   // Create Card - TO BE USED FOR TESTING ONLY (for now)
   app.post("/user/cards", function(req, res, next) {
     var options = {
-      uri: endpoints.cardsUrl,
+      uri: endpoints.userCardUrl,
       method: 'POST',
       json: true,
       body: req.body
@@ -68,7 +68,7 @@
   app.delete("/user/customers/:id", function(req, res, next) {
     console.log("Deleting Customer " + req.params.id);
     var options = {
-      uri: endpoints.customersUrl + "/" + req.params.id,
+      uri: endpoints.userCustUrl + "/" + req.params.id,
       method: 'DELETE'
     };
     request(options, function (error, response, body) {
@@ -83,7 +83,7 @@
   app.delete("/user/addresses/:id", function(req, res, next) {
     console.log("Deleting Address " + req.params.id);
     var options = {
-      uri: endpoints.addressUrl + "/" + req.params.id,
+      uri: endpoints.userAddrUrl + "/" + req.params.id,
       method: 'DELETE'
     };
     request(options, function (error, response, body) {
@@ -98,7 +98,7 @@
   app.delete("/user/cards/:id", function(req, res, next) {
     console.log("Deleting Card " + req.params.id);
     var options = {
-      uri: endpoints.cardsUrl + "/" + req.params.id,
+      uri: endpoints.userCardUrl + "/" + req.params.id,
       method: 'DELETE'
     };
     request(options, function (error, response, body) {
@@ -118,7 +118,7 @@
             headers: {
               'Authorization': req.get('Authorization')
             },
-            uri: endpoints.loginUrl
+            uri: endpoints.userLogUrl
           };
           request(options, function (error, response, body) {
             if (error) {
