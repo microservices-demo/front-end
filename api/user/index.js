@@ -15,13 +15,13 @@
   });
 
   app.get("/user/customers", function (req, res, next) {
-    helpers.simpleHttpRequest(endpoints.userCustUrl + "/", res, next);
+    helpers.simpleHttpRequest(endpoints.userCustUrl, res, next);
   });
   app.get("/user/addresses", function (req, res, next) {
-    helpers.simpleHttpRequest(endpoints.userAddrUrl + "/", res, next);
+    helpers.simpleHttpRequest(endpoints.userAddrUrl, res, next);
   });
   app.get("/user/cards", function (req, res, next) {
-    helpers.simpleHttpRequest(endpoints.userCardUrl + "/", res, next);
+    helpers.simpleHttpRequest(endpoints.userCardUrl, res, next);
   });
   // Create Customer - TO BE USED FOR TESTING ONLY (for now)
   app.post("/user/customers", function(req, res, next) {
