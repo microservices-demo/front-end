@@ -13,6 +13,7 @@ var request      = require("request")
   , accounts     = require("./api/accounts")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
+  , user         = require("./api/user")
   , app          = express()
 
 app.use(express.static("public"));
@@ -39,6 +40,7 @@ app.use(cart);
 app.use(accounts);
 app.use(catalogue);
 app.use(orders);
+app.use(user);
 
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;
