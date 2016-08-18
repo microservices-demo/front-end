@@ -7,12 +7,12 @@
     , helpers   = require("../../helpers")
     , app       = express()
 
-  app.get("/customers/:id", function (req, res, next) {
+  app.get("/user/customers/:id", function (req, res, next) {
     helpers.simpleHttpRequest(endpoints.customersUrl + "/" + req.params.id, res, next);
   });
 
   // Create Customer - TO BE USED FOR TESTING ONLY (for now)
-  app.post("/customers", function(req, res, next) {
+  app.post("/user/customers", function(req, res, next) {
     var options = {
       uri: endpoints.customersUrl,
       method: 'POST',
@@ -31,7 +31,7 @@
   });
 
   // Create Address - TO BE USED FOR TESTING ONLY (for now)
-  app.post("/addresses", function(req, res, next) {
+  app.post("/user/addresses", function(req, res, next) {
     var options = {
       uri: endpoints.addressUrl,
       method: 'POST',
@@ -48,7 +48,7 @@
   });
 
   // Create Card - TO BE USED FOR TESTING ONLY (for now)
-  app.post("/cards", function(req, res, next) {
+  app.post("/user/cards", function(req, res, next) {
     var options = {
       uri: endpoints.cardsUrl,
       method: 'POST',
@@ -65,7 +65,7 @@
   });
 
   // Delete Customer - TO BE USED FOR TESTING ONLY (for now)
-  app.delete("/customers/:id", function(req, res, next) {
+  app.delete("/user/customers/:id", function(req, res, next) {
     console.log("Deleting Customer " + req.params.id);
     var options = {
       uri: endpoints.customersUrl + "/" + req.params.id,
@@ -80,7 +80,7 @@
   });
 
   // Delete Address - TO BE USED FOR TESTING ONLY (for now)
-  app.delete("/addresses/:id", function(req, res, next) {
+  app.delete("/user/addresses/:id", function(req, res, next) {
     console.log("Deleting Address " + req.params.id);
     var options = {
       uri: endpoints.addressUrl + "/" + req.params.id,
@@ -95,7 +95,7 @@
   });
 
   // Delete Card - TO BE USED FOR TESTING ONLY (for now)
-  app.delete("/cards/:id", function(req, res, next) {
+  app.delete("/user/cards/:id", function(req, res, next) {
     console.log("Deleting Card " + req.params.id);
     var options = {
       uri: endpoints.cardsUrl + "/" + req.params.id,
@@ -109,7 +109,7 @@
     }.bind({res: res}));
   });
 
-  app.get("/login", function (req, res, next) {
+  app.get("/user/login", function (req, res, next) {
     console.log("Received login request");
 
     async.waterfall([
