@@ -8,9 +8,21 @@
     , app       = express()
 
   app.get("/user/customers/:id", function (req, res, next) {
-    helpers.simpleHttpRequest(endpoints.customersUrl + "/" + req.params.id, res, next);
+    helpers.simpleHttpRequest(endpoints.userCustUrl + "/" + req.params.id, res, next);
+  });
+  app.get("/user/cards/:id", function (req, res, next) {
+    helpers.simpleHttpRequest(endpoints.userCardUrl + "/" + req.params.id, res, next);
   });
 
+  app.get("/user/customers", function (req, res, next) {
+    helpers.simpleHttpRequest(endpoints.userCustUrl + "/", res, next);
+  });
+  app.get("/user/addresses", function (req, res, next) {
+    helpers.simpleHttpRequest(endpoints.userAddrUrl + "/", res, next);
+  });
+  app.get("/user/cards", function (req, res, next) {
+    helpers.simpleHttpRequest(endpoints.userCardUrl + "/", res, next);
+  });
   // Create Customer - TO BE USED FOR TESTING ONLY (for now)
   app.post("/user/customers", function(req, res, next) {
     var options = {
