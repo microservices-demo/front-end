@@ -2,7 +2,7 @@ IMAGE=frontend
 
 .PHONY: test coverage
 
-dev: clean image server networks
+dev: clean image server
 
 # Brings the backend services up using Docker Compose
 compose:
