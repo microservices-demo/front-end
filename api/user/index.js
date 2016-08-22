@@ -1,7 +1,8 @@
 (function (){
   'use strict';
 
-  var express   = require("express")
+  var async       = require("async")
+    , express   = require("express")
     , request   = require("request")
     , endpoints = require("../endpoints")
     , helpers   = require("../../helpers")
