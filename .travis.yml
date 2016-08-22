@@ -9,11 +9,13 @@ services:
   - docker
 
 before_install:
+  - openssl aes-256-cbc -K $encrypted_a10f349f39af_key -iv $encrypted_a10f349f39af_iv
+    -in front-end_deploy_rsa.enc -out front-end_deploy_rsa -d
   - sudo apt-get install -y make
   - make test-image deps
 
 env:
-  - GROUP=weaveworksdemos COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG;
+  - GROUP=weaveworksdemos COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG REPO=front-end;
 
 script:
   - make test
@@ -25,3 +27,17 @@ after_success:
   - ./scripts/build.sh
   - ./test/container.sh
   - ./scripts/push.sh
+
+before_deploy:
+  - eval "$(ssh-agent -s)"
+  - chmod 600 $TRAVIS_BUILD_DIR/${REPO}_deploy_rsa
+  - ssh-add $TRAVIS_BUILD_DIR/${REPO}_deploy_rsa
+addons:
+  ssh_known_hosts: $BASTION
+deploy:
+  provider: script
+  skip_cleanup: true
+  # The deploy.sh file points to the deploy file on the bastion. Not one in the repo.
+  script: ssh -o StrictHostKeyChecking=no $BASTION_USER@$BASTION ./deploy.sh ${REPO} $COMMIT
+  on:
+    branch: master
