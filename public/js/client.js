@@ -109,10 +109,10 @@ function addToCart(id) {
 function username(id, callback) {
     console.log("Requesting user account information " + id);
     $.ajax({
-        url: "accounts/" + id,
+        url: "customers/" + id,
         type: "GET",
         success: function (data, textStatus, jqXHR) {
-            callback(JSON.parse(data).firstName + " " + JSON.parse(data).lastName);
+            callback(JSON.parse(data)._embedded.customer[0].firstName + " " + JSON.parse(data)._embedded.customer[0].lastName);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Could not get user information: ' + id + ', due to: ' + textStatus + ' | ' + errorThrown);
