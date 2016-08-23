@@ -112,7 +112,7 @@ function username(id, callback) {
         url: "customers/" + id,
         type: "GET",
         success: function (data, textStatus, jqXHR) {
-            callback(JSON.parse(data)._embedded.customer[0].firstName + " " + JSON.parse(data)._embedded.customer[0].lastName);
+            callback(JSON.parse(data).firstName + " " + JSON.parse(data).lastName);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Could not get user information: ' + id + ', due to: ' + textStatus + ' | ' + errorThrown);
