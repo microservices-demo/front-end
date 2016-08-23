@@ -46,7 +46,7 @@
 
     console.log("Delete item from cart: " + req.url);
 
-    var custId = helpers.getCustomerId(req, env);
+    var custId = helpers.getCustomerId(req, app.get("env"));
 
     var options = {
       uri: endpoints.cartsUrl + "/" + custId + "/items/" + req.params.id.toString(),
