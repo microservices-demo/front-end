@@ -64,8 +64,8 @@
             console.log("Received response: " + JSON.stringify(body));
             var jsonBody = JSON.parse(body);
             var customerlink = jsonBody._embedded.customer[0]._links.customer.href;
-            var addressLink = jsonBody._embedded.customer[0].addresses[0]._links.address.href;
-            var cardLink = jsonBody._embedded.customer[0].cards[0]._links.card.href;
+            var addressLink = jsonBody._embedded.customer[0]._links.addresses.href;
+            var cardLink = jsonBody._embedded.customer[0]._links.cards.href;
             var order = {
               "customer": customerlink,
               "address": null,
