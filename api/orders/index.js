@@ -10,7 +10,6 @@
 
   app.get("/orders", function (req, res, next) {
     console.log("Request received with body: " + JSON.stringify(req.body));
-    // var custId = helpers.getCustomerId(req, env);
     var custId = req.cookies.logged_in;
     if (!custId) {
       throw new Error("User not logged in.");
@@ -47,7 +46,6 @@
 
   app.post("/orders", function(req, res, next) {
     console.log("Request received with body: " + JSON.stringify(req.body));
-    // var custId = helpers.getCustomerId(req, env);
     var custId = req.cookies.logged_in;
     if (!custId) {
       throw new Error("User not logged in.");
