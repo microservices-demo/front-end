@@ -31,31 +31,31 @@
 
     describe("customersUrl", function() {
       it("points to the proper endpoint", function() {
-        expect(endpoints.customersUrl).to.equal("http://accounts/customers");
+        expect(endpoints.customersUrl).to.equal("http://user/customers");
       });
     });
 
     describe("addressUrl", function() {
       it("points to the proper endpoint", function() {
-        expect(endpoints.addressUrl).to.equal("http://accounts/addresses");
+        expect(endpoints.addressUrl).to.equal("http://user/addresses");
       });
     });
 
     describe("cardsUrl", function() {
       it("points to the proper endpoint", function() {
-        expect(endpoints.cardsUrl).to.equal("http://accounts/cards");
+        expect(endpoints.cardsUrl).to.equal("http://user/cards");
       });
     });
 
     describe("loginUrl", function() {
       it("points to the proper endpoint", function() {
-        expect(endpoints.loginUrl).to.equal("http://login/login");
+        expect(endpoints.loginUrl).to.equal("http://user/login");
       });
     });
 
     describe("registerUrl", function() {
       it("points to the proper endpoint", function() {
-        expect(endpoints.registerUrl).to.equal("http://login/register");
+        expect(endpoints.registerUrl).to.equal("http://user/register");
       });
     });
   });

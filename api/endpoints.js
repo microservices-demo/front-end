@@ -6,10 +6,10 @@
     tagsUrl:       "http://catalogue/tags",
     cartsUrl:      "http://cart/carts",
     ordersUrl:     "http://orders",
-    customersUrl:  "http://accounts/customers",
-    addressUrl:    "http://accounts/addresses",
-    cardsUrl:      "http://accounts/cards",
-    loginUrl:      "http://login/login",
-    registerUrl:   "http://login/register"
+    customersUrl:  "http://user/customers",
+    addressUrl:    "http://user/addresses",
+    cardsUrl:      "http://user/cards",
+    loginUrl:      "http://user/login",
+    registerUrl:   "http://user/register",
   };
 }());

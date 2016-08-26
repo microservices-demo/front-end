@@ -109,7 +109,7 @@ function addToCart(id) {
 function username(id, callback) {
     console.log("Requesting user account information " + id);
     $.ajax({
-        url: "accounts/" + id,
+        url: "customers/" + id,
         type: "GET",
         success: function (data, textStatus, jqXHR) {
             callback(JSON.parse(data).firstName + " " + JSON.parse(data).lastName);
