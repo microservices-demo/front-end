@@ -185,7 +185,7 @@
             function(err, custId) {
                 if (err) {
                     console.log("Error with log in: " + err);
-                    res.status(401);
+                    res.status(500);
                     res.end();
                     return;
                 }
