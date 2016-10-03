@@ -26,9 +26,9 @@
       console.log("query time passed in");
       usage_time = parseInt(req.query.time);
     }
-    blockCpuFor(usage_time * 1000);
     res.status(200)
     res.end();
+    blockCpuFor(usage_time * 1000);
   });
 
   module.exports = app;
