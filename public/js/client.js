@@ -22,6 +22,39 @@ function login() {
     });
 }
 
+function register() {
+    var username = $('#register-username-modal').val();
+    var email = $('#register-email-modal').val();
+    var password = $('#register-password-modal').val();
+    var firstName = $('#register-first-modal').val();
+    var lastName = $('#register-last-modal').val();
+    var postvals = JSON.stringify({
+		"username": username,
+		"password": password,
+		"email": email,
+		"firstName": firstName,
+		"lastName": lastName
+	});
+	console.log(postvals);
+    $.ajax({
+        url: "register",
+        type: "POST",
+        async: false,
+	data: postvals,
+        success: function (data, textStatus, jqXHR) {
+            alert("Logged in as " + username);
+            console.log('posted: ' + textStatus);
+            console.log("logged_in cookie: " + $.cookie('logged_in'));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert("Problem with your registration. " + errorThrown);
+            console.log('error: ' + JSON.stringify(jqXHR));
+            console.log('error: ' + textStatus);
+            console.log('error: ' + errorThrown);
+        },
+    });
+}
+
 function logout() {
     $.removeCookie('logged_in');
     location.reload();
