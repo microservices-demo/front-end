@@ -6,13 +6,17 @@ var request      = require("request")
   , async        = require("async")
   , cookieParser = require("cookie-parser")
   , session      = require("express-session")
+  , epimetheus   = require("epimetheus")
   , config       = require("./config")
   , helpers      = require("./helpers")
   , cart         = require("./api/cart")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
+  , health       = require("./api/health")
   , app          = express()
+
+epimetheus.instrument(app);
 
 app.use(express.static("public"));
 app.use(session(config.session));
@@ -37,6 +41,7 @@ app.use(cart);
 app.use(catalogue);
 app.use(orders);
 app.use(user);
+app.use(health);
 
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;
