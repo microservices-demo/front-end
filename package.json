@@ -26,6 +26,7 @@
     "request": "^2.72.0",
     "serve-static": "^1.10.2",
     "epimetheus": "^1.0.46",
+    "prom-client": "^6.1.0",
     "morgan": "^1.7.0"
   },
   "devDependencies": {
