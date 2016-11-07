@@ -1,0 +1,43 @@
+language: node_js
+
+node_js:
+  - "0.10.32"
+
+env:
+  global:
+    - GROUP=288971733297.dkr.ecr.us-east-1.amazonaws.com # {AWS account ID}.dkr.ecr.us-east-1
+    - COMMIT=$COMMIT
+    - TAG=$BRANCH.$SHIPPABLE_BUILD_NUMBER
+    - REPO=front-end
+
+build:
+  ci:
+    - mkdir -p shippable/codecoverage -p shippable/testresults
+    - npm install
+    - istanbul cover --report cobertura node_modules/.bin/_mocha -- test/*_test.js test/api/*_test.js
+    - mocha test/*_test.js test/api/*_test.js --reporter mocha-junit-reporter --reporter-options mochaFile=./results/test-results.xml
+
+  post_ci:
+    - cp coverage/cobertura-coverage.xml shippable/codecoverage/
+    - cp results/test-results.xml shippable/testresults/
+
+  on_success:
+    - ./scripts/build.sh
+    - ./scripts/push.sh
+
+integrations:
+  hub:
+    - integrationName: ttrahan-ecr
+      type: ecr
+
+  notifications:
+    - integrationName: trigger-img-front-end
+      type: webhook
+      payload:
+        - versionName=$BRANCH.$BUILD_NUMBER
+      branches:
+        only:
+          - master
+      on_success: always
+      on_failure: never
+      on_start: never
