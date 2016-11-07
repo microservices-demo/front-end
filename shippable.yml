@@ -14,7 +14,7 @@ build:
   ci:
     - mkdir -p shippable/codecoverage -p shippable/testresults
     - npm install
-    - npm coverage
+    - npm run-script coverage
 
   post_ci:
     - cp coverage/cobertura-coverage.xml shippable/codecoverage/
