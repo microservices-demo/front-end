@@ -14,8 +14,7 @@ build:
   ci:
     - mkdir -p shippable/codecoverage -p shippable/testresults
     - npm install
-    - istanbul cover --report cobertura node_modules/.bin/_mocha -- test/*_test.js test/api/*_test.js
-    - mocha test/*_test.js test/api/*_test.js --reporter mocha-junit-reporter --reporter-options mochaFile=./results/test-results.xml
+    - npm coverage
 
   post_ci:
     - cp coverage/cobertura-coverage.xml shippable/codecoverage/
@@ -27,7 +26,7 @@ build:
 
 integrations:
   hub:
-    - integrationName: ttrahan-ecr
+    - integrationName: shippable-ecr  # must match Subscription Integration in Shippable
       type: ecr
 
   notifications:
