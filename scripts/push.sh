@@ -60,4 +60,7 @@ fi;
 if [ -n "$TRAVIS_TAG" ]; then
   tag_and_push_all ${TRAVIS_TAG}
   tag_and_push_all latest
+elif [ -n $GIT_TAG_NAME ]; then
+  tag_and_push_all ${GIT_TAG_NAME}
+  tag_and_push_all latest
 fi;
