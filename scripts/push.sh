@@ -46,10 +46,10 @@ tag_and_push_all() {
     # -f option needed for Docker versions < 1.12 to avoid errors when re-tagging
     DOCKER_VERSION=$(docker version --format '{{.Server.Version}}')
     echo $DOCKER_VERSION
-    if [[ $DOCKER_VERSION < 1.12 ]]; then
+    if [[ $DOCKER_VERSION < 1.12 ]] || [[ $DOCKER_VERSION > 1.9 ]]; then
       $DOCKER_CMD tag -f ${REPO}:${COMMIT} ${REPO}:${TAG}
       echo "FORCED"
-    else
+    elif [[ $DOCKER_VERSION > 1.12 ]]; then
       $DOCKER_CMD tag ${REPO}:${COMMIT} ${REPO}:${TAG}
       echo "NOT FORCED"
     fi
