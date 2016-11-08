@@ -45,6 +45,7 @@ tag_and_push_all() {
   if [[ "$COMMIT" != "$TAG" ]]; then
     # -f option needed for Docker versions < 1.12 to avoid errors when re-tagging
     DOCKER_VERSION=$(docker version --format '{{.Server.Version}}')
+    echo $DOCKER_VERSION
     # function to compare Docker versions
     function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
     if version_gt 1.12 $DOCKER_VERSION; then
@@ -65,10 +66,7 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
 fi;
 
 # Push tag and latest when tagged
-if [ -n "$TRAVIS_TAG" ]; then
-  tag_and_push_all ${TRAVIS_TAG}
-  tag_and_push_all latest
-elif [ -n "$GIT_TAG_NAME" ]; then
-  tag_and_push_all ${GIT_TAG_NAME}
+if [ -n "$TAG" ]; then
+  tag_and_push_all ${TAG}
   tag_and_push_all latest
 fi;

@@ -6,8 +6,8 @@ node_js:
 env:
   global:
     - GROUP=288971733297.dkr.ecr.us-east-1.amazonaws.com # {AWS account ID}.dkr.ecr.us-east-1
-    - COMMIT=$COMMIT
-    - TAG=$BRANCH.$SHIPPABLE_BUILD_NUMBER
+    - COMMIT=$BRANCH.$BUILD_NUMBER
+    - TAG=$GIT_TAG_NAME
     - REPO=front-end
 
 build:
