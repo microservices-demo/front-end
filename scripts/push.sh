@@ -47,12 +47,10 @@ tag_and_push_all() {
     DOCKER_VERSION=$(docker version --format '{{.Server.Version}}')
     # function to compare Docker versions
     function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
-    if [[ version_gt 1.12 $DOCKER_VERSION ]]; then
+    if version_gt 1.12 $DOCKER_VERSION; then
       $DOCKER_CMD tag -f ${REPO}:${COMMIT} ${REPO}:${TAG}
-      echo "FORCED"
     else
       $DOCKER_CMD tag ${REPO}:${COMMIT} ${REPO}:${TAG}
-      echo "NOT FORCED"
     fi
   fi
   push "$REPO:$TAG";
