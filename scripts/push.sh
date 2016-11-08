@@ -70,3 +70,8 @@ if [ -n "$TAG" ]; then
   tag_and_push_all ${TAG}
   tag_and_push_all latest
 fi;
+
+# Push image tag for branch.build_number when available
+if [ -n "$IMAGE_TAG" ]; then
+  tag_and_push_all ${IMAGE_TAG}
+fi;
