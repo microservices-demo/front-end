@@ -43,7 +43,7 @@ tag_and_push_all() {
 
   REPO=${GROUP}/$(basename front-end)
   if [[ "$COMMIT" != "$TAG" ]]; then
-    $DOCKER_CMD tag ${REPO}:${COMMIT} ${REPO}:${TAG}
+    $DOCKER_CMD tag -f ${REPO}:${COMMIT} ${REPO}:${TAG} # -f option needed for Docker <= 1.12
   fi
   push "$REPO:$TAG";
 }
