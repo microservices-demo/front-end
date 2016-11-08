@@ -43,7 +43,12 @@ tag_and_push_all() {
 
   REPO=${GROUP}/$(basename front-end)
   if [[ "$COMMIT" != "$TAG" ]]; then
-    $DOCKER_CMD tag -f ${REPO}:${COMMIT} ${REPO}:${TAG} # -f option needed for Docker <= 1.12
+    # -f option needed for Docker versions < 1.12 to avoid errors when re-tagging
+    if [[ $(docker version --format '{{.Server.Version}}') < 1.12 ]]; then
+      $DOCKER_CMD tag -f ${REPO}:${COMMIT} ${REPO}:${TAG}
+    else
+      $DOCKER_CMD tag ${REPO}:${COMMIT} ${REPO}:${TAG}
+    fi
   fi
   push "$REPO:$TAG";
 }
@@ -60,7 +65,7 @@ fi;
 if [ -n "$TRAVIS_TAG" ]; then
   tag_and_push_all ${TRAVIS_TAG}
   tag_and_push_all latest
-elif [ -n $GIT_TAG_NAME ]; then
+elif [ -n "$GIT_TAG_NAME" ]; then
   tag_and_push_all ${GIT_TAG_NAME}
   tag_and_push_all latest
 fi;
