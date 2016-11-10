@@ -43,7 +43,16 @@ tag_and_push_all() {
 
   REPO=${GROUP}/$(basename front-end)
   if [[ "$COMMIT" != "$TAG" ]]; then
-    $DOCKER_CMD tag ${REPO}:${COMMIT} ${REPO}:${TAG}
+    # -f option needed for Docker versions < 1.12 to avoid errors when re-tagging
+    DOCKER_VERSION=$(docker version --format '{{.Server.Version}}')
+    echo $DOCKER_VERSION
+    # function to compare Docker versions
+    function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
+    if version_gt 1.12 $DOCKER_VERSION; then
+      $DOCKER_CMD tag -f ${REPO}:${COMMIT} ${REPO}:${TAG}
+    else
+      $DOCKER_CMD tag ${REPO}:${COMMIT} ${REPO}:${TAG}
+    fi
   fi
   push "$REPO:$TAG";
 }
@@ -57,7 +66,12 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
 fi;
 
 # Push tag and latest when tagged
-if [ -n "$TRAVIS_TAG" ]; then
-  tag_and_push_all ${TRAVIS_TAG}
+if [ -n "$TAG" ]; then
+  tag_and_push_all ${TAG}
   tag_and_push_all latest
+fi;
+
+# Push image tag for branch.build_number when available
+if [ -n "$IMAGE_TAG" ]; then
+  tag_and_push_all ${IMAGE_TAG}
 fi;
