@@ -9,8 +9,6 @@ services:
   - docker
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_a10f349f39af_key -iv $encrypted_a10f349f39af_iv
-    -in front-end_deploy_rsa.enc -out front-end_deploy_rsa -d
   - sudo apt-get install -y make
   - make test-image deps
 
@@ -29,6 +27,8 @@ after_success:
   - ./scripts/push.sh
 
 before_deploy:
+  - openssl aes-256-cbc -K $encrypted_a10f349f39af_key -iv $encrypted_a10f349f39af_iv
+    -in front-end_deploy_rsa.enc -out front-end_deploy_rsa -d
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/${REPO}_deploy_rsa
   - ssh-add $TRAVIS_BUILD_DIR/${REPO}_deploy_rsa
