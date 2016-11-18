@@ -11,5 +11,6 @@
     cardsUrl:      "http://user/cards",
     loginUrl:      "http://user/login",
     registerUrl:   "http://user/register",
+    dealsUrl:      "http://deals", 
   };
 }());

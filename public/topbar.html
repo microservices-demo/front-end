@@ -4,8 +4,7 @@ _________________________________________________________ -->
     <div class="container">
         <div class="col-md-6 offer" data-animate="fadeInDown">
             <a href="#" class="btn btn-success btn-sm"
-               data-animate-hover="shake">Offer of the day</a> <a href="#">Buy
-            10 socks, get a pet human for free!</a>
+               data-animate-hover="shake">Offer of the day</a> <a href="#" id="deals-link">No Deals For You :(</a>
         </div>
         <div class="col-md-6" data-animate="fadeInDown">
             <ul class="menu">
@@ -121,6 +120,13 @@ _________________________________________________________ -->
             contentType: "application/json; charset=utf-8"
         });
 
+        $.getJSON('/deals', {id: 2}, function (data) {
+            console.log("received deals!");
+            if (data != null) {
+                $("#deals-link").html(data.Name);
+            }
+        });
+
         console.log("Logged_in: " + $.cookie('logged_in'));
         if ($.cookie('logged_in') != null && $.cookie('logged_in') != "") {
             $("#login").remove();
@@ -133,6 +139,5 @@ _________________________________________________________ -->
             $("#howdy").remove()
             $("#logout").remove()
         }
-
     })
 </script>

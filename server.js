@@ -13,6 +13,7 @@ var request      = require("request")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
+  , deals        = require("./api/deals")
   , app          = express()
 
 epimetheus.instrument(app);
@@ -40,6 +41,7 @@ app.use(cart);
 app.use(catalogue);
 app.use(orders);
 app.use(user);
+app.use(deals);
 
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;
