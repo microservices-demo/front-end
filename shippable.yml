@@ -28,6 +28,7 @@ integrations:
   hub:
     - integrationName: shippable-ecr  # must match Subscription Integration in Shippable
       type: ecr
+      region: us-east-1
 
   notifications:
     - integrationName: trigger-img-front-end
