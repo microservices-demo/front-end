@@ -193,7 +193,7 @@
                 res.status(200);
                 res.cookie(cookie_name, custId, {
                     maxAge: 3600000
-                }).send('Cookie is set');
+                }).send({id: custId});
                 console.log("Sent cookies.");
                 res.end();
                 return;
