@@ -1270,8 +1270,8 @@ h1 {
 .navbar-default .navbar-nav > .active > a:focus {
   color: #555555;
   /* change the color of the active tab for the front-end UI  */
-  /*background-color: #4993e4;*/ /* blue */
-  background-color: #49e45b; /* green */
+  background-color: #4993e4;*/ /* blue 
+  /*background-color: #49e45b; /* green */*/
 }
 .navbar-default .navbar-nav > .disabled > a,
 .navbar-default .navbar-nav > .disabled > a:hover,
