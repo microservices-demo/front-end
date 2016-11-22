@@ -5,7 +5,7 @@
 
 
     app.get("/customers/:id", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.customersUrl + "/" + req.params.id, res, next);
+        helpers.simpleHttpRequest(endpoints.customersUrl + "/" + req.session.customerId, res, next);
     });
     app.get("/cards/:id", function(req, res, next) {
         helpers.simpleHttpRequest(endpoints.cardsUrl + "/" + req.params.id, res, next);
@@ -157,6 +157,7 @@
                             console.log(body);
                             var customerId = body.id;
                             console.log(customerId);
+                            req.session.customerId = customerId;
                             callback(null, customerId);
                             return;
                         }
@@ -191,7 +192,7 @@
                 }
                 console.log("set cookie" + custId);
                 res.status(200);
-                res.cookie(cookie_name, custId, {
+                res.cookie(cookie_name, req.session.id, {
                     maxAge: 3600000
                 }).send({id: custId});
                 console.log("Sent cookies.");
@@ -221,6 +222,7 @@
                             console.log(body);
                             var customerId = JSON.parse(body).user.id;
                             console.log(customerId);
+                            req.session.customerId = customerId;
                             callback(null, customerId);
                             return;
                         }
@@ -255,7 +257,7 @@
                     return;
                 }
                 res.status(200);
-                res.cookie(cookie_name, custId, {
+                res.cookie(cookie_name, req.session.id, {
                     maxAge: 3600000
                 }).send('Cookie is set');
                 console.log("Sent cookies.");

@@ -121,14 +121,19 @@ _________________________________________________________ -->
             contentType: "application/json; charset=utf-8"
         });
 
-        console.log("Logged_in: " + $.cookie('logged_in'));
         if ($.cookie('logged_in') != null && $.cookie('logged_in') != "") {
-            $("#login").remove();
-            $("#register").remove();
+
             username($.cookie('logged_in'), function (username) {
-                $("#howdy").append('<a href="#">Logged in as ' + username + '</a>').hide().fadeIn(200);
+                if (typeof username !== 'undefined') {
+                    $("#login").remove();
+                    $("#register").remove();
+                    $("#howdy").append('<a href="#">Logged in as ' + username + '<\/a>').hide().fadeIn(200);
+                    $("#logout").hide().fadeIn(200);
+                } else {
+                    $("#howdy").remove()
+                    $("#logout").remove()
+                }
             });
-            $("#logout").hide().fadeIn(200);
         } else {
             $("#howdy").remove()
             $("#logout").remove()

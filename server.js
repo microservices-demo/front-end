@@ -22,6 +22,7 @@ app.use(session(config.session));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helpers.errorHandler);
+app.use(helpers.sessionMiddleware);
 app.use(morgan("dev", {}));
 
 var domain = "";
