@@ -21,6 +21,12 @@
       send(ret);
   };
 
+  helpers.sessionMiddleware = function(err, req, res, next) {
+    if(!req.cookies.logged_in) {
+      res.session.customerId = null;
+    }
+  };
+
   /* Responds with the given body and status 200 OK  */
   helpers.respondSuccessBody = function(res, body) {
     helpers.respondStatusBody(res, 200, body);
@@ -70,14 +76,14 @@
   /* TODO: Add documentation */
   helpers.getCustomerId = function(req, env) {
     // Check if logged in. Get customer Id
-    var custId = req.cookies.logged_in;
+    var logged_in = req.cookies.logged_in;
 
     // TODO REMOVE THIS, SECURITY RISK
     if (env == "development" && req.query.custId != null) {
-      custId = req.query.custId;
+      return req.query.custId;
     }
 
-    if (!custId) {
+    if (!logged_in) {
       if (!req.session.id) {
         throw new Error("User not logged in.");
       }
@@ -85,7 +91,7 @@
       return req.session.id;
     }
 
-    return custId;
+    return req.session.customerId;
   }
   module.exports = helpers;
 }());

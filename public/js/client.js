@@ -145,7 +145,13 @@ function username(id, callback) {
         url: "customers/" + id,
         type: "GET",
         success: function (data, textStatus, jqXHR) {
-            callback(JSON.parse(data).firstName + " " + JSON.parse(data).lastName);
+            json = JSON.parse(data);
+            if (json.status_code !== 500) {
+                callback(json.firstName + " " + json.lastName);
+            } else {
+                console.error('Could not get user information: ' + id + ', due to: ' + json.status_text + ' | ' + json.error);
+                return callback(undefined);
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Could not get user information: ' + id + ', due to: ' + textStatus + ' | ' + errorThrown);
