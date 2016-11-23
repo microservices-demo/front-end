@@ -98,6 +98,9 @@ function order() {
                 deleteCart();
                 success = true;
             }
+            if (jqXHR.status == 500) {
+                alert(JSON.stringify(jqXHR));
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('error: ' + JSON.stringify(jqXHR));
