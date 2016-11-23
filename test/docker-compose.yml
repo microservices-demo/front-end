@@ -15,18 +15,6 @@ services:
     restart: always
     environment:
       - reschedule:on-node-failure
-  accounts:
-    image: weaveworksdemos/accounts
-    hostname: accounts
-    restart: always
-    environment:
-      - reschedule:on-node-failure
-  accounts-db:
-    image: mongo
-    hostname: accounts-db
-    restart: always
-    environment:
-      - reschedule:on-node-failure
   cart:
     image: weaveworksdemos/cart
     hostname: cart
@@ -82,9 +70,16 @@ services:
     command:
       - -port=80
       - -decline=999
-  login:
-    image: weaveworksdemos/login
-    hostname: login
+  user:
+    image: weaveworksdemos/user
+    hostname: user
     restart: always
     environment:
-      - reschedule:on-node-failure
+      - MONGO_HOST=user-db:27017
+      - reschedule=on-node-failure
+  user-db:
+    image: weaveworksdemos/user-db
+    hostname: user-db
+    restart: always
+    environment:
+      - reschedule=on-node-failure

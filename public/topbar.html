@@ -5,7 +5,7 @@ _________________________________________________________ -->
         <div class="col-md-6 offer" data-animate="fadeInDown">
             <a href="#" class="btn btn-success btn-sm"
                data-animate-hover="shake">Offer of the day</a> <a href="#">Buy
-            10 socks, get a pet human for free!</a>
+            10 socks, get a pet hamster for free!</a>
         </div>
         <div class="col-md-6" data-animate="fadeInDown">
             <ul class="menu">
@@ -29,7 +29,7 @@ _________________________________________________________ -->
                     <h4 class="modal-title" id="Login">Customer login</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="index.html">
+                    <form action="index.html" method="get">
                         <div class="form-group">
                             <input type="text" class="form-control"
                                    name="username"
@@ -67,7 +67,7 @@ _________________________________________________________ -->
                     <h4 class="modal-title" id="Login">Register</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="index.html">
+                    <form action="index.html" method="get">
 
                         <div class="form-group">
                             <label for="name">Username</label>
@@ -121,14 +121,19 @@ _________________________________________________________ -->
             contentType: "application/json; charset=utf-8"
         });
 
-        console.log("Logged_in: " + $.cookie('logged_in'));
         if ($.cookie('logged_in') != null && $.cookie('logged_in') != "") {
-            $("#login").remove();
-            $("#register").remove();
+
             username($.cookie('logged_in'), function (username) {
-                $("#howdy").append('<a href="#">Logged in as ' + username + '</a>').hide().fadeIn(200);
+                if (typeof username !== 'undefined') {
+                    $("#login").remove();
+                    $("#register").remove();
+                    $("#howdy").append('<a href="#">Logged in as ' + username + '<\/a>').hide().fadeIn(200);
+                    $("#logout").hide().fadeIn(200);
+                } else {
+                    $("#howdy").remove()
+                    $("#logout").remove()
+                }
             });
-            $("#logout").hide().fadeIn(200);
         } else {
             $("#howdy").remove()
             $("#logout").remove()

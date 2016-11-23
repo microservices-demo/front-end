@@ -13,7 +13,6 @@ var request      = require("request")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
-  , health       = require("./api/health")
   , app          = express()
 
 epimetheus.instrument(app);
@@ -23,6 +22,7 @@ app.use(session(config.session));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helpers.errorHandler);
+app.use(helpers.sessionMiddleware);
 app.use(morgan("dev", {}));
 
 var domain = "";
@@ -41,7 +41,6 @@ app.use(cart);
 app.use(catalogue);
 app.use(orders);
 app.use(user);
-app.use(health);
 
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;

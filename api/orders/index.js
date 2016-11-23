@@ -10,12 +10,13 @@
 
   app.get("/orders", function (req, res, next) {
     console.log("Request received with body: " + JSON.stringify(req.body));
-    var custId = req.cookies.logged_in;
-    if (!custId) {
+    var logged_in = req.cookies.logged_in;
+    if (!logged_in) {
       throw new Error("User not logged in.");
       return
     }
 
+    custId = req.session.customerId;
     async.waterfall([
         function (callback) {
           request(endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId, function (error, response, body) {
@@ -46,11 +47,13 @@
 
   app.post("/orders", function(req, res, next) {
     console.log("Request received with body: " + JSON.stringify(req.body));
-    var custId = req.cookies.logged_in;
-    if (!custId) {
+    var logged_in = req.cookies.logged_in;
+    if (!logged_in) {
       throw new Error("User not logged in.");
       return
     }
+
+    custId = req.session.customerId;
 
     async.waterfall([
         function (callback) {

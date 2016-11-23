@@ -9,6 +9,7 @@ function login() {
             alert("Logged in as " + username);
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
+            location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert("Problem with your login credentials. " + errorThrown);
@@ -20,6 +21,7 @@ function login() {
             xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
         }
     });
+    return false;
 }
 
 function register() {
@@ -45,6 +47,7 @@ function register() {
             alert("Logged in as " + username);
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
+            location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert("Problem with your registration. " + errorThrown);
@@ -53,6 +56,7 @@ function register() {
             console.log('error: ' + errorThrown);
         },
     });
+    return false;
 }
 
 function logout() {
@@ -145,7 +149,13 @@ function username(id, callback) {
         url: "customers/" + id,
         type: "GET",
         success: function (data, textStatus, jqXHR) {
-            callback(JSON.parse(data).firstName + " " + JSON.parse(data).lastName);
+            json = JSON.parse(data);
+            if (json.status_code !== 500) {
+                callback(json.firstName + " " + json.lastName);
+            } else {
+                console.error('Could not get user information: ' + id + ', due to: ' + json.status_text + ' | ' + json.error);
+                return callback(undefined);
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Could not get user information: ' + id + ', due to: ' + textStatus + ' | ' + errorThrown);
