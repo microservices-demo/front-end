@@ -53,7 +53,7 @@
       return
     }
 
-    custId = req.session.customerId;
+    var custId = req.session.customerId;
 
     async.waterfall([
         function (callback) {
