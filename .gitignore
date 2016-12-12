@@ -3,3 +3,5 @@
 
 # Ignore coverage reports
 /coverage
+
+.idea
