@@ -4,8 +4,10 @@ Front-end app
 ---
 Front-end application written in [Node.js](https://nodejs.org/en/) that puts together all of the microservices under [microservices-demo](https://github.com/microservices-demo/microservices-demo).
 
-## Development
-### Dependencies
+# Build
+
+## Dependencies
+
 <table>
   <thead>
     <tr>
@@ -29,51 +31,65 @@ Front-end application written in [Node.js](https://nodejs.org/en/) that puts tog
   </tbody>
 </table>
 
-### Take it for a spin
-If you want to try this out real quick on your laptop, go to the terminal and type
-```
-$ make up
-```
+## Node
 
-This step brings all the services up using compose and the actual front-end application using Docker.
-The application will become available on http://localhost:8080. Adjust to the virutal machine's IP if you
-are using docker-machine or similar.
+`npm install`
 
-Once you're done with testing you can bring the whole thing down with
-```
-$ make down
-```
+## Docker
 
-### Getting started
-**Before you start** make sure the rest of the microservices are up & running.
+`make test-image`
 
-Install the application dependencies with:
-```
-$ make deps
-```
+## Docker Compose
 
-### Testing
+`make up`
+
+# Test
+
 **Make sure that the microservices are up & running**
 
-* Unit & Functional tests:
+## Unit & Functional tests:
 
-    ```
-    make test
-    ```
+```
+make test
+```
 
-* End-to-End tests:
-    To make sure that the test suite is running against the latest (local) version with your changes, you need to manually build
-    the image, run the container and attach it to the proper Docker networks.
-    There is a make task that will do all this for you:
+## End-to-End tests:
+  
+To make sure that the test suite is running against the latest (local) version with your changes, you need to manually build
+the image, run the container and attach it to the proper Docker networks.
+There is a make task that will do all this for you:
 
-    ```
-    $ make dev
-    ```
+```
+make dev
+```
 
-    That will also tail the logs of the container to make debugging easy.
+That will also tail the logs of the container to make debugging easy.
+Then you can run the tests with:
 
-    Then you can run the tests with:
+```
+make e2e
+```
 
-    ```
-    $ make e2e
-    ```
+# Run
+
+## Node
+
+`npm start`
+
+## Docker
+
+`make server`
+
+# Use
+
+## Node
+
+`curl http://localhost:8081`
+
+## Docker Compose
+
+`curl http://localhost:8080`
+
+# Push
+
+`GROUP=weaveworksdemos COMMIT=test ./scripts/push.sh`
