@@ -24,11 +24,17 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "finalhandler": "^0.4.1",
+    "morgan": "^1.7.0",
     "request": "^2.72.0",
     "serve-static": "^1.10.2",
     "epimetheus": "^1.0.46",
     "prom-client": "^6.1.0",
-    "morgan": "^1.7.0"
+    "node-fetch": "^1.6.3",
+    "zipkin": "^0.4.0",
+    "zipkin-context-cls": "^0.2.1",
+    "zipkin-instrumentation-express": "^0.4.0",
+    "zipkin-instrumentation-fetch": "^0.4.0",
+    "zipkin-transport-http": "^0.4.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

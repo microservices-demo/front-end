@@ -2,7 +2,12 @@
   'use strict';
 
   var request = require("request");
+
+  const wrapFetch = require('zipkin-instrumentation-fetch');
+  const fetch = require('node-fetch');
+
   var helpers = {};
+  var tracer = null;
 
   /* Public: errorHandler is a middleware that handles your errors
    *
@@ -50,6 +55,14 @@
     res.end();
   }
 
+  helpers.setTracer = function(_tracer) {
+    tracer = _tracer;
+  }
+
+  helpers.fetcher = function(remoteServiceName) {
+    return wrapFetch(fetch, {tracer, remoteServiceName: remoteServiceName});
+  }
+
   /* Public: performs an HTTP GET request to the given URL
    *
    * url  - the URL where the external service can be reached out
@@ -66,11 +79,20 @@
    *   });
    * });
    */
-  helpers.simpleHttpRequest = function(url, res, next) {
+  helpers.simpleHttpRequest = function(traceName, url, res, next) {
+    var tracedFetch = helpers.fetcher(traceName);
+    tracedFetch(url).then(function(response) {
+      if (!response.ok) return next(response.error())
+      response.text().then(function(body) {
+        helpers.respondSuccessBody(res, body);
+      }.bind({res: res}));
+    });
+    /*
     request.get(url, function(error, response, body) {
       if (error) return next(error);
       helpers.respondSuccessBody(res, body);
     }.bind({res: res}));
+    */
   }
 
   /* TODO: Add documentation */

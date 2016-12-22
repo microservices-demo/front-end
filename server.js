@@ -17,6 +17,20 @@ var request      = require("request")
 
 epimetheus.instrument(app);
 
+const {Tracer, BatchRecorder} = require('zipkin');
+const CLSContext = require('zipkin-context-cls');
+const zipkinMiddleware = require('zipkin-instrumentation-express').expressMiddleware;
+const {HttpLogger} = require('zipkin-transport-http');
+const ctxImpl = new CLSContext('zipkin');
+const recorder = new BatchRecorder({logger: new HttpLogger({endpoint: 'http://zipkin:9411/api/v1/spans'})});
+const tracer = new Tracer({ctxImpl, recorder});
+helpers.setTracer(tracer);
+
+app.use(zipkinMiddleware({
+  tracer,
+  serviceName: 'socks-shop-ui'
+}));
+
 app.use(express.static("public"));
 app.use(session(config.session));
 app.use(bodyParser.json());

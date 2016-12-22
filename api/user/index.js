@@ -5,20 +5,20 @@
 
 
     app.get("/customers/:id", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.customersUrl + "/" + req.session.customerId, res, next);
+        helpers.simpleHttpRequest("GET /user/customers/{id}", endpoints.customersUrl + "/" + req.session.customerId, res, next);
     });
     app.get("/cards/:id", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.cardsUrl + "/" + req.params.id, res, next);
+        helpers.simpleHttpRequest("GET /user/cards/{id}", endpoints.cardsUrl + "/" + req.params.id, res, next);
     });
 
     app.get("/customers", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.customersUrl, res, next);
+        helpers.simpleHttpRequest("GET /user/customers", endpoints.customersUrl, res, next);
     });
     app.get("/addresses", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.addressUrl, res, next);
+        helpers.simpleHttpRequest("GET /user/addresses", endpoints.addressUrl, res, next);
     });
     app.get("/cards", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.cardsUrl, res, next);
+        helpers.simpleHttpRequest("GET /user/cards", endpoints.cardsUrl, res, next);
     });
     // Create Customer - TO BE USED FOR TESTING ONLY (for now)
     app.post("/customers", function(req, res, next) {

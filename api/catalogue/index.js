@@ -7,6 +7,8 @@
     , helpers   = require("../../helpers")
     , app       = express()
 
+  const wrapFetch = require('zipkin-instrumentation-fetch');
+
   app.get("/catalogue/images*", function (req, res, next) {
     var url = endpoints.catalogueUrl + req.url.toString();
     request.get(url)
@@ -15,11 +17,13 @@
   });
 
   app.get("/catalogue*", function (req, res, next) {
-    helpers.simpleHttpRequest(endpoints.catalogueUrl + req.url.toString(), res, next);
+    var url = req.url.toString();
+    var traceName = (/\/[0-9]+/.test(url) ? "GET /catalogue/{id}" : "GET /catalogue");
+    helpers.simpleHttpRequest(traceName, endpoints.catalogueUrl + url, res, next);
   });
 
   app.get("/tags", function(req, res, next) {
-    helpers.simpleHttpRequest(endpoints.tagsUrl, res, next);
+    helpers.simpleHttpRequest("GET /tags", endpoints.tagsUrl, res, next);
   });
 
   module.exports = app;
