@@ -16,7 +16,7 @@
       return
     }
 
-    custId = req.session.customerId;
+    var custId = req.session.customerId;
     async.waterfall([
         function (callback) {
           request(endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId, function (error, response, body) {
@@ -53,7 +53,7 @@
       return
     }
 
-    custId = req.session.customerId;
+    var custId = req.session.customerId;
 
     async.waterfall([
         function (callback) {
