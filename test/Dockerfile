@@ -1,4 +1,4 @@
-FROM node:0.10.46
+FROM node:6.9.2
 
 RUN apt-get install -y make
 
@@ -9,4 +9,3 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-ENTRYPOINT ["/bin/bash"]

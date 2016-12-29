@@ -60,7 +60,9 @@
   }
 
   helpers.fetcher = function(remoteServiceName) {
-    return wrapFetch(fetch, {tracer, remoteServiceName: remoteServiceName});
+    var span = tracer.startSpan('http_request');
+
+    return wrapFetch(fetch, {tracer, remoteServiceName: "socks-shop-ui"});
   }
 
   /* Public: performs an HTTP GET request to the given URL
@@ -88,8 +90,15 @@
       }.bind({res: res}));
     });
     /*
+    var span = tracer.startSpan('http_request');
     request.get(url, function(error, response, body) {
-      if (error) return next(error);
+      if (error) {
+	span.logEvent('request_error', error);
+        span.finish();
+	return next(error);
+      }
+      span.logEvent('data_received', body);
+      span.finish();
       helpers.respondSuccessBody(res, body);
     }.bind({res: res}));
     */
