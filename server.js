@@ -22,7 +22,6 @@ const
 
 epimetheus.instrument(app);
 
-app.use(express.static("public"));
 app.use(session(config.session));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -41,7 +40,10 @@ process.argv.forEach(function (val, index, array) {
   }
 });
 
+
+
 /* Mount API endpoints */
+app.use(express.static("public"));
 app.use(cart);
 app.use(catalogue);
 app.use(orders);
