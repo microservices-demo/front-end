@@ -30,7 +30,9 @@
     "request": "^2.72.0",
     "serve-static": "^1.10.2",
     "zipkin": "^0.5.1",
-    "zipkin-instrumentation-express": "^0.5.1"
+    "zipkin-instrumentation-express": "^0.5.1",
+    "zipkin-instrumentation-fetch": "^0.5.1",
+    "zipkin-transport-http": "^0.5.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

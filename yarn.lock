@@ -329,6 +329,12 @@ encodeurl@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.1.tgz#79e3d58655346909fe6f0f45a5de68103b294d20"
 
+encoding@^0.1.11:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
+  dependencies:
+    iconv-lite "~0.4.13"
+
 epimetheus@^1.0.46:
   version "1.0.46"
   resolved "https://registry.yarnpkg.com/epimetheus/-/epimetheus-1.0.46.tgz#fad0664062fac5f4cd31abb2de9a67853a984662"
@@ -593,7 +599,7 @@ http-signature@~1.1.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-iconv-lite@0.4.13:
+iconv-lite@0.4.13, iconv-lite@~0.4.13:
   version "0.4.13"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.13.tgz#1f88aba4ab0b1508e8312acc39345f36e992e2f2"
 
@@ -642,6 +648,10 @@ is-my-json-valid@^2.12.4:
 is-property@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-property/-/is-property-1.0.2.tgz#57fe1c4e48474edd65b09911f26b1cd4095dda84"
+
+is-stream@^1.0.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
 
 is-typedarray@~1.0.0:
   version "1.0.0"
@@ -906,6 +916,13 @@ negotiator@0.6.1:
 network-address@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/network-address/-/network-address-1.1.0.tgz#74d577b0dea652284659079fc8d7010b72f01092"
+
+node-fetch@^1.5.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.6.3.tgz#dc234edd6489982d58e8f0db4f695029abcd8c04"
+  dependencies:
+    encoding "^0.1.11"
+    is-stream "^1.0.1"
 
 node-int64@~0.3.0:
   version "0.3.3"
@@ -1393,6 +1410,16 @@ yargs@~3.10.0:
 zipkin-instrumentation-express@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/zipkin-instrumentation-express/-/zipkin-instrumentation-express-0.5.1.tgz#a93c9f134fad520d70ac0a65f90f066c4a67461f"
+
+zipkin-instrumentation-fetch@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/zipkin-instrumentation-fetch/-/zipkin-instrumentation-fetch-0.5.1.tgz#2b938f3547cedfee964e5821470eee80318ff732"
+
+zipkin-transport-http@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/zipkin-transport-http/-/zipkin-transport-http-0.5.1.tgz#6c7d6626017484b0e0f218ccd8f4187ab58364e2"
+  dependencies:
+    node-fetch "^1.5.3"
 
 zipkin@^0.5.1:
   version "0.5.1"
