@@ -83,6 +83,10 @@ balanced-match@^0.4.1:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
 
+base64-js@^1.1.2:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
+
 base64-url@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/base64-url/-/base64-url-1.3.3.tgz#f8b6c537f09a4fc58c99cb86e0b0e9c61461a20f"
@@ -211,6 +215,10 @@ commander@2.9.0, commander@^2.9.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
     graceful-readlink ">= 1.0.0"
+
+commander@~2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.1.0.tgz#d121bbae860d9992a3d517ba96f56588e47c6781"
 
 component-emitter@^1.2.0:
   version "1.2.1"
@@ -887,9 +895,21 @@ ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
+nan@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-1.0.0.tgz#ae24f8850818d662fcab5acf7f3b95bfaa2ccf38"
+
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+network-address@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/network-address/-/network-address-1.1.0.tgz#74d577b0dea652284659079fc8d7010b72f01092"
+
+node-int64@~0.3.0:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.3.3.tgz#2d6e6b2ece5de8588b43d88d1bc41b26cd1fa84d"
 
 nopt@3.x:
   version "3.0.6"
@@ -934,6 +954,10 @@ optionator@^0.8.1:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
     wordwrap "~1.0.0"
+
+options@>=0.0.5:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
 
 parseurl@~1.3.1:
   version "1.3.1"
@@ -983,6 +1007,10 @@ punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
+q@1.0.x:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.0.1.tgz#11872aeedee89268110b10a718448ffb10112a14"
+
 qs@6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.2.0.tgz#3b7848c03c2dece69a9522b0fae8c4126d745f3b"
@@ -1007,21 +1035,9 @@ raw-body@~2.1.7:
     iconv-lite "0.4.13"
     unpipe "1.0.0"
 
-readable-stream@2.1.5:
+readable-stream@2.1.5, readable-stream@^2.0.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.1.5.tgz#66fa8b720e1438b364681f2ad1a63c618448c9d0"
-  dependencies:
-    buffer-shims "^1.0.0"
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "~1.0.0"
-    process-nextick-args "~1.0.6"
-    string_decoder "~0.10.x"
-    util-deprecate "~1.0.1"
-
-readable-stream@^2.0.5:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.2.tgz#a9e6fec3c7dda85f8bb1b3ba7028604556fc825e"
   dependencies:
     buffer-shims "^1.0.0"
     core-util-is "~1.0.0"
@@ -1219,6 +1235,18 @@ tdigest@^0.1.1:
   dependencies:
     bintrees "1.0.1"
 
+thrift@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/thrift/-/thrift-0.9.3.tgz#99021336403d42e08b8efadb1c37a06d7998b2a6"
+  dependencies:
+    node-int64 "~0.3.0"
+    q "1.0.x"
+    ws "~0.4.32"
+
+tinycolor@0.x:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/tinycolor/-/tinycolor-0.0.1.tgz#320b5a52d83abb5978d81a3e887d4aefb15a6164"
+
 tough-cookie@~2.3.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.3.2.tgz#f081f76e4c85720e6c37a5faced737150d84072a"
@@ -1336,6 +1364,15 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
 
+ws@~0.4.32:
+  version "0.4.32"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-0.4.32.tgz#787a6154414f3c99ed83c5772153b20feb0cec32"
+  dependencies:
+    commander "~2.1.0"
+    nan "~1.0.0"
+    options ">=0.0.5"
+    tinycolor "0.x"
+
 xml@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
@@ -1352,3 +1389,15 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+zipkin-instrumentation-express@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/zipkin-instrumentation-express/-/zipkin-instrumentation-express-0.5.1.tgz#a93c9f134fad520d70ac0a65f90f066c4a67461f"
+
+zipkin@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/zipkin/-/zipkin-0.5.1.tgz#ec3be8b904599078e007b9b94838af38aa143ec7"
+  dependencies:
+    base64-js "^1.1.2"
+    network-address "^1.1.0"
+    thrift "^0.9.3"

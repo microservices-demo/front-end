@@ -1,12 +1,17 @@
-var request      = require("request")
-  , express      = require("express")
-  , morgan       = require("morgan")
-  , path         = require("path")
-  , bodyParser   = require("body-parser")
-  , async        = require("async")
-  , cookieParser = require("cookie-parser")
-  , session      = require("express-session")
-  , epimetheus   = require("epimetheus")
+// Keep imports sorted alphabetically
+const
+    async            = require("async")
+  , bodyParser       = require("body-parser")
+  , cookieParser     = require("cookie-parser")
+  , epimetheus       = require("epimetheus")
+  , express          = require("express")
+  , morgan           = require("morgan")
+  , path             = require("path")
+  , request          = require("request")
+  , session          = require("express-session")
+  , zipkin           = require("zipkin")
+  , zipkinMiddleware = require("zipkin-instrumentation-express").expressMiddleware
+
   , config       = require("./config")
   , helpers      = require("./helpers")
   , cart         = require("./api/cart")
