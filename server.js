@@ -20,7 +20,23 @@ const
   , user         = require("./api/user")
   , app          = express()
 
+// Add zipkin middlware
+let zipkinTracer = (function() {
+  const {Tracer, ExplicitContext, BatchRecorder, ConsoleRecorder} = zipkin;
+  const {HttpLogger} = require('zipkin-transport-http');
+  const ctxImpl = new ExplicitContext();
+  //const recorder = new ConsoleRecorder();
+  const recorder = new BatchRecorder({
+    logger: new HttpLogger({endpoint: 'http://zipkin:9411/api/v1/spans'}),
+    timeout: 1 * 1000000 /* timeout after 1 second */
+  });
+
+  const tracer = new Tracer({ctxImpl, recorder});
+  return tracer;
+})();
+
 // Setup middleware
+app.use(zipkinMiddleware({tracer: zipkinTracer, serviceName: "front-end"}));
 epimetheus.instrument(app);
 app.use(session(config.session));
 app.use(bodyParser.json());
@@ -31,10 +47,9 @@ app.use(morgan("dev", {}));
 
 /* Mount API endpoints */
 app.use(express.static("public"));
-app.use(cart);
-app.use(catalogue);
-app.use(orders);
-app.use(user);
+for (let mod of [cart, catalogue, orders, user]) {
+  app.use(mod.withTracer(zipkinTracer));
+}
 
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;
