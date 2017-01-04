@@ -89,6 +89,7 @@
                         </div>
                         <!-- /.table-responsive -->
 
+
                         <div class="box-footer">
                             <div class="pull-left">
                                 <a href="category.html" class="btn btn-default"><i
@@ -99,7 +100,7 @@
                                 <a class="btn btn-default" onclick="alert('Stub. Todo.')"><i
                                         class="fa fa-refresh"></i> Update basket
                                 </a>
-                                <button id="orderButton" type="submit" class="btn btn-primary" onclick="return order();" disabled>
+                                <button id="orderButton" type="submit" class="btn btn-primary" disabled>
                                     Proceed to checkout <i
                                         class="fa fa-chevron-right"></i>
                                 </button>
@@ -111,6 +112,103 @@
                 </div>
                 <!-- /.box -->
 
+                <div class="row same-height-row">
+
+                    <div class="col-md-6">
+                        <div class="box">
+                            <div class="box-header">
+                                <h4 style="display: inline;">Shipping Address</h4>
+                                <p style="display: inline; float: right;">
+                                    <a data-toggle="modal" data-target="#address-modal" href="#change">Change</a>
+                                </p>
+                            </div>
+                            <p id="address"></p>
+                            <div class="modal fade" id="address-modal" tabindex="-1" role="dialog" aria-labelledby="address" aria-hidden="true">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="Login">Address</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" id="form-address">
+                                                <div class="form-group">
+                                                    <label for="house-number">House Number</label>
+                                                    <input type="text" class="form-control" name="house-number" id="form-number" placeholder="Number">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="street">Street Name</label>
+                                                    <input type="text" class="form-control" name="street" id="form-street" placeholder="Street">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="city">City</label>
+                                                    <input type="text" class="form-control" name="city" id="form-city" placeholder="City">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="post-code">Post Code</label>
+                                                    <input type="text" class="form-control" name="post-code" id="form-post-code" placeholder="Post Code">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="country">Country</label>
+                                                    <input type="text" class="form-control" name="country" id="form-country" placeholder="Country">
+                                                </div>
+                                                    <p class="text-center">
+                                                        <button class="btn btn-primary" href="#" onclick="return address()"><i
+                                                                class="fa fa-refresh"></i> Update
+                                                        </button>
+                                                    </p>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box">
+                            <div class="box-header">
+                                <h4 style="display: inline;">Payment</h4>
+                                <p style="display: inline; float: right;">
+                                    <a data-toggle="modal" data-target="#card-modal" href="#change">Change</a>
+                                </p>
+                            </div>
+                            <p id="number"></p>
+                            <div class="modal fade" id="card-modal" tabindex="-1" role="dialog" aria-labelledby="card" aria-hidden="true">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="credit-card">Credit Card</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" id="form-card">
+                                                <div class="form-group">
+                                                    <label for="card-number">Card Number</label>
+                                                    <input type="text" class="form-control" name="card-number" id="form-card-number" placeholder="Card Number">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="expires">Expires</label>
+                                                    <input type="text" class="form-control" name="expires" id="form-expires" placeholder="MM/YY">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="ccv">CCV</label>
+                                                    <input type="text" class="form-control" name="ccv" id="form-ccv" placeholder="CCV">
+                                                </div>
+                                            </form>
+                                            <p class="text-right">
+                                                <button class="btn btn-primary" href="#" onclick="return card()"><i
+                                                        class="fa fa-refresh"></i> Update
+                                                </button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row same-height-row" id="youMayAlsoLike">
                     <div class="col-md-3 col-sm-6">
@@ -249,7 +347,6 @@ _________________________________________________________ -->
                     if (element != null && element.itemId != null && element.itemId != "null") {
                         $.getJSON('/catalogue/' + element.itemId, function (data) {
                             console.log(JSON.stringify(data));
-                            // {"Id":"574dad8b0329ff0f9ce4173a","name":"Herrera","description":"reprehenderit sit nostrud voluptate sit tempor laborum tempor officia eiusmod","imageUrl":"http://192.168.99.103:32769/images/sock.jpeg","Price":9,"count":409,"tag":["blue","large","green"]}%
                             $('#cart-list').append(' <tr>\
                                                 <td>\
                                                     <a href="#">\
@@ -275,6 +372,18 @@ _________________________________________________________ -->
                         }).always(function () {
                             console.log("Final counts: $" + cartTotal + ", with " + numItemsInCart + " items.");
                             $('#orderButton').prop('disabled', false);
+                            if ($('p#address').text() === 'No address saved for user.' || $('p#number').text() === 'No credit card saved for user.') {
+                                $('#orderButton').click(function(event) {
+                                    event.stopPropagation();
+                                    event.preventDefault();
+                                    alert("Missing shipping or payment info.");
+                                    return false;
+                                });
+                            } else {
+                                $('#orderButton').click(function(event) {
+                                    return order();
+                                });
+                            }
                             $('#numItemsInCart').text('You currently have ' + numItemsInCart + ' item(s) in your cart.');
                             $('#cartTotal').text('$' + cartTotal.toFixed(2));
                             $('#orderSubtotal').text('$' + cartTotal.toFixed(2));
@@ -284,6 +393,30 @@ _________________________________________________________ -->
                     }
                 });
 
+            }
+        });
+
+        $.getJSON('/card', function(data) {
+            if (data.status_code !== 500) {
+                $("p#number").text("Card ending in " + data.number).css("color", "black");
+            } else {
+                $("p#number").text("No credit card saved for user.").css("color", "red");
+            }
+        });
+
+        $.getJSON('/address', function(data) {
+            if (data.status_code !== 500) {
+                var text = data.number + " ";
+                text += data.street
+                text += "</br>";
+                text += data.city;
+                text += "</br>";
+                text += data.postcode;
+                text += "</br>";
+                text += data.country;
+                $("p#address").html(text).css("color", "black");
+            } else {
+                $("p#address").text("No address saved for user.").css("color", "red");
             }
         });
 

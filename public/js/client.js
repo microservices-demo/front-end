@@ -162,3 +162,53 @@ function username(id, callback) {
         }
     });
 }
+
+function address() {
+    var data = {
+        "number": $("#form-number").val(),
+        "street": $("#form-street").val(),
+        "city": $("#form-city").val(),
+        "postcode": $("#form-post-code").val(),
+        "country": $("#form-country").val()
+    };
+    $.ajax({
+        url: "addresses",
+        type: "POST",
+        async: false,
+        data: JSON.stringify(data),
+        success: function (data, textStatus, jqXHR) {
+            location.reload();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert("Problem with . " + errorThrown);
+            console.log('error: ' + JSON.stringify(jqXHR));
+            console.log('error: ' + textStatus);
+            console.log('error: ' + errorThrown);
+        },
+    });
+    return false;
+}
+
+function card() {
+    var data = {
+        "longNum": $("#form-card-number").val(),
+        "expires": $("#form-expires").val(),
+        "ccv": $("#form-ccv").val()
+    };
+    $.ajax({
+        url: "cards",
+        type: "POST",
+        async: false,
+        data: JSON.stringify(data),
+        success: function (data, textStatus, jqXHR) {
+            location.reload();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert("Problem with . " + errorThrown);
+            console.log('error: ' + JSON.stringify(jqXHR));
+            console.log('error: ' + textStatus);
+            console.log('error: ' + errorThrown);
+        },
+    });
+    return false;
+}

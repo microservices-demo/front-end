@@ -20,6 +20,7 @@
     app.get("/cards", function(req, res, next) {
         helpers.simpleHttpRequest(endpoints.cardsUrl, res, next);
     });
+
     // Create Customer - TO BE USED FOR TESTING ONLY (for now)
     app.post("/customers", function(req, res, next) {
         var options = {
@@ -41,9 +42,9 @@
         }));
     });
 
-
-    // Create Address - TO BE USED FOR TESTING ONLY (for now)
     app.post("/addresses", function(req, res, next) {
+        req.body.userID = helpers.getCustomerId(req, app.get("env"));
+
         var options = {
             uri: endpoints.addressUrl,
             method: 'POST',
@@ -61,8 +62,53 @@
         }));
     });
 
-    // Create Card - TO BE USED FOR TESTING ONLY (for now)
+    app.get("/card", function(req, res, next) {
+        var custId = helpers.getCustomerId(req, app.get("env"));
+        var options = {
+            uri: endpoints.customersUrl + '/' + custId + '/cards',
+            method: 'GET',
+        };
+        request(options, function(error, response, body) {
+            if (error) {
+                return next(error);
+            }
+            var data = JSON.parse(body);
+            if (data.status_code !== 500 && data._embedded.card.length !== 0 ) {
+                var resp = {
+                    "number": data._embedded.card[0].longNum.slice(-4)
+                };
+                return helpers.respondSuccessBody(res, JSON.stringify(resp));
+            }
+            return helpers.respondSuccessBody(res, JSON.stringify({"status_code": 500}));
+        }.bind({
+            res: res
+        }));
+    });
+
+    app.get("/address", function(req, res, next) {
+        var custId = helpers.getCustomerId(req, app.get("env"));
+        var options = {
+            uri: endpoints.customersUrl + '/' + custId + '/addresses',
+            method: 'GET',
+        };
+        request(options, function(error, response, body) {
+            if (error) {
+                return next(error);
+            }
+            var data = JSON.parse(body);
+            if (data.status_code !== 500 && data._embedded.address.length !== 0 ) {
+                var resp = data._embedded.address[0];
+                return helpers.respondSuccessBody(res, JSON.stringify(resp));
+            }
+            return helpers.respondSuccessBody(res, JSON.stringify({"status_code": 500}));
+        }.bind({
+            res: res
+        }));
+    });
+
     app.post("/cards", function(req, res, next) {
+        req.body.userID = helpers.getCustomerId(req, app.get("env"));
+
         var options = {
             uri: endpoints.cardsUrl,
             method: 'POST',
@@ -131,7 +177,6 @@
         }));
     });
 
-    // Create Customer - TO BE USED FOR TESTING ONLY (for now)
     app.post("/register", function(req, res, next) {
         var options = {
             uri: endpoints.registerUrl,
