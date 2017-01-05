@@ -2,12 +2,16 @@ module.exports = {
   withTracer: function(tracer) {
     'use strict';
 
-    var async     = require("async")
+    const async   = require("async")
       , express   = require("express")
       , request   = require("request")
+      , fetch     = require("node-fetch")
+      , wrapFetch = require("zipkin-instrumentation-fetch")
       , endpoints = require("../endpoints")
       , helpers   = require("../../helpers")
-      , app       = express()
+      , app       = express();
+
+    const zipkinFetch = wrapFetch(fetch, { tracer, serviceName: "front-end", remoteServiceName: "orders" } );
 
     app.get("/orders", function (req, res, next) {
       console.log("Request received with body: " + JSON.stringify(req.body));
