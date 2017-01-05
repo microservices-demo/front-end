@@ -21,27 +21,20 @@ module.exports = {
         return
       }
 
-      var custId = req.session.customerId;
-      async.waterfall([
-          function (callback) {
-            request(endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId, function (error, response, body) {
-              if (error) {
-                return callback(error);
-              }
-              console.log("Received response: " + JSON.stringify(body));
-              if (response.statusCode == 404) {
-                console.log("No orders found for user: " + custId);
-                return callback(null, []);
-              }
-              callback(null, JSON.parse(body)._embedded.customerOrders);
-            });
-          }
-      ],
-      function (err, result) {
-        if (err) {
-          return next(err);
+      const custId = req.session.customerId;
+      const url = endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId; // <-- TODO: potential security issue
+
+      zipkinFetch(url).then(function (reponse) {
+        var customerOrders = [];
+        if (res.ok) {
+          // Just parse, extract the customerOrders and serialize again.
+          customerOrders = response.json()._embedded.customerOrders;
+        } else if (res.status == 404) {
+          console.log("No orders found for user: " + custId);
         }
-        helpers.respondStatusBody(res, 201, JSON.stringify(result));
+        helpers.respondStatusBody(res, 201, JSON.stringify(customerOrders));
+      }).catch(function (err) {
+        next(err);
       });
     });
 
