@@ -39,8 +39,10 @@ module.exports = {
     });
 
     app.get("/orders/*", function (req, res, next) {
-      var url = endpoints.ordersUrl + req.url.toString();
-      request.get(url).pipe(res);
+      const url = endpoints.ordersUrl + req.url.toString();
+      zipkinFetch(url).then(function (reponse) {
+        response.body.pipe(res)
+      });
     });
 
     app.post("/orders", function(req, res, next) {
