@@ -1,9 +1,15 @@
 (function (){
   'use strict';
-
+  const {
+    HttpHeaders: Header,
+    Annotation
+  } = require('zipkin');
   var request = require("request");
   var helpers = {};
 
+  helpers.useTracer = function(tracer) {
+	helpers.tracer = tracer;
+  }
   /* Public: errorHandler is a middleware that handles your errors
    *
    * Example:
@@ -26,6 +32,7 @@
       res.session.customerId = null;
     }
   };
+
 
   /* Responds with the given body and status 200 OK  */
   helpers.respondSuccessBody = function(res, body) {
@@ -67,11 +74,50 @@
    * });
    */
   helpers.simpleHttpRequest = function(url, res, next) {
-    request.get(url, function(error, response, body) {
+    var headers = {};
+    helpers.ZipkinHeaders(url, headers)
+    var traceId = headers[Header.TraceId]
+    console.log("header sent:" + traceId); 
+    request.get({url: url, headers: headers}, function(error, response, body) {
       if (error) return next(error);
       helpers.respondSuccessBody(res, body);
     }.bind({res: res}));
+	var tracer = helpers.tracer
+	tracer.scoped(() => {
+	  tracer.setId(traceId);
+	  tracer.recordBinary('http.status_code', "200");
+	  tracer.recordAnnotation(new Annotation.ClientRecv());
+	});
   }
+
+  helpers.ZipkinHeaders = function(url, headers) {
+          var tracer = helpers.tracer
+	  tracer.scoped(() => {
+	    tracer.setId(tracer.createChildId());
+	    const traceId = tracer.id;
+	    this.traceId = traceId;
+
+	    headers[Header.TraceId] = traceId.traceId;
+	    headers[Header.SpanId] = traceId.spanId;
+	    traceId._parentId.ifPresent(psid => {
+	      headers[Header.ParentSpanId] = psid;
+	    });
+	    traceId.sampled.ifPresent(sampled => {
+	      headers[Header.Sampled] = sampled ? '1' : '0';
+	    });
+
+	    const method = "GET";
+	    tracer.recordServiceName("front-end");
+	    tracer.recordRpc(method);
+	    tracer.recordBinary('http.url', url);
+	    tracer.recordAnnotation(new Annotation.ClientSend());
+	    tracer.recordAnnotation(new Annotation.ServerAddr({
+	      ServiceName: url
+	    }));
+	});
+    }
+
+
 
   /* TODO: Add documentation */
   helpers.getCustomerId = function(req, env) {

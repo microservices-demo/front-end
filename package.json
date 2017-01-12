@@ -21,22 +21,25 @@
     "async": "^1.5.2",
     "body-parser": "^1.15.1",
     "cookie-parser": "^1.4.3",
+    "epimetheus": "^1.0.46",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "finalhandler": "^0.4.1",
+    "morgan": "^1.7.0",
+    "prom-client": "^6.1.0",
     "request": "^2.72.0",
     "serve-static": "^1.10.2",
-    "epimetheus": "^1.0.46",
-    "prom-client": "^6.1.0",
-    "morgan": "^1.7.0"
+    "zipkin": "^0.5.1",
+    "zipkin-instrumentation-express": "^0.5.1",
+    "zipkin-transport-http": "^0.5.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
-    "sinon": "^1.17.5",
+    "istanbul": "^0.4.4",
     "mocha": "^3.0.0",
     "mocha-junit-reporter": "^1.12.1",
-    "istanbul": "^0.4.4",
-    "mongodb": "^2.2.5"
+    "mongodb": "^2.2.5",
+    "sinon": "^1.17.5"
   }
 }

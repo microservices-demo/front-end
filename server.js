@@ -16,7 +16,18 @@ var request      = require("request")
   , app          = express()
 
 epimetheus.instrument(app);
+const {Tracer, ExplicitContext, BatchRecorder} = require('zipkin');
+const {HttpLogger} = require('zipkin-transport-http');
+const zipkinMiddleware = require('zipkin-instrumentation-express').expressMiddleware;
 
+const ctxImpl = new ExplicitContext();
+const recorder = new BatchRecorder({
+  logger: new HttpLogger({
+    endpoint: "http://zipkin:9411/api/v1/spans"
+  })
+});
+
+const tracer = new Tracer({ctxImpl, recorder}); // configure your tracer properly here
 app.use(express.static("public"));
 app.use(session(config.session));
 app.use(bodyParser.json());
@@ -24,7 +35,11 @@ app.use(cookieParser());
 app.use(helpers.errorHandler);
 app.use(helpers.sessionMiddleware);
 app.use(morgan("dev", {}));
-
+app.use(zipkinMiddleware({
+  tracer,
+  serviceName: "front-end"
+}));
+helpers.useTracer(tracer);
 var domain = "";
 process.argv.forEach(function (val, index, array) {
   var arg = val.split("=");
