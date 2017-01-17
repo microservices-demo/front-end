@@ -37,7 +37,7 @@ app.use(helpers.sessionMiddleware);
 app.use(morgan("dev", {}));
 app.use(zipkinMiddleware({
   tracer,
-  serviceName: "front-end"
+  serviceName: "frontend"
 }));
 helpers.useTracer(tracer);
 var domain = "";

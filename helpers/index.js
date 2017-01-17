@@ -74,23 +74,27 @@
    * });
    */
   helpers.simpleHttpRequest = function(url, res, next) {
-    var headers = {};
-    helpers.ZipkinHeaders(url, headers)
-    var traceId = headers[Header.TraceId]
+	  var headers = {};
+	  var traceId
+    helpers.ZipkinHeaders(url, headers, traceId)
     console.log("header sent:" + traceId); 
-    request.get({url: url, headers: headers}, function(error, response, body) {
-      if (error) return next(error);
-      helpers.respondSuccessBody(res, body);
-    }.bind({res: res}));
-	var tracer = helpers.tracer
-	tracer.scoped(() => {
-	  tracer.setId(traceId);
-	  tracer.recordBinary('http.status_code', "200");
-	  tracer.recordAnnotation(new Annotation.ClientRecv());
-	});
+	  request.get({url: url, headers: headers},
+		  function(error, response, body) {
+      			if (error) return next(error);
+      			helpers.respondSuccessBody(res, body);
+		  }.bind({res: res})
+	  ).on("response", function(response){
+		  // TODO: This response needs to be sorted
+	  	  //	  var tracer = helpers.tracer
+		  //tracer.scoped(() => {
+		  //		  tracer.setId(traceId);
+		  //		  tracer.recordBinary('http.status_code', response.statusCode);
+		  //		  tracer.recordAnnotation(new Annotation.ClientRecv());
+		  //	  });
+		});
   }
 
-  helpers.ZipkinHeaders = function(url, headers) {
+  helpers.ZipkinHeaders = function(url, headers, traceId) {
           var tracer = helpers.tracer
 	  tracer.scoped(() => {
 	    tracer.setId(tracer.createChildId());
@@ -107,7 +111,7 @@
 	    });
 
 	    const method = "GET";
-	    tracer.recordServiceName("front-end");
+	    tracer.recordServiceName("frontend");
 	    tracer.recordRpc(method);
 	    tracer.recordBinary('http.url', url);
 	    tracer.recordAnnotation(new Annotation.ClientSend());
