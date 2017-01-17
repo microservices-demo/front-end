@@ -5,6 +5,7 @@
     Annotation
   } = require('zipkin');
   var request = require("request");
+  const purl = require('url');
   var helpers = {};
 
   helpers.useTracer = function(tracer) {
@@ -75,26 +76,31 @@
    */
   helpers.simpleHttpRequest = function(url, res, next) {
 	  var headers = {};
-	  var traceId
-    helpers.ZipkinHeaders(url, headers, traceId)
-    console.log("header sent:" + traceId); 
+    helpers.ZipkinHeaders(url, headers)
+    console.log("header sent:" + headers[Header.TraceId]); 
 	  request.get({url: url, headers: headers},
 		  function(error, response, body) {
       			if (error) return next(error);
       			helpers.respondSuccessBody(res, body);
 		  }.bind({res: res})
-	  ).on("response", function(response){
-		  // TODO: This response needs to be sorted
-	  	  //	  var tracer = helpers.tracer
-		  //tracer.scoped(() => {
-		  //		  tracer.setId(traceId);
-		  //		  tracer.recordBinary('http.status_code', response.statusCode);
-		  //		  tracer.recordAnnotation(new Annotation.ClientRecv());
-		  //	  });
-		});
+	  ).on("response", helpers.ClientRecv);
   }
 
-  helpers.ZipkinHeaders = function(url, headers, traceId) {
+	helpers.ClientRecv = function(response) {
+		console.log(response.request.host)
+		return
+	  	  	  var tracer = helpers.tracer
+		  tracer.scoped(() => {
+		  		tracer.recordRpc(response.request.host);
+		  		tracer.recordServiceName("frontend");
+		  		  tracer.setId(response.headers[Header.TraceId]);
+		  		  tracer.recordBinary('http.status_code', response.statusCode);
+		  		  tracer.recordAnnotation(new Annotation.ClientRecv());
+		  	  });
+		
+	};
+
+  helpers.ZipkinHeaders = function(url, headers) {
           var tracer = helpers.tracer
 	  tracer.scoped(() => {
 	    tracer.setId(tracer.createChildId());
@@ -110,18 +116,16 @@
 	      headers[Header.Sampled] = sampled ? '1' : '0';
 	    });
 
-	    const method = "GET";
-	    tracer.recordServiceName("frontend");
-	    tracer.recordRpc(method);
+		  var host = helpers.getHost(url)
+		  tracer.recordServiceName("frontend");
+		  tracer.recordRpc(host);
 	    tracer.recordBinary('http.url', url);
 	    tracer.recordAnnotation(new Annotation.ClientSend());
-	    tracer.recordAnnotation(new Annotation.ServerAddr({
-	      ServiceName: url
-	    }));
 	});
     }
-
-
+  helpers.getHost = function(url){
+	return purl.parse(url, false, true).hostname
+  }
 
   /* TODO: Add documentation */
   helpers.getCustomerId = function(req, env) {

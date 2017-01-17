@@ -29,7 +29,7 @@
               return callback(null, []);
             }
             callback(null, JSON.parse(body)._embedded.customerOrders);
-          });
+	  }).on("response", helpers.ClientRecv);
         }
     ],
     function (err, result) {
@@ -41,8 +41,10 @@
   });
 
   app.get("/orders/*", function (req, res, next) {
-    var url = endpoints.ordersUrl + req.url.toString();
-    request.get(url).pipe(res);
+	  var url = endpoints.ordersUrl + req.url.toString();
+	  var headers = {};
+	  helpers.ZipkinHeaders(url, headers);
+	  request.get({url: url, headers: headers}).pipe(res).on("response", helpers.ClientRecv);
   });
 
   app.post("/orders", function(req, res, next) {
@@ -57,7 +59,10 @@
 
     async.waterfall([
         function (callback) {
-          request(endpoints.customersUrl + "/" + custId, function (error, response, body) {
+          var url = endpoints.customersUrl + "/" + custId
+	  var headers = {};
+	  helpers.ZipkinHeaders(url, headers);
+          request({url: url, headers: headers}, function (error, response, body) {
             if (error) {
               callback(error);
               return;
@@ -74,13 +79,15 @@
               "items": endpoints.cartsUrl + "/" + custId + "/items"
             };
             callback(null, order, addressLink, cardLink);
-          });
+	  }).on("response", helpers.ClientRecv);
         },
         function (order, addressLink, cardLink, callback) {
           async.parallel([
               function (callback) {
                 console.log("GET Request to: " + addressLink);
-                request.get(addressLink, function (error, response, body) {
+	        var headers = {};
+	        helpers.ZipkinHeaders(addressLink, headers);
+                request.get({url:addressLink, headers: headers}, function (error, response, body) {
                   if (error) {
                     callback(error);
                     return;
@@ -91,11 +98,13 @@
                     order.address = jsonBody._embedded.address[0]._links.self.href;
                   }
                   callback();
-                });
+		  }).on("response", helpers.ClientRecv);
               },
               function (callback) {
                 console.log("GET Request to: " + cardLink);
-                request.get(cardLink, function (error, response, body) {
+	        var headers = {};
+	        helpers.ZipkinHeaders(cardLink, headers);
+                request.get({url:cardLink, headers:headers}, function (error, response, body) {
                   if (error) {
                     callback(error);
                     return;
@@ -106,7 +115,7 @@
                     order.card = jsonBody._embedded.card[0]._links.self.href;
                   }
                   callback();
-                });
+		  }).on("response",helpers.ClientRecv);
               }
           ], function (err, result) {
             if (err) {
@@ -117,12 +126,16 @@
             callback(null, order);
           });
         },
-        function (order, callback) {
+	function (order, callback) {
+          var url = endpoints.ordersUrl + '/orders'
+	  var headers = {};
+	  helpers.ZipkinHeaders(url, headers);
           var options = {
-            uri: endpoints.ordersUrl + '/orders',
+            uri: url,
             method: 'POST',
             json: true,
-            body: order
+	    body: order,
+            headers: headers
           };
           console.log("Posting Order: " + JSON.stringify(order));
           request(options, function (error, response, body) {
@@ -132,7 +145,7 @@
             console.log("Order response: " + JSON.stringify(response));
             console.log("Order response: " + JSON.stringify(body));
             callback(null, response.statusCode, body);
-          });
+	  }).on("response", helpers.ClientRecv);
         }
     ],
     function (err, status, result) {
