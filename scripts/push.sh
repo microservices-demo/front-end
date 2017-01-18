@@ -31,13 +31,11 @@ tag_and_push_all() {
     else
         TAG=$1
     fi
-    for m in ./docker/*/; do
-        REPO=${GROUP}/$(basename $m)
-        if [[ "$COMMIT" != "$TAG" ]]; then
-            docker tag ${REPO}:${COMMIT} ${REPO}:${TAG}
-        fi
-        push "$REPO:$TAG";
-    done;
+    DOCKER_REPO=${GROUP}/${REPO}
+    if [[ "$COMMIT" != "$TAG" ]]; then
+        docker tag ${DOCKER_REPO}:${COMMIT} ${DOCKER_REPO}:${TAG}
+    fi
+    push "$DOCKER_REPO:$TAG";
 }
 
 # Push snapshot when in master
