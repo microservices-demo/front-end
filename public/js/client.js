@@ -100,11 +100,10 @@ function order() {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log('error: ' + JSON.stringify(jqXHR));
-            console.log('error: ' + textStatus);
-            console.log('error: ' + errorThrown);
+            response_payload = JSON.parse(jqXHR.responseText)
+            console.log('error: ' + jqXHR.responseText);
             if (jqXHR.status == 406) {
-                alert("Error placing order. Payment declined.");
+                alert("Error placing order. " +  response_payload.message);
             }
         }
     });
