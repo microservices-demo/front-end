@@ -91,8 +91,8 @@ function order() {
         url: "orders",
         type: "POST",
         async: false,
-        success: function (data, textStatus, jqXHR) {
-            if (jqXHR.status == 201) {
+	    success: function (data, textStatus, jqXHR) {
+            if (jqXHR.status == 200 || jqXHR.status == 201) {
                 console.log("Order placed.");
                 alert("Order placed!");
                 deleteCart();

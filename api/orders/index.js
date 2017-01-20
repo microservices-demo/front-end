@@ -7,7 +7,9 @@
     , endpoints = require("../endpoints")
     , helpers   = require("../../helpers")
     , app       = express()
-
+    , fetch = require('node-fetch')
+    , wrapFetch    = require('zipkin-instrumentation-fetch')
+  var zipkinFetch = helpers.getFetch()
   app.get("/orders", function (req, res, next) {
     console.log("Request received with body: " + JSON.stringify(req.body));
     var logged_in = req.cookies.logged_in;
@@ -17,34 +19,19 @@
     }
 
     var custId = req.session.customerId;
-    async.waterfall([
-        function (callback) {
-          request(endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId, function (error, response, body) {
-            if (error) {
-              return callback(error);
-            }
-            console.log("Received response: " + JSON.stringify(body));
-            if (response.statusCode == 404) {
-              console.log("No orders found for user: " + custId);
-              return callback(null, []);
-            }
-            callback(null, JSON.parse(body)._embedded.customerOrders);
-	  }).on("response", helpers.ClientRecv);
-        }
-    ],
-    function (err, result) {
-      if (err) {
-        return next(err);
-      }
-      helpers.respondStatusBody(res, 201, JSON.stringify(result));
-    });
+	  var url = endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId
+	  zipkinFetch(url, {headers: req.headers}).then(resp => resp.json()).then(function(json){
+		var body = JSON.stringify(json._embedded.customerOrders)
+		console.log(body)  
+		  res.write(body)
+		res.end()
+	  }).catch(next);
+    
   });
 
   app.get("/orders/*", function (req, res, next) {
 	  var url = endpoints.ordersUrl + req.url.toString();
-	  var headers = {};
-	  helpers.ZipkinHeaders(url, headers);
-	  request.get({url: url, headers: headers}).pipe(res).on("response", helpers.ClientRecv);
+	  zipkinFetch(url, {headers: req.headers}).then(resp => resp.body.pipe(res)).catch(next);
   });
 
   app.post("/orders", function(req, res, next) {
@@ -60,15 +47,8 @@
     async.waterfall([
         function (callback) {
           var url = endpoints.customersUrl + "/" + custId
-	  var headers = {};
-	  helpers.ZipkinHeaders(url, headers);
-          request({url: url, headers: headers}, function (error, response, body) {
-            if (error) {
-              callback(error);
-              return;
-            }
-            console.log("Received response: " + JSON.stringify(body));
-            var jsonBody = JSON.parse(body);
+	  zipkinFetch(url, {headers: req.headers}).then(resp => resp.json()).then(function(body){
+            var jsonBody = body;
             var customerlink = jsonBody._links.customer.href;
             var addressLink = jsonBody._links.addresses.href;
             var cardLink = jsonBody._links.cards.href;
@@ -78,44 +58,31 @@
               "card": null,
               "items": endpoints.cartsUrl + "/" + custId + "/items"
             };
-            callback(null, order, addressLink, cardLink);
-	  }).on("response", helpers.ClientRecv);
+	    callback(null, order, addressLink, cardLink);
+	  }).catch(callback);
         },
         function (order, addressLink, cardLink, callback) {
           async.parallel([
               function (callback) {
                 console.log("GET Request to: " + addressLink);
-	        var headers = {};
-	        helpers.ZipkinHeaders(addressLink, headers);
-                request.get({url:addressLink, headers: headers}, function (error, response, body) {
-                  if (error) {
-                    callback(error);
-                    return;
-                  }
-                  console.log("Received response: " + JSON.stringify(body));
-                  var jsonBody = JSON.parse(body);
-                  if (jsonBody._embedded.address[0] != null) {
-                    order.address = jsonBody._embedded.address[0]._links.self.href;
-                  }
-                  callback();
-		  }).on("response", helpers.ClientRecv);
+		  zipkinFetch(addressLink, {headers: req.headers}).then(resp => resp.json()).then(function(body){
+                    console.log("Received response: " + JSON.stringify(body));
+                    var jsonBody = body;
+                    if (jsonBody._embedded.address[0] != null) {
+                      order.address = jsonBody._embedded.address[0]._links.self.href;
+                    }
+                    callback();
+	  	 }).catch(callback);
               },
               function (callback) {
                 console.log("GET Request to: " + cardLink);
-	        var headers = {};
-	        helpers.ZipkinHeaders(cardLink, headers);
-                request.get({url:cardLink, headers:headers}, function (error, response, body) {
-                  if (error) {
-                    callback(error);
-                    return;
-                  }
-                  console.log("Received response: " + JSON.stringify(body));
-                  var jsonBody = JSON.parse(body);
+		zipkinFetch(cardLink, {headers: req.headers}).then(resp => resp.json()).then(function(body){
+                  var jsonBody = body;
                   if (jsonBody._embedded.card[0] != null) {
                     order.card = jsonBody._embedded.card[0]._links.self.href;
                   }
                   callback();
-		  }).on("response",helpers.ClientRecv);
+	  	 }).catch(callback);
               }
           ], function (err, result) {
             if (err) {
@@ -127,33 +94,31 @@
           });
         },
 	function (order, callback) {
+	  console.log(order)
+	  var optheaders = req.headers;
+	  optheaders['Content-Type'] = 'application/json';
           var url = endpoints.ordersUrl + '/orders'
-	  var headers = {};
-	  helpers.ZipkinHeaders(url, headers);
           var options = {
-            uri: url,
             method: 'POST',
-            json: true,
-	    body: order,
-            headers: headers
-          };
-          console.log("Posting Order: " + JSON.stringify(order));
-          request(options, function (error, response, body) {
-            if (error) {
-              return callback(error);
-            }
-            console.log("Order response: " + JSON.stringify(response));
+		  body: JSON.stringify(order),
+		  headers: optheaders
+	  };
+          var status
+		zipkinFetch(url, {headers: req.headers}, options).then(function(resp){
+			res.writeHeader(resp.status)
+			return resp.json()
+		}).then(function(body){
             console.log("Order response: " + JSON.stringify(body));
-            callback(null, response.statusCode, body);
-	  }).on("response", helpers.ClientRecv);
-        }
-    ],
-    function (err, status, result) {
-      if (err) {
-        return next(err);
-      }
-      helpers.respondStatusBody(res, status, JSON.stringify(result));
-    });
+	    res.write(JSON.stringify(body));
+	    res.end();
+	  }).catch(callback);
+        },
+	function (err, result) {
+	  if (err) {
+	    return next(err);
+	  }
+	 }
+    ]);
   });
 
   module.exports = app;

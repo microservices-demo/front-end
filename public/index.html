@@ -184,6 +184,7 @@ _________________________________________________________ -->
         $("#footer").load("footer.html");
 
         $.getJSON('/catalogue', {size: 5}, function (data) {
+            console.log(data)
             if (data != null) {
                 $.each(data, function (index, element) {
                     $('#hot-slider').append(

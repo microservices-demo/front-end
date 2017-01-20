@@ -13,33 +13,32 @@ var request      = require("request")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
-  , app          = express()
+  , app          = express();
 
-epimetheus.instrument(app);
 const {Tracer, ExplicitContext, BatchRecorder} = require('zipkin');
-const {HttpLogger} = require('zipkin-transport-http');
 const zipkinMiddleware = require('zipkin-instrumentation-express').expressMiddleware;
-
+const {HttpLogger} = require('zipkin-transport-http');
 const ctxImpl = new ExplicitContext();
 const recorder = new BatchRecorder({
   logger: new HttpLogger({
     endpoint: "http://zipkin:9411/api/v1/spans"
   })
 });
-
 const tracer = new Tracer({ctxImpl, recorder}); // configure your tracer properly here
+
+epimetheus.instrument(app);
+
 app.use(express.static("public"));
 app.use(session(config.session));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helpers.errorHandler);
 app.use(helpers.sessionMiddleware);
-app.use(morgan("dev", {}));
 app.use(zipkinMiddleware({
   tracer,
   serviceName: "frontend"
 }));
-helpers.useTracer(tracer);
+app.use(morgan("dev", {}));
 var domain = "";
 process.argv.forEach(function (val, index, array) {
   var arg = val.split("=");
