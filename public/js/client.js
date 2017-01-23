@@ -183,7 +183,7 @@ function address() {
             location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with . " + errorThrown);
+            $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Error saving the address. ' + errorThrown + '</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
@@ -207,7 +207,7 @@ function card() {
             location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with . " + errorThrown);
+            $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Error saving the creditcard. ' + errorThrown + '</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
