@@ -50,6 +50,8 @@
     <div id="content">
         <div class="container">
 
+            <div id="user-message"> </div>
+
             <div class="col-md-12">
                 <ul class="breadcrumb">
                     <li><a href="index.html">Home</a>
@@ -376,7 +378,7 @@ _________________________________________________________ -->
                                 $('#orderButton').click(function(event) {
                                     event.stopPropagation();
                                     event.preventDefault();
-                                    alert("Missing shipping or payment info.");
+                                    $("#user-message").html('<div class="alert alert-danger alert-dismissable">Could not place order. Missing shipping or payment information.</div>');
                                     return false;
                                 });
                             } else {
