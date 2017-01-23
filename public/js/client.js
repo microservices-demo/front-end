@@ -6,13 +6,15 @@ function login() {
         type: "GET",
         async: false,
         success: function (data, textStatus, jqXHR) {
-            alert("Logged in as " + username);
+            $("#user-message").html('<div class="alert alert-success">Login was successful.</div>');
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
-            location.reload();
+            setTimeout(function(){
+                location.reload();
+            }, 1500);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with your login credentials. " + errorThrown);
+            $("#user-message").html('<div class="alert alert-danger">Invalid login credentials.</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
