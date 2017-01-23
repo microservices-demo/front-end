@@ -6,7 +6,7 @@ function login() {
         type: "GET",
         async: false,
         success: function (data, textStatus, jqXHR) {
-            $("#user-message").html('<div class="alert alert-success">Login was successful.</div>');
+            $("#login-message").html('<div class="alert alert-success">Login successful.</div>');
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
             setTimeout(function(){
@@ -14,7 +14,7 @@ function login() {
             }, 1500);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            $("#user-message").html('<div class="alert alert-danger">Invalid login credentials.</div>');
+            $("#login-message").html('<div class="alert alert-danger">Invalid login credentials.</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
@@ -46,13 +46,15 @@ function register() {
         async: false,
 	data: postvals,
         success: function (data, textStatus, jqXHR) {
-            alert("Logged in as " + username);
+            $("#registration-message").html('<div class="alert alert-success">Registration and login successful.</div>');
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
-            location.reload();
+            setTimeout(function(){
+                location.reload();
+            }, 1500);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with your registration. " + errorThrown);
+            $("#registration-message").html('<div class="alert alert-danger">There was a problem with your registration: ' + errorThrown + '</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
