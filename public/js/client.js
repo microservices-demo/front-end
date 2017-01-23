@@ -86,7 +86,7 @@ function resetTags() {
 
 function order() {
     if (!$.cookie('logged_in')) {
-        $("#user-message").html('<div class="alert alert-danger alert-dismissable">You must be logged in to place an order.</div>');
+        $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> You must be logged in to place an order.</div>');
         return false;
     }
 
@@ -98,7 +98,7 @@ function order() {
         success: function (data, textStatus, jqXHR) {
             if (jqXHR.status == 201) {
                 console.log("Order placed.");
-                $("#user-message").html('<div class="alert alert-success alert-dismissable">Order placed.</div>');
+                $("#user-message").html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Order placed.</div>');
                 deleteCart();
                 success = true;
             }
@@ -107,7 +107,7 @@ function order() {
             response_payload = JSON.parse(jqXHR.responseText)
             console.log('error: ' + jqXHR.responseText);
             if (jqXHR.status == 406) {
-                $("#user-message").html('<div class="alert alert-danger alert-dismissable">Error placing order. ' + response_payload.message + '</div>');
+                $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Error placing order. ' + response_payload.message + '</div>');
             }
         }
     });
