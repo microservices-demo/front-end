@@ -6,13 +6,15 @@ function login() {
         type: "GET",
         async: false,
         success: function (data, textStatus, jqXHR) {
-            alert("Logged in as " + username);
+            $("#login-message").html('<div class="alert alert-success">Login successful.</div>');
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
-            location.reload();
+            setTimeout(function(){
+                location.reload();
+            }, 1500);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with your login credentials. " + errorThrown);
+            $("#login-message").html('<div class="alert alert-danger">Invalid login credentials.</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
@@ -44,13 +46,15 @@ function register() {
         async: false,
 	data: postvals,
         success: function (data, textStatus, jqXHR) {
-            alert("Logged in as " + username);
+            $("#registration-message").html('<div class="alert alert-success">Registration and login successful.</div>');
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
-            location.reload();
+            setTimeout(function(){
+                location.reload();
+            }, 1500);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with your registration. " + errorThrown);
+            $("#registration-message").html('<div class="alert alert-danger">There was a problem with your registration: ' + errorThrown + '</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
@@ -82,7 +86,7 @@ function resetTags() {
 
 function order() {
     if (!$.cookie('logged_in')) {
-        alert("You must be logged in to place an order.");
+        $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> You must be logged in to place an order.</div>');
         return false;
     }
 
@@ -94,7 +98,7 @@ function order() {
         success: function (data, textStatus, jqXHR) {
             if (jqXHR.status == 201) {
                 console.log("Order placed.");
-                alert("Order placed!");
+                $("#user-message").html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Order placed.</div>');
                 deleteCart();
                 success = true;
             }
@@ -103,7 +107,7 @@ function order() {
             response_payload = JSON.parse(jqXHR.responseText)
             console.log('error: ' + jqXHR.responseText);
             if (jqXHR.status == 406) {
-                alert("Error placing order. " +  response_payload.message);
+                $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Error placing order. ' + response_payload.message + '</div>');
             }
         }
     });
@@ -179,7 +183,7 @@ function address() {
             location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with . " + errorThrown);
+            $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Error saving the address. ' + errorThrown + '</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
@@ -203,7 +207,7 @@ function card() {
             location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Problem with . " + errorThrown);
+            $("#user-message").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Error saving the creditcard. ' + errorThrown + '</div>');
             console.log('error: ' + JSON.stringify(jqXHR));
             console.log('error: ' + textStatus);
             console.log('error: ' + errorThrown);
