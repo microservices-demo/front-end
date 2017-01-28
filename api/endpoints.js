@@ -1,7 +1,7 @@
 (function (){
   'use strict';
 
-  const util = require('util');
+  var util = require('util');
 
   var domain = "";
   process.argv.forEach(function (val, index, array) {
