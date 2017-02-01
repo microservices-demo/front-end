@@ -1,64 +1,69 @@
-(function (){
-  'use strict';
-  const {
-    HttpHeaders: Header,
-    Annotation
-  } = require('zipkin');
-  var request = require("request");
-  const purl = require('url');
-  var helpers = {};
-
-  helpers.useTracer = function(tracer) {
-	helpers.tracer = tracer;
-  }
-  /* Public: errorHandler is a middleware that handles your errors
+(function() {
+    'use strict';
+	//const {HttpHeaders: Header, Annotation, TraceId, None, Some} = require('zipkin');
+    var request = require("request");
+    const purl = require('url');
+    var helpers = {};
+    var fetch = require('node-fetch');
+    var wrapFetch    = require('zipkin-instrumentation-fetch')
+	const {Tracer, ExplicitContext, BatchRecorder} = require('zipkin');
+	const {HttpLogger} = require('zipkin-transport-http');
+	const ctxImpl = new ExplicitContext();
+	const recorder = new BatchRecorder({
+	  logger: new HttpLogger({
+	    endpoint: "http://zipkin:9411/api/v1/spans"
+	  })
+	});
+	const tracer = new Tracer({ctxImpl, recorder}); // configure your tracer properly here
+    helpers.getFetch = function() {
+	    return wrapFetch(fetch, {tracer, serviceName: "frontend-fetch"});
+	
+    }
+    /* Public: errorHandler is a middleware that handles your errors
    *
    * Example:
    *
    * var app = express();
    * app.use(helpers.errorHandler);
    * */
-  helpers.errorHandler = function(err, req, res, next) {
-    var ret = {
-      message: err.message,
-      error:   err
+    helpers.errorHandler = function(err, req, res, next) {
+        var ret = {
+            message: err.message,
+            error: err
+        };
+        res.status(err.status || 500).send(ret);
     };
-    res.
-      status(err.status || 500).
-      send(ret);
-  };
 
-  helpers.sessionMiddleware = function(err, req, res, next) {
-    if(!req.cookies.logged_in) {
-      res.session.customerId = null;
+    helpers.sessionMiddleware = function(err, req, res, next) {
+        if (!req.cookies.logged_in) {
+            res.session.customerId = null;
+        }
+    };
+
+    /* Responds with the given body and status 200 OK  */
+    helpers.respondSuccessBody = function(res, body) {
+        helpers.respondStatusBody(res, 200, body);
     }
-  };
 
-
-  /* Responds with the given body and status 200 OK  */
-  helpers.respondSuccessBody = function(res, body) {
-    helpers.respondStatusBody(res, 200, body);
-  }
-
-  /* Public: responds with the given body and status
+    /* Public: responds with the given body and status
    *
    * res        - response object to use as output
    * statusCode - the HTTP status code to set to the response
    * body       - (string) the body to yield to the response
    */
-  helpers.respondStatusBody = function(res, statusCode, body) {
-    res.writeHeader(statusCode);
-    res.write(body);
-    res.end();
-  }
+    helpers.respondStatusBody = function(res, statusCode, body) {
+        res.writeHeader(statusCode);
+        res.write(body);
+        res.end();
+    }
 
-  /* Responds with the given statusCode */
-  helpers.respondStatus = function(res, statusCode) {
-    res.writeHeader(statusCode);
-    res.end();
-  }
+    /* Responds with the given statusCode */
+    helpers.respondStatus = function(res, statusCode) {
+        res.writeHeader(statusCode);
+        res.end();
+    }
 
-  /* Public: performs an HTTP GET request to the given URL
+    /* Public: performs an HTTP GET request to the given URL
    *
    * url  - the URL where the external service can be reached out
    * res  - the response object where the external service's output will be yield
@@ -74,78 +79,50 @@
    *   });
    * });
    */
-  helpers.simpleHttpRequest = function(url, res, next) {
-	  var headers = {};
-    helpers.ZipkinHeaders(url, headers)
-    console.log("header sent:" + headers[Header.TraceId]); 
-	  request.get({url: url, headers: headers},
-		  function(error, response, body) {
-      			if (error) return next(error);
-      			helpers.respondSuccessBody(res, body);
-		  }.bind({res: res})
-	  ).on("response", helpers.ClientRecv);
-  }
+    helpers.simpleHttpRequest = function(url, resp, error, next, headers) {
+	    var tracer = helpers.tracer
+      var host = helpers.getHost(url)
+      const zipkinFetch = helpers.getFetch();
+      zipkinFetch(url,{headers: headers}).catch(function(err) {
+	      error(err);
+      }).then(function(res){
 
-	helpers.ClientRecv = function(response) {
-		console.log(response.request.host)
-		return
-	  	  	  var tracer = helpers.tracer
-		  tracer.scoped(() => {
-		  		tracer.recordRpc(response.request.host);
-		  		tracer.recordServiceName("frontend");
-		  		  tracer.setId(response.headers[Header.TraceId]);
-		  		  tracer.recordBinary('http.status_code', response.statusCode);
-		  		  tracer.recordAnnotation(new Annotation.ClientRecv());
-		  	  });
-		
-	};
-
-  helpers.ZipkinHeaders = function(url, headers) {
-          var tracer = helpers.tracer
-	  tracer.scoped(() => {
-	    tracer.setId(tracer.createChildId());
-	    const traceId = tracer.id;
-	    this.traceId = traceId;
-
-	    headers[Header.TraceId] = traceId.traceId;
-	    headers[Header.SpanId] = traceId.spanId;
-	    traceId._parentId.ifPresent(psid => {
-	      headers[Header.ParentSpanId] = psid;
-	    });
-	    traceId.sampled.ifPresent(sampled => {
-	      headers[Header.Sampled] = sampled ? '1' : '0';
-	    });
-
-		  var host = helpers.getHost(url)
-		  tracer.recordServiceName("frontend");
-		  tracer.recordRpc(host);
-	    tracer.recordBinary('http.url', url);
-	    tracer.recordAnnotation(new Annotation.ClientSend());
-	});
-    }
-  helpers.getHost = function(url){
-	return purl.parse(url, false, true).hostname
-  }
-
-  /* TODO: Add documentation */
-  helpers.getCustomerId = function(req, env) {
-    // Check if logged in. Get customer Id
-    var logged_in = req.cookies.logged_in;
-
-    // TODO REMOVE THIS, SECURITY RISK
-    if (env == "development" && req.query.custId != null) {
-      return req.query.custId;
+	      resp.writeHeader(res.status)
+	      return res.text();
+      }).then(function(body){
+             if (next && typeof next === 'function') {
+		console.log("Next set")
+		body = next(body)
+	      }
+	      resp.write(body);
+	      resp.end(); 
+      })
     }
 
-    if (!logged_in) {
-      if (!req.session.id) {
-        throw new Error("User not logged in.");
-      }
-      // Use Session ID instead
-      return req.session.id;
+
+    helpers.getHost = function(url) {
+        return purl.parse(url, false, true).hostname
     }
 
-    return req.session.customerId;
-  }
-  module.exports = helpers;
+    /* TODO: Add documentation */
+    helpers.getCustomerId = function(req, env) {
+        // Check if logged in. Get customer Id
+        var logged_in = req.cookies.logged_in;
+
+        // TODO REMOVE THIS, SECURITY RISK
+        if (env == "development" && req.query.custId != null) {
+            return req.query.custId;
+        }
+
+        if (!logged_in) {
+            if (!req.session.id) {
+                throw new Error("User not logged in.");
+            }
+            // Use Session ID instead
+            return req.session.id;
+        }
+
+        return req.session.customerId;
+    }
+    module.exports = helpers;
 }());
