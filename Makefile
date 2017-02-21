@@ -1,4 +1,4 @@
-IMAGE=frontend
+IMAGE=front-end
 
 .PHONY: test coverage
 
