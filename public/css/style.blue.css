@@ -385,8 +385,8 @@ h1 {
 #content .panel.sidebar-menu .panel-body span.colour.green {
   background: green;
 }
-#content .panel.sidebar-menu .panel-body span.colour.blue {
-  background: blue;
+#content .panel.sidebar-menu .panel-body span.colour.green {
+  background: green;
 }
 #content .panel.sidebar-menu .panel-body span.colour.yellow {
   background: yellow;
@@ -1270,7 +1270,7 @@ h1 {
 .navbar-default .navbar-nav > .active > a:focus {
   color: #555555;
   /* change the color of the active tab for the front-end UI  */
-  background-color: #4993e4;*/ /* blue 
+  background-color: #4993e4;*/ /* green 
   /*background-color: #49e45b; /* green */*/
 }
 .navbar-default .navbar-nav > .disabled > a,
