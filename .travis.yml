@@ -13,7 +13,7 @@ before_install:
   - make test-image deps
 
 env:
-  - GROUP=weaveworksdemos COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG REPO=front-end;
+  - GROUP=${FORK-:weaveworksdemos} COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG REPO=front-end;
 
 script:
   - make test
