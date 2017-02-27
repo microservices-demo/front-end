@@ -13,12 +13,19 @@ var request      = require("request")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
+  , RedisStore   = require('connect-redis')(session)
   , app          = express()
 
 epimetheus.instrument(app);
 
 app.use(express.static("public"));
-app.use(session(config.session));
+app.use(session({
+      store: new RedisStore({host: "session-db"}),
+      name: 'md.sid',
+      secret: 'sooper secret',
+      resave: false,
+      saveUninitialized: true
+    }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helpers.errorHandler);
