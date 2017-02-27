@@ -28,7 +28,8 @@
     "serve-static": "^1.10.2",
     "epimetheus": "^1.0.46",
     "prom-client": "^6.1.0",
-    "morgan": "^1.7.0"
+    "morgan": "^1.7.0",
+    "connect-redis": "^3.2.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
