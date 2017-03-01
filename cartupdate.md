@@ -2,21 +2,19 @@
 
 ## front-end/api/cart/index.js
 
-  added new route /cart/update to app
-
+  - added new route /cart/update to app
+```
   app.post("/cart/update", fun -  - ction (req, res, next)
-
+```
 ## front-end/public/js/client.js
 
-  added new function
-
+  - added new function  updateToCart
+```
   updateToCart(id, quantity, next)
- 
+ ```
 ## front-end/public/basket.html
 
-- added new function
-  
-  updateCart()
+- added new function  updateCart
   ```
   function updateCart() {
 		console.log("Updating Cart");
@@ -38,13 +36,14 @@
 		next();
 	}
   ```
+  
   for each item row in cart table call updateToCart (client.js - updateToCart(id, quantity, next))
   
 - connected update button click to function updateCart()
 
   line:102   `<a class="btn btn-default" onclick="updateCart();"><i`
   
-- ammended $(document).ready(function () - 
+- ammended $(document).ready(function ()
   
   line:382   `<td id="' + element.itemId + '">\`
   
