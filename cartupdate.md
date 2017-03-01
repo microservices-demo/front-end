@@ -117,3 +117,7 @@
 # Issues raised
 
 - PATCH method on cart db returns STATUS CODE 202 ... NOT ... STATUS CODE 200 as specified in the docs
+
+- front-end/test/Dockerfile had old node version. Updated it to version 4.8 (minimum required) File needs rejigging.
+
+- front-end/test/docker-compose.yml was missing catalogue-db. Requires updating.
