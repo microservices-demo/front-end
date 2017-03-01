@@ -1,7 +1,7 @@
 {
-  "name": "weave-demo-frontend",
+  "name": "microservices-demo-front-end",
   "version": "0.0.1",
-  "description": "Front end for weave demo application.",
+  "description": "Front end for microservices demo application.",
   "main": "server.js",
   "scripts": {
     "test": "istanbul cover node_modules/.bin/_mocha -- test/*_test.js test/api/*_test.js",
