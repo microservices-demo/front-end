@@ -11,13 +11,33 @@
   added new function
 
   updateToCart(id, quantity, next)
-  
+ 
 ## front-end/public/basket.html
 
 - added new function
   
   updateCart()
-  
+  ```
+  function updateCart() {
+		console.log("Updating Cart");
+		var cartsize = document.getElementById("cart-list").rows.length;
+		console.log("cart-list size: " + cartsize);
+
+		var idx = 0;
+		next = function(){
+			if (idx< cartsize) {
+				var id = document.getElementById("cart-list").rows[idx].cells[2].id;
+				var quantity = document.getElementById("cart-list").rows[idx].cells[2].getElementsByTagName('input')[0].value;
+				idx++;
+				updateToCart(id, quantity, next);
+			}
+			else {
+				location.reload();
+			}
+		}
+		next();
+	}
+  ```
   for each item row in cart table call updateToCart (client.js - updateToCart(id, quantity, next))
   
 - connected update button click to function updateCart()
