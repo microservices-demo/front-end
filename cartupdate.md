@@ -113,3 +113,7 @@
   this adds catalogue itemId to quantity input box to be retrieved when iterating cart items for updateCart() routine
   
   also changed to min="1" from min="0" as 0 is obviously impossible and will cause problems later on
+
+# Issues raised
+
+- PATCH method on cart db returns STATUS CODE 202 ... NOT ... STATUS CODE 200 as specified in the docs
