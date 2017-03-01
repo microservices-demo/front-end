@@ -24,7 +24,7 @@ if(process.env.SESSION_REDIS) {
 }
 else {
     console.log('Using local session manager');
-    app.use(session(config.session_redis));
+    app.use(session(config.session));
 }
 
 app.use(bodyParser.json());
