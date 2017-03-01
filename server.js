@@ -13,19 +13,20 @@ var request      = require("request")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
-  , RedisStore   = require('connect-redis')(session)
   , app          = express()
 
 epimetheus.instrument(app);
 
 app.use(express.static("public"));
-app.use(session({
-      store: new RedisStore({host: "session-db"}),
-      name: 'md.sid',
-      secret: 'sooper secret',
-      resave: false,
-      saveUninitialized: true
-    }));
+if(process.env.SESSION_REDIS) {
+    console.log('Using the redis based session manager');
+    app.use(session(config.session_redis));
+}
+else {
+    console.log('Using local session manager');
+    app.use(session(config.session_redis));
+}
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helpers.errorHandler);
