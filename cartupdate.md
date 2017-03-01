@@ -4,7 +4,7 @@
 
   - added new route /cart/update to app
 ```
-    app.post("/cart/update", function (req, res, next) {
+  app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
     
     if (req.body.id == null) {
