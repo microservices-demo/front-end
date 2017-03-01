@@ -4,7 +4,7 @@
 
   - added new route /cart/update to app
 ```
-  app.post("/cart/update", fun -  - ction (req, res, next)
+  app.post("/cart/update", function (req, res, next)
 ```
 ## front-end/public/js/client.js
 
