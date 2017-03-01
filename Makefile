@@ -31,7 +31,7 @@ server:
 		-e PORT=8080            \
 		-p 8080:8080            \
 		--network test_default  \
-		$(IMAGE) /usr/local/bin/npm start
+		$(IMAGE) npm start
 
 # Removes the development container & image
 clean:
