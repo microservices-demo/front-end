@@ -27,7 +27,7 @@
   // Delete cart
   app.delete("/cart", function (req, res, next) {
     var custId = helpers.getCustomerId(req, app.get("env"));
-    console.log('Attempting to delete cart for user: ' + custId);3
+    console.log('Attempting to delete cart for user: ' + custId);
     var options = {
       uri: endpoints.cartsUrl + "/" + custId,
       method: 'DELETE'
