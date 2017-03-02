@@ -129,6 +129,25 @@ function deleteCart() {
         }
     });
 }
+// function update To Cart(itemId, quantity, callback)
+// cart/update request sent to frontend server (index.js - app.post("/cart/update" function...)
+function updateToCart(id, quantity, next) {
+
+	console.log("Sending request to update cart: item: " + id + " quantity: " + quantity);
+    $.ajax({
+        url: "cart/update",
+        type: "POST",
+        data: JSON.stringify({"id": id, "quantity": quantity}),
+        success: function (data, textStatus, jqXHR) {
+            console.log('Item updated: ' + id + ', ' + textStatus);
+            next();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Could not update item: ' + id + ', due to: ' + textStatus + ' | ' + errorThrown);
+            next();
+        }
+    });
+}
 
 function addToCart(id) {
     console.log("Sending request to add to cart: " + id);

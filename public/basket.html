@@ -99,7 +99,11 @@
                                     shopping</a>
                             </div>
                             <div class="pull-right">
+<<<<<<< HEAD
                                 <a class="btn btn-default" onclick="updateCart()"><i
+=======
+                                <a class="btn btn-default" onclick="updateCart();"><i
+>>>>>>> a643a7d... Implemented update cart functions
                                         class="fa fa-refresh"></i> Update basket
                                 </a>
                                 <button id="orderButton" type="submit" class="btn btn-primary" disabled>
@@ -334,27 +338,28 @@ _________________________________________________________ -->
         });
     }
 
-    function updateCart() {
-        console.log('Updating cart.');
-        $("tr.item").each(function (){
-            var id = $(this).find("input.id").val(),
-                quantity = $(this).find("input.form-control").val();
-            console.log("Item nr " + id  + " has " + quantity);
-            $.ajax({
-                url: "cart/" + id,
-                type: "PUT",
-                data: JSON.stringify({"quantity": quantity}),
-                success: function (data, textStatus, jqXHR) {
-                    console.log('Worked!');
-                    location.reload();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Could not update item: ' + id + ', due to: ' + textStatus + ' | ' + errorThrown);
-                }
-            });
-        });
-    }
+	// function updateCart()
+	// for each item row in cart table call updateToCart (client.js - updateToCart(itemId, quantity, callback))
+	function updateCart() {
+		console.log("Updating Cart");
+		var cartsize = document.getElementById("cart-list").rows.length;
+		console.log("cart-list size: " + cartsize);
 
+		var idx = 0;
+		next = function(){
+			if (idx< cartsize) {
+				var id = document.getElementById("cart-list").rows[idx].cells[2].id;
+				var quantity = document.getElementById("cart-list").rows[idx].cells[2].getElementsByTagName('input')[0].value;
+				idx++;
+				updateToCart(id, quantity, next);
+			}
+			else {
+				location.reload();
+			}
+		}
+		next();
+	}
+	
     $(document).ready(function () {
         $.ajaxSetup({
             contentType: "application/json; charset=utf-8"
@@ -379,7 +384,11 @@ _________________________________________________________ -->
                                                 <td>\
                                                     <a href="#">' + data.name + '</a>\
                                                 </td>\
+<<<<<<< HEAD
                                                 <td>\
+=======
+                                                <td id="' + element.itemId + '">\
+>>>>>>> a643a7d... Implemented update cart functions
                                                     <input type="number" min="1" value="' + element.quantity + '" class="form-control">\
                                                 </td>\
                                                 <td>$' + data.price.toFixed(2) + '</td>\
