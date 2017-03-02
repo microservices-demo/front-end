@@ -11,15 +11,12 @@
   // List items in cart for current logged in user.
   app.get("/cart", function (req, res, next) {
     console.log("Request received: " + req.url + ", " + req.query.custId);
-    console.log(req.query);
     var custId = helpers.getCustomerId(req, app.get("env"));
     console.log("Customer ID: " + custId);
     request(endpoints.cartsUrl + "/" + custId + "/items", function (error, response, body) {
       if (error) {
         return next(error);
       }
-      console.log("RESPONSE: " + response.statusCode);
-      //console.log(res);
       helpers.respondStatusBody(res, response.statusCode, body)
     });
   });
