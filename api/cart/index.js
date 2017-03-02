@@ -71,7 +71,7 @@
 
     var custId = helpers.getCustomerId(req, app.get("env"));
     var options = {
-      uri: endpoints.cartsUrl + "/" + custId + "/items", // /" + req.params.id.toString(),
+      uri: endpoints.cartsUrl + "/" + custId + "/items",
       method: 'PATCH',
       json: true,
       body: {itemId: req.params.id, quantity: req.body.quantity}
