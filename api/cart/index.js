@@ -61,6 +61,32 @@
     });
   });
 
+  // Update item
+  app.put("/cart/:id", function (req, res, next) {
+    if (req.params.id == null) {
+      return next(new Error("Must pass id of item to update"), 400);
+    }
+
+     console.log("Updating item: " + req.params.id + " quantity: " + req.body.quantity);
+
+    var custId = helpers.getCustomerId(req, app.get("env"));
+    var options = {
+      uri: endpoints.cartsUrl + "/" + custId + "/items",
+      method: 'PATCH',
+      json: true,
+      body: {itemId: req.params.id, quantity: req.body.quantity}
+    };
+    console.log(options.uri)
+    request(options, function (error, response, body) {
+      if (error) {
+        return next(error);
+      }
+      console.log('Item updated with status: ' + response.statusCode);
+      helpers.respondStatus(res, response.statusCode);
+    });
+
+  });
+
   // Add new item to cart
   app.post("/cart", function (req, res, next) {
     console.log("Attempting to add to cart: " + JSON.stringify(req.body));

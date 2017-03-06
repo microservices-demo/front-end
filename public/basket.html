@@ -99,12 +99,11 @@
                                     shopping</a>
                             </div>
                             <div class="pull-right">
-                                <a class="btn btn-default" onclick="alert('Stub. Todo.')"><i
+                                <a class="btn btn-default" onclick="updateCart()"><i
                                         class="fa fa-refresh"></i> Update basket
                                 </a>
                                 <button id="orderButton" type="submit" class="btn btn-primary" disabled>
-                                    Proceed to checkout <i
-                                        class="fa fa-chevron-right"></i>
+                                    Proceed to checkout <i class="fa fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
@@ -335,6 +334,27 @@ _________________________________________________________ -->
         });
     }
 
+    function updateCart() {
+        console.log('Updating cart.');
+        $("tr.item").each(function (){
+            var id = $(this).find("input.id").val(),
+                quantity = $(this).find("input.form-control").val();
+            console.log("Item nr " + id  + " has " + quantity);
+            $.ajax({
+                url: "cart/" + id,
+                type: "PUT",
+                data: JSON.stringify({"quantity": quantity}),
+                success: function (data, textStatus, jqXHR) {
+                    console.log('Worked!');
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Could not update item: ' + id + ', due to: ' + textStatus + ' | ' + errorThrown);
+                }
+            });
+        });
+    }
+
     $(document).ready(function () {
         $.ajaxSetup({
             contentType: "application/json; charset=utf-8"
@@ -349,7 +369,8 @@ _________________________________________________________ -->
                     if (element != null && element.itemId != null && element.itemId != "null") {
                         $.getJSON('/catalogue/' + element.itemId, function (data) {
                             console.log(JSON.stringify(data));
-                            $('#cart-list').append(' <tr>\
+                            $('#cart-list').append(' <tr class="item">\
+                                                <input class="id" type="hidden" value="' + data.id + '">\
                                                 <td>\
                                                     <a href="#">\
                                                         <img src="' + data.imageUrl[0] + '" alt="' + data.namex + '">\
@@ -359,7 +380,7 @@ _________________________________________________________ -->
                                                     <a href="#">' + data.name + '</a>\
                                                 </td>\
                                                 <td>\
-                                                    <input type="number" min="0" value="' + element.quantity + '" class="form-control">\
+                                                    <input type="number" min="1" value="' + element.quantity + '" class="form-control">\
                                                 </td>\
                                                 <td>$' + data.price.toFixed(2) + '</td>\
                                                 <td>$0.00</td>\
