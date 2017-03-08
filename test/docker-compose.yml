@@ -15,9 +15,9 @@ services:
     restart: always
     environment:
       - reschedule:on-node-failure
-  cart:
-    image: weaveworksdemos/cart
-    hostname: cart
+  carts:
+    image: weaveworksdemos/carts
+    hostname: carts
     restart: always
     environment:
       - reschedule:on-node-failure
