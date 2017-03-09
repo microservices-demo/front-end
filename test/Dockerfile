@@ -1,6 +1,6 @@
-FROM node:0.10.46
+FROM node:6-alpine
 
-RUN apt-get install -y make
+RUN apk update && apk add make
 
 RUN npm install -g phantomjs-prebuilt
 RUN npm install -g casperjs
@@ -9,4 +9,4 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/sh"]

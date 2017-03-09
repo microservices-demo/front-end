@@ -1,10 +1,8 @@
-FROM mhart/alpine-node:6.3
+FROM node:6-alpine
 ENV NODE_ENV "production"
 ENV PORT 8079
 EXPOSE 8079
 RUN addgroup mygroup && adduser -D -G mygroup myuser && mkdir -p /usr/src/app && chown -R myuser /usr/src/app
-RUN npm install -g yarn
-
 
 # Prepare app directory
 WORKDIR /usr/src/app
