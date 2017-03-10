@@ -8,5 +8,3 @@ RUN npm install -g casperjs
 RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
-
-ENTRYPOINT ["/bin/sh"]
