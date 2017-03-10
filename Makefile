@@ -2,7 +2,7 @@ IMAGE=front-end
 
 .PHONY: test coverage
 
-up: compose test-image server
+up: compose test-image deps server
 
 down: kill-server kill-compose
 
@@ -31,7 +31,7 @@ server:
 		-e PORT=8080            \
 		-p 8080:8080            \
 		--network test_default  \
-		$(IMAGE) npm start
+		$(IMAGE) /usr/local/bin/npm start
 
 # Removes the development container & image
 clean:
