@@ -1,4 +1,4 @@
-FROM node:6-alpine
+FROM node:4-alpine
 
 RUN apk update && apk add make
 
