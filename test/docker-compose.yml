@@ -29,9 +29,9 @@ services:
     restart: always
     environment:
       - reschedule:on-node-failure
-  cart-db:
+  carts-db:
     image: mongo
-    hostname: cart-db
+    hostname: carts-db
     restart: always
     environment:
       - reschedule:on-node-failure
