@@ -8,7 +8,7 @@
   const metric = {
     http: {
       requests: {
-        duration: new client.Summary('request_duration_seconds', 'request duration in seconds', ['method', 'path', 'status']),
+        duration: new client.Summary('request_duration_seconds', 'request duration in seconds', ['method', 'path', 'status_code']),
       }
     }
   }
