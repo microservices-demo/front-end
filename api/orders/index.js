@@ -58,7 +58,7 @@
     async.waterfall([
         function (callback) {
           request(endpoints.customersUrl + "/" + custId, function (error, response, body) {
-            if (error || response.status_code === "500") {
+            if (error || body.status_code === 500) {
               callback(error);
               return;
             }
@@ -87,7 +87,7 @@
                   }
                   console.log("Received response: " + JSON.stringify(body));
                   var jsonBody = JSON.parse(body);
-                  if (jsonBody._embedded.address[0] != null) {
+                  if (jsonBody.status_code !== 500 && jsonBody._embedded.address[0] != null) {
                     order.address = jsonBody._embedded.address[0]._links.self.href;
                   }
                   callback();
@@ -102,7 +102,7 @@
                   }
                   console.log("Received response: " + JSON.stringify(body));
                   var jsonBody = JSON.parse(body);
-                  if (jsonBody._embedded.card[0] != null) {
+                  if (jsonBody.status_code !== 500 && jsonBody._embedded.card[0] != null) {
                     order.card = jsonBody._embedded.card[0]._links.self.href;
                   }
                   callback();
