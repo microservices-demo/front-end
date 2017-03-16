@@ -18,17 +18,6 @@
     return (diff[0] * 1e9 + diff[1]) / 1000000000;
   }
 
-  function parse(path) {
-    var clean_path = path;
-    var ignore_list = ['css', 'img', 'js'];
-
-    if (ignore_list.indexOf(path.split('/')[1]) != -1) {
-      clean_path = '/' + path.split('/')[1] + '/';
-    }
-
-    return clean_path;
-}
-
   function observe(method, path, statusCode, start) {
     var path = path.toLowerCase();
     if (path !== '/metrics' && path !== '/metrics/') {
