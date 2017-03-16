@@ -20,12 +20,11 @@
 
   function parse(path) {
     var clean_path = path;
+    var ignore_list = ['css', 'img', 'js'];
 
-    if (path[path.length - 1] != '/') {
-      if (!path.includes('.')) {
-        clean_path = path.substr(0, path.lastIndexOf('/') + 1);
-      }
-    };
+    if (ignore_list.indexOf(path.split('/')[1]) != -1) {
+      clean_path = '/' + path.split('/')[1] + '/';
+    }
 
     return clean_path;
 }
@@ -35,8 +34,7 @@
     if (path !== '/metrics' && path !== '/metrics/') {
         var duration = s(start);
         var method = method.toLowerCase();
-        var clean_path = parse(path);
-        metric.http.requests.duration.labels(method, clean_path, statusCode).observe(duration);
+        metric.http.requests.duration.labels(method, path, statusCode).observe(duration);
     }
   };
 
