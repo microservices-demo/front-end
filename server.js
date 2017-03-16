@@ -15,8 +15,10 @@ var request      = require("request")
   , metrics      = require("./api/metrics")
   , app          = express()
 
-app.use(express.static("public"));
+
+app.use(helpers.rewriteSlash);
 app.use(metrics);
+app.use(express.static("public"));
 if(process.env.SESSION_REDIS) {
     console.log('Using the redis based session manager');
     app.use(session(config.session_redis));

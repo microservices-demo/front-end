@@ -18,25 +18,12 @@
     return (diff[0] * 1e9 + diff[1]) / 1000000000;
   }
 
-  function parse(path) {
-    var clean_path = path;
-
-    if (path[path.length - 1] != '/') {
-      if (!path.includes('.')) {
-        clean_path = path.substr(0, path.lastIndexOf('/') + 1);
-      }
-    };
-
-    return clean_path;
-}
-
   function observe(method, path, statusCode, start) {
     var path = path.toLowerCase();
     if (path !== '/metrics' && path !== '/metrics/') {
         var duration = s(start);
         var method = method.toLowerCase();
-        var clean_path = parse(path);
-        metric.http.requests.duration.labels(method, clean_path, statusCode).observe(duration);
+        metric.http.requests.duration.labels(method, path, statusCode).observe(duration);
     }
   };
 
