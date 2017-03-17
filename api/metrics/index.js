@@ -8,7 +8,7 @@
   const metric = {
     http: {
       requests: {
-        duration: new client.Summary('request_duration_seconds', 'request duration in seconds', ['method', 'path', 'status_code']),
+        duration: new client.Summary('request_duration_seconds', 'request duration in seconds', ['service', 'method', 'route', 'status_code']),
       }
     }
   }
@@ -19,11 +19,11 @@
   }
 
   function observe(method, path, statusCode, start) {
-    var path = path.toLowerCase();
-    if (path !== '/metrics' && path !== '/metrics/') {
+    var route = path.toLowerCase();
+    if (route !== '/metrics' && route !== '/metrics/') {
         var duration = s(start);
         var method = method.toLowerCase();
-        metric.http.requests.duration.labels(method, path, statusCode).observe(duration);
+        metric.http.requests.duration.labels('front-end', method, route, statusCode).observe(duration);
     }
   };
 
