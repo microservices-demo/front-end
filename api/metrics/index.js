@@ -8,7 +8,7 @@
   const metric = {
     http: {
       requests: {
-        duration: new client.Summary('request_duration_seconds', 'request duration in seconds', ['service', 'method', 'route', 'status_code']),
+        duration: new client.Histogram('request_duration_seconds', 'request duration in seconds', ['service', 'method', 'route', 'status_code']),
       }
     }
   }
