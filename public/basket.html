@@ -119,8 +119,8 @@
                         <div class="box">
                             <div class="box-header">
                                 <h4 style="display: inline;">Shipping Address</h4>
-                                <p style="display: inline; float: right;">
-                                    <a data-toggle="modal" data-target="#address-modal" href="#change">Change</a>
+                                <p id="change_shipping" style="display: inline; float: right;">
+                                    <a data-toggle="modal" data-target="#address-modal" href="#change">Add</a>
                                 </p>
                             </div>
                             <p id="address"></p>
@@ -170,8 +170,8 @@
                         <div class="box">
                             <div class="box-header">
                                 <h4 style="display: inline;">Payment</h4>
-                                <p style="display: inline; float: right;">
-                                    <a data-toggle="modal" data-target="#card-modal" href="#change">Change</a>
+                                <p id="change_payment" style="display: inline; float: right;">
+                                    <a data-toggle="modal" data-target="#card-modal" href="#change">Add</a>
                                 </p>
                             </div>
                             <p id="number"></p>
@@ -366,6 +366,7 @@ _________________________________________________________ -->
                 var cartTotal = 0;
                 var numItemsInCart = 0;
                 var shipping = 4.99;
+                var orderPlaced = false;
                 $.each(data, function (index, element) {
                     if (element != null && element.itemId != null && element.itemId != "null") {
                         $.getJSON('/catalogue/' + element.itemId, function (data) {
@@ -405,6 +406,8 @@ _________________________________________________________ -->
                                 });
                             } else {
                                 $('#orderButton').click(function(event) {
+                                    if (orderPlaced == false) {
+                                      orderPlaced = true;
                                     return order();
                                 });
                             }
@@ -423,8 +426,10 @@ _________________________________________________________ -->
         $.getJSON('/card', function(data) {
             if (data.status_code !== 500) {
                 $("p#number").text("Card ending in " + data.number).css("color", "black");
+                $("#change_payment").hide();
             } else {
                 $("p#number").text("No credit card saved for user.").css("color", "red");
+                $("#change_payment").show();
             }
         });
 
@@ -439,8 +444,10 @@ _________________________________________________________ -->
                 text += "</br>";
                 text += data.country;
                 $("p#address").html(text).css("color", "black");
+                $("#change_shipping").hide();
             } else {
                 $("p#address").text("No address saved for user.").css("color", "red");
+                $("#change_shipping").show();
             }
         });
 
