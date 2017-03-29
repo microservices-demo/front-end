@@ -12,6 +12,9 @@ before_install:
   - sudo apt-get install -y make
   - make test-image deps
 
+install:
+  - npm install
+
 env:
   - GROUP=weaveworksdemos COMMIT="${TRAVIS_COMMIT}" TAG="${TRAVIS_TAG}" REPO=front-end;
 
