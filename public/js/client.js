@@ -149,8 +149,6 @@ function addToCart(id) {
 // function update To Cart(itemId, quantity, callback)
 // cart/update request sent to frontend server (index.js - app.post("/cart/update" function...)
 function updateToCart(id, quantity, next) {
-
-	console.log("Sending request to update cart: item: " + id + " quantity: " + quantity);
     $.ajax({
         url: "cart/update",
         type: "POST",
