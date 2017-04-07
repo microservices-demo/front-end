@@ -19,7 +19,7 @@ services:
     image: weaveworksdemos/catalogue-db
     hostname: catalogue-db
     restart: always
-    environment:
+    environment
       - MYSQL_ROOT_PASSWORD=""
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_DATABASE=socksdb
