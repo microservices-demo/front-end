@@ -102,6 +102,9 @@ function order() {
                 deleteCart();
                 success = true;
             }
+            if (jqXHR.status == 500) {
+                alert(JSON.stringify(jqXHR));
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             response_payload = JSON.parse(jqXHR.responseText)
