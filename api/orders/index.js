@@ -64,6 +64,12 @@
             }
             console.log("Received response: " + JSON.stringify(body));
             var jsonBody = JSON.parse(body);
+
+            if (jsonBody._links == undefined) {
+              callback(error);
+              return;
+            }
+
             var customerlink = jsonBody._links.customer.href;
             var addressLink = jsonBody._links.addresses.href;
             var cardLink = jsonBody._links.cards.href;
