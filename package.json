@@ -24,6 +24,7 @@
     "connect-redis": "^3.2.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
+    "express-busboy": "^6.0.1",
     "express-session": "^1.13.0",
     "finalhandler": "^0.4.1",
     "morgan": "^1.7.0",
