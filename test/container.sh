@@ -23,7 +23,7 @@ CID=$($DOCKER_CMD run -d --name testcontainer -p 8080:8079 ${REPO}:${COMMIT})
 
 for i in 1 2 3 4 5
 do
-  curl -s --head http://localhost:8080/ > /dev/null
+  curl -s --head http://localhost:8080/welcome.html > /dev/null
   if [ $? -eq "0" ]
   then
     PASS=0
