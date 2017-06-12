@@ -33,7 +33,6 @@ do
   fi
 done
 
-$DOCKER_CMD logs testcontainer
 $DOCKER_CMD rm -f $CID > /dev/null
 
 if [ $PASS -eq "0" ]
