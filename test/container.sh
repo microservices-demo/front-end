@@ -29,7 +29,7 @@ do
     PASS=0
     break
   else
-    sleep 
+    sleep 1 
   fi
 done
 
