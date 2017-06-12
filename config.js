@@ -3,7 +3,7 @@
 
   var session      = require("express-session"),
       RedisStore   = require('connect-redis')(session)
-
+      ,redis = require("redis")
   module.exports = {
     session: {
       name: 'md.sid',
@@ -18,6 +18,14 @@
       secret: 'sooper secret',
       resave: false,
       saveUninitialized: true
+    },
+    redis_client: null,
+    branding :{
+    	set: false,
+	values: {
+		name: "",
+		logo: "",
+	}
     }
   };
 }());

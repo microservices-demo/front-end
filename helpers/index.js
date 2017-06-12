@@ -2,6 +2,10 @@
   'use strict';
 
   var request = require("request");
+  var config  = require("../config");
+  var fs = require('fs');
+  var redis = require("redis")
+
   var helpers = {};
 
   /* Public: errorHandler is a middleware that handles your errors
@@ -102,5 +106,42 @@
 
     return req.session.customerId;
   }
+
+
+  helpers.getBrandingConfig = function(callback) {
+	if(process.env.SESSION_REDIS) {
+		config.redis_client = redis.createClient();
+    		var test = config.redis_client.get("branding_info")
+		console.log("fired")
+    		config.redis_client.get("branding_info", function(err, reply) {
+			if (reply !== null) {
+				config.branding.values = JSON.parse(reply)
+				config.branding.set = true
+				callback(config.branding)
+			} else {
+				callback(config.branding)
+			}
+		})
+	} else {
+		if (fs.existsSync("./branding.json")) {
+			config.branding.values = JSON.parse(fs.readFileSync('./branding.json'))
+			config.branding.set = true
+				callback(config.branding)
+			} else {
+				callback(config.branding)
+			}
+	}
+  }
+
+  helpers.setBrandingConfig = function() {
+	if(process.env.SESSION_REDIS) {
+    		return config.redis_client.set("branding_info", JSON.stringify(config.branding.values))
+	} else {
+		fs.writeFile("./branding.json", JSON.stringify(config.branding.values, null, 2), function(err) {
+			return err;
+		}); 
+	}
+  }
+
   module.exports = helpers;
 }());
