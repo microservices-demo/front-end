@@ -21,7 +21,7 @@ REPO=${GROUP}/$(basename front-end);
 
 CID=$($DOCKER_CMD run -d --name testcontainer -p 8080:8079 ${REPO}:${COMMIT})
 
-for i in 1 2 3 4 5 6 7 8 9
+for i in 1 2 3 4 5
 do
   curl -s --head http://localhost:8080/welcome.html > /dev/null
   if [ $? -eq "0" ]
@@ -29,10 +29,11 @@ do
     PASS=0
     break
   else
-    sleep 1
+    sleep 
   fi
 done
 
+docker logs testcontainer
 $DOCKER_CMD rm -f $CID > /dev/null
 
 if [ $PASS -eq "0" ]
