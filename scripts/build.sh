@@ -24,5 +24,5 @@ CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
 echo $CODE_DIR
 
 REPO=${GROUP}/$(basename front-end);
-
+echo $REPO
 $DOCKER_CMD build -t ${REPO}:${COMMIT} .
