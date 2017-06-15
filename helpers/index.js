@@ -111,8 +111,13 @@
   helpers.getBrandingConfig = function(callback) {
 	if(process.env.SESSION_REDIS) {
 		config.redis_client = redis.createClient("redis://session-db:6379");
-    		var test = config.redis_client.get("branding_info")
-		console.log("fired")
+		config.redis_client.on("error", function (err) {
+  			console.log("Redis error encountered", err);
+		});
+
+		config.redis_client.on("end", function() {
+			console.log("Redis connection closed");
+		});
     		config.redis_client.get("branding_info", function(err, reply) {
 			if (reply !== null) {
 				config.branding.values = JSON.parse(reply)
