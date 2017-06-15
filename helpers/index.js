@@ -110,7 +110,7 @@
 
   helpers.getBrandingConfig = function(callback) {
 	if(process.env.SESSION_REDIS) {
-		config.redis_client = redis.createClient();
+		config.redis_client = redis.createClient("redis://session-db:6379");
     		var test = config.redis_client.get("branding_info")
 		console.log("fired")
     		config.redis_client.get("branding_info", function(err, reply) {
@@ -135,7 +135,9 @@
 
   helpers.setBrandingConfig = function() {
 	if(process.env.SESSION_REDIS) {
-    		return config.redis_client.set("branding_info", JSON.stringify(config.branding.values))
+    		if (config.redis_client.connected) {
+			config.redis_client.set("branding_info", JSON.stringify(config.branding.values))
+		}
 	} else {
 		fs.writeFile("./branding.json", JSON.stringify(config.branding.values, null, 2), function(err) {
 			return err;
