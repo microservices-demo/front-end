@@ -14,34 +14,44 @@ var request      = require("request")
   , user         = require("./api/user")
   , branding     = require("./api/branding")
   , metrics      = require("./api/metrics")
+  , fs 		 = require('fs')
   , app          = express()
 
 
 
 app.use(function (req, res, next) {
 	if (config.branding.set == false) {
-	helpers.getBrandingConfig(function(cfg){
-		if (!cfg.set) {
-			ext = req.url.split('.').pop();
-			if ((["js", "css", "png", "map"].indexOf(ext) > -1) || 
-				(["/welcome.html", "/branding"].indexOf(req.url) > -1)) {
-				next()
-				return
-
-			} else {
-				res.redirect("/welcome.html")
-				return
-			}
+		if(process.env.DEFAULT_BRANDING) {
+			config.branding.set = true
+			config.branding.values.name = "weave"
+			image = "./public/img/weave-logo.png"
+			config.branding.values.logo = fs.readFileSync(image).toString("base64")
+			next()
 		} else {
-				next()
-				return
+	
+			helpers.getBrandingConfig(function(cfg){
+				if (!cfg.set) {
+					ext = req.url.split('.').pop();
+						if ((["js", "css", "png", "map"].indexOf(ext) > -1) || 
+							(["/welcome.html", "/branding"].indexOf(req.url) > -1)) {
+							next()
+							return
+
+						} else {
+							res.redirect("/welcome.html")
+							return
+						}
+				} else {
+					next()
+					return
+				}
+			});
 		}
-	});
 	} else {
-				helpers.setBrandingConfig()
-				next()
+		helpers.setBrandingConfig()
+		next()
 	}
-				return
+	return
 });
 
 app.use(express.static("public"));
