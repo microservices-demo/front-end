@@ -21,39 +21,44 @@
   ); 
 
   app.post("/branding", function (req, res, next) {
-      	if (config.branding.set === true) {
+      	if (config.branding.set == true) {
     		res.redirect("/")
 		return
+	} else {
+		console.log(req.body.brand)
+		if (req.body.brand !== undefined) {
+			var brand = req.body.brand
+			var image
+			if (brand == "cncf") {
+				config.branding.set = true
+				config.branding.values.name = "cncf"
+				image = "./public/img/cncf-logo.png"
+			} else if (brand == "weave") {
+				config.branding.set = true
+				config.branding.values.name = "weave"
+				image = "./public/img/weave-logo.png"
+			} else if (brand == "other") {
+				config.branding.set = true
+				config.branding.values.name = "other"
+				console.log(req.files.logo.file);
+				if (req.files.logo == undefined) {
+				res.redirect("/welcome.html")
+				return
+				}		
+				image = req.files.logo.file
+			}
+			else {
+				res.redirect("/welcome.html")
+				return
+			}
+			config.branding.values.logo = fs.readFileSync(image).toString("base64")
+			res.redirect("/")
+			return
+	    	} else {
+			res.redirect("/welcome.html")
+			return
+    		}
 	}
-      	if (req.body.brand !== undefined) {
-    	var brand = req.body.brand
-	var image
-	if (brand == "cncf") {
-		config.branding.set = true
-		config.branding.values.name = "cncf"
-		image = "./public/img/cncf-logo.png"
-	} else if (brand == "weave") {
-		config.branding.set = true
-		config.branding.values.name = "weave"
-		image = "./public/img/weave-logo.png"
-	} else if (brand == "other") {
-		config.branding.set = true
-		config.branding.values.name = "other"
-    		console.log(req.files.logo.file);
-		if (req.files.logo == undefined) {
-    		res.redirect("/welcome.html")
-		return
-		}		
-	        image = req.files.logo.file
-	}
-	else {
-    		res.redirect("/welcome.html")
-		return
-	}
-	config.branding.values.logo = fs.readFileSync(image).toString("base64")
-    }
-    helpers.setBrandingConfig()
-    res.redirect("/")
   });
 
 
