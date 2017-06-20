@@ -118,15 +118,26 @@
 		config.redis_client.on("end", function() {
 			console.log("Redis connection closed");
 		});
-    		config.redis_client.get("branding_info", function(err, reply) {
-			if (reply !== null) {
-				config.branding.values = JSON.parse(reply)
-				config.branding.set = true
-				callback(config.branding)
-			} else {
-				callback(config.branding)
-			}
-		})
+		
+		if(process.env.DEFAULT_BRANDING) {
+			config.branding.set = true
+			config.branding.values.name = "weave"
+			var image
+			image = "./public/img/weave-logo.png"
+			config.branding.values.logo = fs.readFileSync(image).toString("base64")
+			callback(config.branding)
+			return
+		} else { 
+			config.redis_client.get("branding_info", function(err, reply) {
+				if (reply !== null) {
+					config.branding.values = JSON.parse(reply)
+					config.branding.set = true
+					callback(config.branding)
+				} else {
+					callback(config.branding)
+				}
+			})
+		}
 	} else {
 		if (fs.existsSync("./branding.json")) {
 			config.branding.values = JSON.parse(fs.readFileSync('./branding.json'))
