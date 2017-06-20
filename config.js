@@ -25,6 +25,12 @@
 	values: {
 		name: "",
 		logo: "",
+		company: "",
+		street: "",
+		city: "",
+		zip: "",
+		state: "",
+		country: "",
 	}
     }
   };

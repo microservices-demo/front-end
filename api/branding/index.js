@@ -33,10 +33,21 @@
 				config.branding.set = true
 				config.branding.values.name = "cncf"
 				image = "./public/img/cncf-logo.png"
+				config.branding.values.company = "Cloud Native Computing Foundation c/o The Linux Foundation"
+				config.branding.values.street = "1 Letterman Drive</br>Suite D4700"
+				config.branding.values.city = "San Francisco"
+				config.branding.values.state = "CA"
+				config.branding.values.zip = "94129"
+				config.branding.values.country = "USA"
 			} else if (brand == "weave") {
 				config.branding.set = true
 				config.branding.values.name = "weave"
 				image = "./public/img/weave-logo.png"
+				config.branding.values.company = "Weaveworks Ltd."
+				config.branding.values.street = "32 – 38 Scrutton Street"
+				config.branding.values.city = "London"
+				config.branding.values.zip = "EC2A 4RQ"
+				config.branding.values.country = "UK"
 			} else if (brand == "other") {
 				config.branding.set = true
 				config.branding.values.name = "other"
