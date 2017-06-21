@@ -53,9 +53,15 @@
 					config.branding.values.name = "other"
 					console.log(req.files.logo.file);
 					if (req.files.logo == undefined) {
-					res.redirect("/welcome.html")
-					return
-					}		
+						res.redirect("/welcome.html")
+						return
+					}	
+					config.branding.values.company = req.body.company
+					config.branding.values.street = req.body.street
+					config.branding.values.city = req.body.city
+					config.branding.values.zip = req.body.zip
+					config.branding.values.state = req.body.state
+					config.branding.values.country = req.body.country
 					image = req.files.logo.file
 				}
 				else {
