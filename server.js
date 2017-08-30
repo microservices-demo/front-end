@@ -19,42 +19,42 @@ var request      = require("request")
 
 
 app.use(function (req, res, next) {
-	if (config.branding.set == false) {
-		helpers.getBrandingConfig(function(cfg){
-			if (!cfg.set) {
-				ext = req.url.split('.').pop();
-					if ((["js", "css", "png", "map"].indexOf(ext) > -1) || 
-						(["/welcome.html", "/branding"].indexOf(req.url) > -1)) {
-						next()
-						return
+  if (config.branding.set == false) {
+    helpers.getBrandingConfig(function(cfg){
+      if (!cfg.set) {
+        ext = req.url.split('.').pop();
+        if ((["js", "css", "png", "map"].indexOf(ext) > -1) ||
+          (["/welcome.html", "/branding"].indexOf(req.url) > -1)) {
+          next()
+          return
 
-					} else {
-						res.redirect("/welcome.html")
-						return
-					}
-			} else {
-				next()
-				return
-			}
-		});
-	} else {
-		helpers.setBrandingConfig()
-		next()
-	}
-	return
+        } else {
+          res.redirect("/welcome.html")
+          return
+        }
+      } else {
+        next()
+        return
+      }
+    });
+  } else {
+    helpers.setBrandingConfig()
+    next()
+  }
+  return
 });
 
 app.use(express.static("public"));
 app.use(helpers.rewriteSlash);
 app.use(metrics);
 if(process.env.SESSION_REDIS) {
-    console.log('Using the redis based session manager');
-    app.use(session(config.session_redis));
+  console.log('Using the redis based session manager');
+  app.use(session(config.session_redis));
 
 }
 else {
-    console.log('Using local session manager');
-    app.use(session(config.session));
+  console.log('Using local session manager');
+  app.use(session(config.session));
 }
 
 app.use(bodyParser.json());

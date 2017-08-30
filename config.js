@@ -1,9 +1,10 @@
 (function (){
   'use strict';
 
-  var session      = require("express-session"),
-      RedisStore   = require('connect-redis')(session)
-      ,redis = require("redis")
+  var session    = require("express-session")
+    , RedisStore = require('connect-redis')(session)
+    , redis      = require("redis");
+
   module.exports = {
     session: {
       name: 'md.sid',
@@ -21,17 +22,17 @@
     },
     redis_client: null,
     branding :{
-    	set: false,
-	values: {
-		name: "",
-		logo: "",
-		company: "",
-		street: "",
-		city: "",
-		zip: "",
-		state: "",
-		country: "",
-	}
+      set: false,
+      values: {
+        name: "",
+        logo: "",
+        company: "",
+        street: "",
+        city: "",
+        zip: "",
+        state: "",
+        country: "",
+      }
     }
   };
 }());
