@@ -20,8 +20,9 @@
       resave: false,
       saveUninitialized: true
     },
+
     redis_client: null,
-    branding :{
+    branding: {
       set: false,
       values: {
         name: "",

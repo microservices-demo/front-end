@@ -14,9 +14,7 @@ var request      = require("request")
   , user         = require("./api/user")
   , branding     = require("./api/branding")
   , metrics      = require("./api/metrics")
-  , app          = express()
-
-
+  , app          = express();
 
 app.use(function (req, res, next) {
   if (config.branding.set == false) {
@@ -25,34 +23,33 @@ app.use(function (req, res, next) {
         ext = req.url.split('.').pop();
         if ((["js", "css", "png", "map"].indexOf(ext) > -1) ||
           (["/welcome.html", "/branding"].indexOf(req.url) > -1)) {
-          next()
-          return
+          next();
+          return;
 
         } else {
-          res.redirect("/welcome.html")
-          return
+          res.redirect("/welcome.html");
+          return;
         }
       } else {
-        next()
-        return
+        next();
+        return;
       }
     });
   } else {
-    helpers.setBrandingConfig()
-    next()
+    helpers.setBrandingConfig();
+    next();
   }
-  return
+  return;
 });
 
 app.use(express.static("public"));
 app.use(helpers.rewriteSlash);
 app.use(metrics);
-if(process.env.SESSION_REDIS) {
+
+if (process.env.SESSION_REDIS) {
   console.log('Using the redis based session manager');
   app.use(session(config.session_redis));
-
-}
-else {
+} else {
   console.log('Using local session manager');
   app.use(session(config.session));
 }
@@ -79,12 +76,11 @@ app.use(catalogue);
 app.use(orders);
 app.use(user);
 app.use(branding);
-
 app.use(helpers.errorHandler);
+
+app.set('view engine', 'ejs')
 
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;
   console.log("App now running in %s mode on port %d", app.get("env"), port);
 });
-app.set('view engine', 'ejs')
-

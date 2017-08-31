@@ -1,12 +1,11 @@
 (function (){
   'use strict';
 
-  var request = require("request");
-  var config  = require("../config");
-  var fs = require('fs');
-  var redis = require("redis")
-
-  var helpers = {};
+  var  request = require("request")
+     , config  = require("../config")
+     , fs      = require('fs')
+     , redis   = require("redis")
+     , helpers = {}
 
   /* Public: errorHandler is a middleware that handles your errors
    *
@@ -15,7 +14,6 @@
    * var app = express();
    * app.use(helpers.errorHandler);
    * */
-
   helpers.errorHandler = function(err, req, res, next) {
     var ret = {
       message: err.message,
@@ -120,39 +118,38 @@
       });
 
       if(process.env.DEFAULT_BRANDING) {
-        config.branding.set = true
-        config.branding.values.name = "weave"
-        var image
-        image = "./public/img/weave-logo.png"
-        config.branding.values.logo = fs.readFileSync(image).toString("base64")
-        callback(config.branding)
+        var image = "./public/img/weave-logo.png";
+        config.branding.set = true;
+        config.branding.values.name = "weave";
+        config.branding.values.logo = fs.readFileSync(image).toString("base64");
+        callback(config.branding);
         return
       } else {
         config.redis_client.get("branding_info", function(err, reply) {
           if (reply !== null) {
-            config.branding.values = JSON.parse(reply)
-            config.branding.set = true
-            callback(config.branding)
+            config.branding.values = JSON.parse(reply);
+            config.branding.set = true;
+            callback(config.branding);
           } else {
-            callback(config.branding)
+            callback(config.branding);
           }
-        })
+        });
       }
     } else {
       if (fs.existsSync("./branding.json")) {
-        config.branding.values = JSON.parse(fs.readFileSync('./branding.json'))
-        config.branding.set = true
-        callback(config.branding)
+        config.branding.values = JSON.parse(fs.readFileSync('./branding.json'));
+        config.branding.set = true;
+        callback(config.branding);
       } else {
-        callback(config.branding)
+        callback(config.branding);
       }
     }
-  }
+  };
 
   helpers.setBrandingConfig = function() {
     if(process.env.SESSION_REDIS) {
       if (config.redis_client.connected) {
-        config.redis_client.set("branding_info", JSON.stringify(config.branding.values))
+        config.redis_client.set("branding_info", JSON.stringify(config.branding.values));
       }
     } else {
       fs.writeFile("./branding.json", JSON.stringify(config.branding.values, null, 2), function(err) {
