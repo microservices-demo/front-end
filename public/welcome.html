@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="WeaveSocks Demo App">
+    <meta name="author" content="Ondrej Svestka | ondrejsvestka.cz">
+    <meta name="keywords" content="">
+
+    <title>
+        WeaveSocks
+    </title>
+
+    <meta name="keywords" content="">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100'
+          rel='stylesheet' type='text/css'>
+
+    <!-- styles -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/owl.carousel.css" rel="stylesheet">
+    <link href="css/owl.theme.css" rel="stylesheet">
+
+    <!-- theme stylesheet -->
+    <link href="css/style.blue.css" rel="stylesheet" id="theme-stylesheet">
+
+    <!-- your stylesheet with modifications -->
+    <link href="css/custom.css" rel="stylesheet">
+
+    <script src="js/respond.min.js"></script>
+
+    <link rel="shortcut icon" href="favicon.png">
+
+
+</head>
+
+<body>
+
+<div id="navbar"></div>
+
+<div id="all">
+
+    <div id="content">
+
+        <div class="container">
+            <div class="col-md-12">
+            	<div class="welcome_text">
+			Welcome!
+                <div class="box">
+                    <form method="post" action="branding" id="branding"  method="post" enctype="multipart/form-data">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div>Branding</div>
+                                    <div class="form-group">
+					    <div>
+				                <label><input type="radio" name="brand" value="cncf" class="not-other">CNCF</label>
+					    </div>
+					    <div>
+						<label><input type="radio" name="brand" value="weave" class="not-other">Weaveworks</label>
+					    </div>
+					    <div>
+						<label>
+					            <input type="radio" name="brand" value="other" class="other">Other</label>
+					    </div>
+                                    </div>
+                                    <div class="form-group collapse" id="upload-image">
+					<label class="btn btn-primary btn-file">
+					    Upload <input type="file" hidden name="logo" id="logo">
+					</label>
+					<div class="form-group">
+						<input type="text" class="form-control"
+                                   			name="company" placeholder="Company">
+                                    	</div>
+					<div class="form-group">
+						<input type="text" class="form-control"
+                                   			name="street" placeholder="Street address">
+                                    	</div>
+					<div class="form-group">
+						<input type="text" class="form-control"
+                                   			name="city" placeholder="City">
+                                    	</div>
+					<div class="form-group">
+						<input type="text" class="form-control"
+                                   			name="zip" placeholder="Zip">
+                                    	</div>
+					<div class="form-group">
+						<input type="text" class="form-control"
+                                   			name="state" placeholder="State">
+                                    	</div>
+					<div class="form-group">
+						<input type="text" class="form-control"
+                                   			name="country" placeholder="Country">
+                                    	</div>
+                                    </div>
+                                    <div class="form-group">
+                            		<button class="btn btn-primary" href="#" on>
+						  <input type="submit" value="Submit">
+
+                            		</button>
+                                    </div>
+                                </div>
+                            </div>
+               		</div>
+                    </div>
+		    </form>
+            	</div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /#content -->
+
+    <div id="footer"></div>
+
+</div>
+<!-- /#all -->
+
+
+<!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/js.cookie.js"></script>
+<script src="js/client.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/bootstrap-hover-dropdown.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/front.js"></script>
+<script src="js/jquery.query-object.js"></script>
+<script src="js/client.js"></script>
+<script>
+
+$(document).ready(function(){
+    $(".not-other").click(function(){
+        $(".collapse").collapse('hide');
+    });
+    $(".other").click(function(){
+        $(".collapse").collapse('show');
+    });
+});
+</script>
+</body>
+
+</html>

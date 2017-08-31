@@ -1,8 +1,11 @@
 (function (){
   'use strict';
 
-  var request = require("request");
-  var helpers = {};
+  var  request = require("request")
+     , config  = require("../config")
+     , fs      = require('fs')
+     , redis   = require("redis")
+     , helpers = {}
 
   /* Public: errorHandler is a middleware that handles your errors
    *
@@ -11,7 +14,6 @@
    * var app = express();
    * app.use(helpers.errorHandler);
    * */
-
   helpers.errorHandler = function(err, req, res, next) {
     var ret = {
       message: err.message,
@@ -53,10 +55,10 @@
 
   /* Rewrites and redirects any url that doesn't end with a slash. */
   helpers.rewriteSlash = function(req, res, next) {
-   if(req.url.substr(-1) == '/' && req.url.length > 1)
-       res.redirect(301, req.url.slice(0, -1));
-   else
-       next();
+    if(req.url.substr(-1) == '/' && req.url.length > 1)
+      res.redirect(301, req.url.slice(0, -1));
+    else
+      next();
   }
 
   /* Public: performs an HTTP GET request to the given URL
@@ -102,5 +104,59 @@
 
     return req.session.customerId;
   }
+
+
+  helpers.getBrandingConfig = function(callback) {
+    if(process.env.SESSION_REDIS) {
+      config.redis_client = redis.createClient("redis://session-db:6379");
+      config.redis_client.on("error", function (err) {
+        console.log("Redis error encountered", err);
+      });
+
+      config.redis_client.on("end", function() {
+        console.log("Redis connection closed");
+      });
+
+      if(process.env.DEFAULT_BRANDING) {
+        var image = "./public/img/weave-logo.png";
+        config.branding.set = true;
+        config.branding.values.name = "weave";
+        config.branding.values.logo = fs.readFileSync(image).toString("base64");
+        callback(config.branding);
+        return
+      } else {
+        config.redis_client.get("branding_info", function(err, reply) {
+          if (reply !== null) {
+            config.branding.values = JSON.parse(reply);
+            config.branding.set = true;
+            callback(config.branding);
+          } else {
+            callback(config.branding);
+          }
+        });
+      }
+    } else {
+      if (fs.existsSync("./branding.json")) {
+        config.branding.values = JSON.parse(fs.readFileSync('./branding.json'));
+        config.branding.set = true;
+        callback(config.branding);
+      } else {
+        callback(config.branding);
+      }
+    }
+  };
+
+  helpers.setBrandingConfig = function() {
+    if(process.env.SESSION_REDIS) {
+      if (config.redis_client.connected) {
+        config.redis_client.set("branding_info", JSON.stringify(config.branding.values));
+      }
+    } else {
+      fs.writeFile("./branding.json", JSON.stringify(config.branding.values, null, 2), function(err) {
+        return err;
+      });
+    }
+  }
+
   module.exports = helpers;
 }());
