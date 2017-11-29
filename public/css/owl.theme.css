@@ -75,3 +75,7 @@
 	min-height: 150px;
 	background: url('../img/AjaxLoader.gif') no-repeat center center
 }
+
+.owl-carousel .owl-item{
+    max-height:480px;
+}
