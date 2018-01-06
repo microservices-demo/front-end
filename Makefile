@@ -37,15 +37,6 @@ server:
 		--network test_default  \
 		$(IMAGE) /usr/local/bin/npm start
 
-# Removes the development container & image
-clean:
-	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi
-	@if [ $$(docker images -q $(IMAGE) | wc -l) -ge 1 ]; then docker rmi $(IMAGE); fi
-
-# Builds the Docker image used for running tests
-test-image:
-	@docker build -t $(IMAGE) -f test/Dockerfile .
-
 # Runs unit tests in Docker
 test: test-image
 	@docker run              \

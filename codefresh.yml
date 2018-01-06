@@ -12,7 +12,7 @@ steps:
   build-image:
     title: Build image
     type: build
-    description: Build catalogue
+    description: Build frontend
     image-name: cloudpossedemo/frontend
     dockerfile: Dockerfile
 
