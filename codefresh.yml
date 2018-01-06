@@ -1,0 +1,67 @@
+# Build a service with environment variables
+version: '1.0'
+
+steps:
+  init-variables:
+    title: Init variables
+    image: alpine
+    commands:
+      - cf_export BUILD_HARNESS_VERSION=feature-helm-chart-ops
+      - cf_export GIT_BRANCH=${{CF_BRANCH}}
+
+  build-image:
+    title: Build image
+    type: build
+    description: Build catalogue
+    image-name: cloudpossedemo/frontend
+    dockerfile: Dockerfile
+
+  semver:
+    title: Export semantic version
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ${{build-image}}
+    commands:
+      - make git:show
+      - make semver:show
+      - make semver:export >> ${{CF_VOLUME_PATH}}/env_vars_to_export
+
+  push-image-commit:
+    title: Push image with commit based semver tags
+    type: push
+    candidate: ${{build-image}}
+    tags:
+      - "${{SEMVERSION_COMMIT_SHORT}}"
+      - "${{SEMVERSION_COMMIT}}"
+
+  push-image-branch:
+    title: Push image with branch based semver tags
+    type: push
+    candidate: ${{build-image}}
+    tags:
+      - "${{SEMVERSION_BRANCH}}"
+      - "${{SEMVERSION_BRANCH_COMMIT_SHORT}}"
+      - "${{SEMVERSION_BRANCH_COMMIT}}"
+    when:
+      condition:
+        all:
+          executeForBranch: "'${{SEMVERSION_BRANCH}}' != ''"
+
+  push-image-tag:
+    title: Push image with tag based semver tags
+    type: push
+    candidate: ${{build-image}}
+    tag: "${{SEMVERSION_TAG}}"
+    when:
+      condition:
+        all:
+          executeForTag: "'${{SEMVERSION_TAG}}' != ''"
+
+  push-image-latest:
+    title: Push image with latest tag
+    type: push
+    candidate: ${{build-image}}
+    tag: latest
+    when:
+      condition:
+        all:
+          executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
