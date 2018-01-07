@@ -25,6 +25,17 @@ steps:
       - make semver:show
       - make semver:export >> ${{CF_VOLUME_PATH}}/env_vars_to_export
 
+  build-chart:
+    title: Build Charts
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ${{build-image}}
+    commands:
+      - REPO_NAME=cloudpossedemo REPO_ENDPOINT=${{REPO_ENDPOINT}} make helm:repo:add
+      - make helm:repo:add-remote
+      - make helm:chart:clean
+      - make helm:chart:build-all
+      - make helm:chart:publish
+
   push-image-commit:
     title: Push image with commit based semver tags
     type: push
@@ -65,3 +76,16 @@ steps:
       condition:
         all:
           executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
+
+  deploy-helm:
+    title: Deploy helm chart
+    image: cloudposse/cf-plugin-helm:0.2.0-fix-working-with-repo
+    environment:
+      - CHART_NAME=frontend
+      - RELEASE_NAME=frontend-${{CF_BRANCH_TAG_NORMALIZED}}
+      - KUBE_CONTEXT=cluster-4
+      - NAMESPACE=test
+      - CHART_VERSION=${{SEMVERSION_BRANCH}}
+      - CHART_REPO_URL=${{REPO_ENDPOINT}}
+      - WAIT=false
+      - TIMEOUT=1200

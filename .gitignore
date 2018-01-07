@@ -5,3 +5,5 @@
 /coverage
 
 .idea
+
+.build-harness
