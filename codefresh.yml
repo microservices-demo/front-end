@@ -98,7 +98,7 @@ steps:
     image: alpine
     working_directory: ${{generate-helm-values}}
     commands:
-      - ls -l
+      - ls -la
 
   deploy-helm:
     title: Deploy helm chart
