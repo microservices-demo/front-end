@@ -103,6 +103,10 @@ steps:
     title: Deploy helm chart
     image: cloudposse/cf-plugin-helm:0.2.0-fix-working-with-repo
     working_directory: ${{build-image}}
+    commands:
+      - ls -la
+      - pwd
+      - /opt/bin/release_chart
     environment:
       - CHART_NAME=frontend
       - RELEASE_NAME=frontend-${{CF_BRANCH_TAG_NORMALIZED}}
