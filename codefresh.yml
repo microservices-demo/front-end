@@ -104,7 +104,7 @@ steps:
   deploy-helm:
     title: Deploy helm chart
     image: cloudposse/cf-plugin-helm:0.2.0-fix-working-with-repo
-    working_directory: ${{generate-helm-values}}
+    working_directory: ${{build-image}}
     environment:
       - CHART_NAME=frontend
       - RELEASE_NAME=frontend-${{CF_BRANCH_TAG_NORMALIZED}}
@@ -114,4 +114,4 @@ steps:
       - CHART_REPO_URL=${{REPO_ENDPOINT}}
       - WAIT=false
       - TIMEOUT=1200
-      - ARGS="-f .values.yaml"
+      - ARGS="-f ./.values.yaml"
