@@ -81,7 +81,7 @@ steps:
     image: alpine
     commands:
       - |-
-        cat >.values.yaml <<EOL
+        cat > ./.values.yaml <<EOL
         ingress:
           - name: "default"
             labels:
@@ -90,7 +90,15 @@ steps:
             hosts:
               "domain.test": "/"
         EOL
+
       - cat .values.yaml
+
+  generate-helm-values-test:
+    title: Generate helm values
+    image: alpine
+    working_directory: ${{generate-helm-values}}
+    commands:
+      - ls -l
 
   deploy-helm:
     title: Deploy helm chart
