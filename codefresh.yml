@@ -80,10 +80,8 @@ steps:
     title: Generate helm values
     image: alpine
     commands:
-      - bash -c "echo $VALUES > .values.yaml"
-      - cat .values.yaml
-    environment:
-      VALUES: |-
+      - |-
+        cat >.values.yaml <<EOL
         ingress:
           - name: "default"
             labels:
@@ -91,6 +89,8 @@ steps:
             annotations: {}
             hosts:
               "domain.test": "/"
+        EOL
+      - cat .values.yaml
 
   deploy-helm:
     title: Deploy helm chart
