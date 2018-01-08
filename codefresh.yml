@@ -88,3 +88,7 @@ steps:
       - CHART_REPO_URL=${{REPO_ENDPOINT}}
       - WAIT=false
       - TIMEOUT=1200
+
+      - CUSTOM_ingress[0]_name=default
+      - CUSTOM_ingress[0]_labels_dns=route53
+      - CUSTOM_ingress[0]_hosts_"domain.com"="/"
