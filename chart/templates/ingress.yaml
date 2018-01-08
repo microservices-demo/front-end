@@ -18,7 +18,7 @@ metadata:
 spec:
   rules:
   {{- range $host, $path := .hosts }}
-    - host: {{ $host }}
+    - host: {{ $host | quote }}
       http:
         paths:
           - path: {{ $path }}

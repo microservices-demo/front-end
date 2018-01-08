@@ -84,8 +84,6 @@ steps:
         cat > ./.values.yaml <<EOL
         ingress:
         - name: "default"
-          labels:
-            dns: "route53"
           annotations: {}
           hosts:
             "domain.test": "/"
