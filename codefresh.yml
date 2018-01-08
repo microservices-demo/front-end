@@ -89,6 +89,6 @@ steps:
       - WAIT=false
       - TIMEOUT=1200
 
-      - CUSTOM_ingress[0]_name=default
-      - CUSTOM_ingress[0]_labels_dns=route53
-      - CUSTOM_ingress[0]_hosts_"domain.com"="/"
+      - custom_ingress[0]_name=default
+      - custom_ingress[0]_labels_dns=route53
+      - custom_ingress[0]_hosts_"domain.com"="/"
