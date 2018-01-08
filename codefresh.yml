@@ -99,6 +99,7 @@ steps:
     working_directory: ${{generate-helm-values}}
     commands:
       - ls -la
+      - cat ./.values.yaml
 
   deploy-helm:
     title: Deploy helm chart
