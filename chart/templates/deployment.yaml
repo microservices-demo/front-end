@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       name: {{ include "common.fullname" . }}
-{{ toYaml .Values.deployment.replica.annotations | indent 8 }}
+{{ toYaml .Values.deployment.replicas.annotations | indent 8 }}
       labels:
         app: {{ template "common.name" . }}
         release: {{ .Release.Name | quote }}
