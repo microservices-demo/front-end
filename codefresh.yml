@@ -91,8 +91,6 @@ steps:
               "domain.test": "/"
         EOL
 
-      - cat .values.yaml
-
   generate-helm-values-test:
     title: Generate helm values
     image: alpine
