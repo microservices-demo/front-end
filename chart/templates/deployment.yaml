@@ -22,12 +22,12 @@ spec:
         release: {{ .Release.Name | quote }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+      - name: {{ .Chart.Name | quote }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
         env:
-        - name: PORT
-          value: {{ .Values.service.internalPort }}
+        - name: "PORT"
+          value: {{ .Values.service.internalPort | quote }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
         livenessProbe:
