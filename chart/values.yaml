@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: cloudpossedemo/front-end
+  repository: cloudpossedemo/frontend
   tag: '{{ (datasource "semver").version }}'
   pullPolicy: IfNotPresent
 deployment:
