@@ -76,9 +76,26 @@ steps:
         all:
           executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
 
+  generate-helm-values:
+    title: Generate helm values
+    image: alpine
+    commands:
+      - bash -c "echo $VALUES > .values.yaml"
+      - cat .values.yaml
+    environment:
+      VALUES: |-
+        ingress:
+          - name: "default"
+            labels:
+              dns: "route53"
+            annotations: {}
+            hosts:
+              "domain.test": "/"
+
   deploy-helm:
     title: Deploy helm chart
     image: cloudposse/cf-plugin-helm:0.2.0-fix-working-with-repo
+    working_directory: ${{generate-helm-values}}
     environment:
       - CHART_NAME=frontend
       - RELEASE_NAME=frontend-${{CF_BRANCH_TAG_NORMALIZED}}
@@ -88,7 +105,4 @@ steps:
       - CHART_REPO_URL=${{REPO_ENDPOINT}}
       - WAIT=false
       - TIMEOUT=1200
-
-      - custom_ingress[0]_name=default
-      - custom_ingress[0]_labels_dns=route53
-      - custom_ingress[0]_hosts_"domain.com"="/"
+      - ARGS="-f .values.yaml"
