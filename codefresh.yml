@@ -83,12 +83,12 @@ steps:
       - |-
         cat > ./.values.yaml <<EOL
         ingress:
-          - name: "default"
-            labels:
-              dns: "route53"
-            annotations: {}
-            hosts:
-              "domain.test": "/"
+        - name: "default"
+          labels:
+            dns: "route53"
+          annotations: {}
+          hosts:
+            "domain.test": "/"
         EOL
 
   generate-helm-values-test:
@@ -104,8 +104,7 @@ steps:
     image: cloudposse/cf-plugin-helm:0.2.0-fix-working-with-repo
     working_directory: ${{build-image}}
     commands:
-      - ls -la
-      - pwd
+      - cat ./.values.yaml
       - /opt/bin/release_chart
     environment:
       - CHART_NAME=frontend
@@ -116,4 +115,4 @@ steps:
       - CHART_REPO_URL=${{REPO_ENDPOINT}}
       - WAIT=false
       - TIMEOUT=1200
-      - ARGS=-f .values.yaml
+      - ARGS=-f ./.values.yaml
