@@ -116,3 +116,4 @@ steps:
       - WAIT=false
       - TIMEOUT=1200
       - ARGS=-f ./.values.yaml
+      - DEBUG=true
