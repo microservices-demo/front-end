@@ -106,7 +106,7 @@ steps:
       - /opt/bin/release_chart
     environment:
       - CHART_NAME=frontend
-      - RELEASE_NAME=frontend-${{CF_BRANCH_TAG_NORMALIZED}}
+      - RELEASE_NAME=frontend-${{FEATURE}}
       - KUBE_CONTEXT=cluster-4
       - NAMESPACE=${{NAMESPACE}}
       - CHART_VERSION=${{SEMVERSION_BRANCH}}
