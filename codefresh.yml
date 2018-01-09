@@ -89,7 +89,8 @@ steps:
         - name: "default"
           labels:
             dns: "route53"
-          annotations: {}
+          annotations:
+            domainName: "${INGRESS_HOST}"
           hosts:
             "${INGRESS_HOST}": "/"
         EOL
