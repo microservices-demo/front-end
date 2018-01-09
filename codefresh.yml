@@ -94,7 +94,7 @@ steps:
             "${INGRESS_HOST}": "/"
         EOL
     environment:
-      - INGRESS_HOST={{FEATURE}}.{{PROJECT}}.{{BASE_HOST}}
+      - INGRESS_HOST=${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}
 
   deploy-helm:
     title: Deploy helm chart
