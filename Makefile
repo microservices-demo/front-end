@@ -2,6 +2,8 @@ include $(shell curl --silent -o .build-harness "https://raw.githubusercontent.c
 
 CHART_NAME ?= frontend
 
+PROJECT ?= demo
+
 IMAGE=front-end
 
 .PHONY: test coverage

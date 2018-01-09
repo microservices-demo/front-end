@@ -24,6 +24,8 @@ steps:
       - make git:show
       - make semver:show
       - make semver:export >> ${{CF_VOLUME_PATH}}/env_vars_to_export
+      - make stages:export
+      - make stages:export >> ${{CF_VOLUME_PATH}}/env_vars_to_export
 
   build-chart:
     title: Build Charts
@@ -84,18 +86,12 @@ steps:
         cat > ./.values.yaml <<EOL
         ingress:
         - name: "default"
+          labels:
+            dns: "route53"
           annotations: {}
           hosts:
             "domain.test": "/"
         EOL
-
-  generate-helm-values-test:
-    title: Generate helm values
-    image: alpine
-    working_directory: ${{generate-helm-values}}
-    commands:
-      - ls -la
-      - cat ./.values.yaml
 
   deploy-helm:
     title: Deploy helm chart
