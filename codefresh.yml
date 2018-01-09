@@ -8,6 +8,7 @@ steps:
     commands:
       - cf_export BUILD_HARNESS_VERSION=feature-helm-chart-ops
       - cf_export GIT_BRANCH=${{CF_BRANCH}}
+      - cf_export BASE_HOST=cloudposse.org
 
   build-image:
     title: Build image
@@ -90,8 +91,10 @@ steps:
             dns: "route53"
           annotations: {}
           hosts:
-            "domain.test": "/"
+            "${INGRESS_HOST}": "/"
         EOL
+    environment:
+      - INGRESS_HOST={{FEATURE}}.{{PROJECT}}.{{BASE_HOST}}
 
   deploy-helm:
     title: Deploy helm chart
