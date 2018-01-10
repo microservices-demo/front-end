@@ -33,6 +33,7 @@ steps:
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ${{build-image}}
     commands:
+      - REPO_NAME=cloudpossedemo REPO_ENDPOINT=${{REPO_ENDPOINT}} make helm:repo:add
       - make helm:repo:add-remote
       - make helm:chart:clean
       - make helm:chart:build-all

@@ -53,3 +53,8 @@ resources:
 #   - secretName: server-tls
 #     hosts:
 #     - domain.com
+
+
+catalogue:
+  enabled: true
+  fullnameOverride: catalogue
