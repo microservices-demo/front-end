@@ -84,7 +84,7 @@ steps:
     image: alpine
     commands:
       - |-
-        cat > ./.values.yaml <<EOL
+        cat > ./.${CF_BUILD_ID}.yaml <<EOL
         ingress:
         - name: "default"
           labels:
@@ -102,7 +102,7 @@ steps:
     image: cloudposse/cf-plugin-helm:0.2.0-fix-working-with-repo
     working_directory: ${{build-image}}
     commands:
-      - cat ./.values.yaml
+      - cat ./.${CF_BUILD_ID}.yaml
       - /opt/bin/release_chart
     environment:
       - CHART_NAME=frontend
@@ -113,5 +113,5 @@ steps:
       - CHART_REPO_URL=${{REPO_ENDPOINT}}
       - WAIT=false
       - TIMEOUT=1200
-      - ARGS=-f ./.values.yaml
+      - ARGS=-f ./.${{CF_BUILD_ID}}.yaml
       - DEBUG_CHART=true
