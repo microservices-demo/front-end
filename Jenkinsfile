@@ -18,10 +18,8 @@ node {
     }
     */
     stage('Deploy') {
-        docker.withTool("default") { 
-            withDockerServer([credentialsId: "", uri: "tcp://registry.ocbi.com:2376"]) { 
-                sh "printenv"
-            } 
+        sshagent (credentials: ['steven']) {
+            sh("env")
         }
     }     
     
