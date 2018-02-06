@@ -22,5 +22,13 @@ node {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
-    }    
+    }
+    stage('Deploy') {
+        docker.withTool("default") { 
+            withDockerServer([credentialsId: "", uri: "tcp://registry.ocbi.com:2376"]) { 
+                sh "printenv"
+            } 
+        }
+    }     
+    
 }
