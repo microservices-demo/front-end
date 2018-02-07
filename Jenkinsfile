@@ -19,7 +19,7 @@ node {
     */
     stage('Deploy') {
       sshagent (credentials: ['Jenkins']) {
-        sh 'ssh -l steven 23.97.67.158 uname -a'
+        sh 'ssh steven@23.97.67.158 uname -a'
       }
     }     
     
