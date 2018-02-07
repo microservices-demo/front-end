@@ -19,7 +19,7 @@ node {
     */
     stage('Deploy') {
         sshagent (credentials: ['steven']) {
-            sh("env")
+            sh("ssh -o StrictHostKeyChecking=no -l cloudbees 23.97.67.158 uname -a")
         }
     }     
     
