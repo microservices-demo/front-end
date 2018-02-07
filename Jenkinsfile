@@ -18,7 +18,7 @@ node {
     }
     */
     stage('Deploy') {
-        sshagent (credentials: ['System']) {
+        sshagent (credentials: ['Steven']) {
             sh("ssh -o StrictHostKeyChecking=no -l steven 23.97.67.158 uname -a")
         }
     }     
