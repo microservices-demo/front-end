@@ -24,7 +24,7 @@ node {
     }
     */
     stage('Deploy') {
-        sshagent("91c21a26-fcba-4c0e-824e-e4d0fd12c067") {
+        sshagent(['91c21a26-fcba-4c0e-824e-e4d0fd12c067']) {
             sh "ssh steven@23.97.67.158 \"echo ${env.BUILD_ID}\""
         }        
     }     
