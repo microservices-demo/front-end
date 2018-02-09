@@ -18,7 +18,7 @@ node {
     }
     */
     stage('Deploy') {
-        sshagent (credentials: ['steven']) {
+        sshagent(['steven']) {
             sh "ssh steven@23.97.67.158 \"echo ${env.BUILD_ID}\""
         }        
     }     
