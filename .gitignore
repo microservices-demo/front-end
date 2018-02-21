@@ -5,6 +5,7 @@
 /coverage
 
 .idea
+demo-front-end.iml
 
 .build-harness
 packages

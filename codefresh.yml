@@ -80,6 +80,35 @@ steps:
         all:
           executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
 
+  update-github-branch-protection:
+    title: Add "Staging Environment" status check to the branch
+    image: cloudposse/github-status-updater
+    environment:
+      - GITHUB_ACTION=update_branch_protection
+      - GITHUB_TOKEN=${{GITHUB_TOKEN}}
+      - GITHUB_OWNER=${{CF_REPO_OWNER}}
+      - GITHUB_REPO=${{CF_REPO_NAME}}
+      - GITHUB_REF=${{CF_BRANCH}}
+      - GITHUB_CONTEXT=Staging Environment
+    when:
+      condition:
+        all:
+          executeForBranch: "'${{SEMVERSION_BRANCH}}' != ''"
+
+  set-github-deployment-status-to-pending:
+    title: Set GitHub "Staging Environment" deployment status to "pending"
+    image: cloudposse/github-status-updater
+    environment:
+      - GITHUB_ACTION=update_state
+      - GITHUB_TOKEN=${{GITHUB_TOKEN}}
+      - GITHUB_OWNER=${{CF_REPO_OWNER}}
+      - GITHUB_REPO=${{CF_REPO_NAME}}
+      - GITHUB_REF=${{CF_REVISION}}
+      - GITHUB_CONTEXT=Staging Environment
+      - GITHUB_STATE=pending
+      - GITHUB_DESCRIPTION=Deploying changes to ${{FEATURE}} namespace
+      - GITHUB_TARGET_URL=http://${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}
+
   generate-helm-values:
     title: Generate helm values
     image: alpine
@@ -116,3 +145,49 @@ steps:
       - TIMEOUT=1200
       - ARGS=-f ./.${{CF_BUILD_ID}}.yaml
       - DEBUG_CHART=true
+
+  set-github-deployment-status-to-success:
+    title: Set GitHub "Staging Environment" deployment status to "success"
+    image: cloudposse/github-status-updater
+    environment:
+      - GITHUB_ACTION=update_state
+      - GITHUB_TOKEN=${{GITHUB_TOKEN}}
+      - GITHUB_OWNER=${{CF_REPO_OWNER}}
+      - GITHUB_REPO=${{CF_REPO_NAME}}
+      - GITHUB_REF=${{CF_REVISION}}
+      - GITHUB_CONTEXT=Staging Environment
+      - GITHUB_STATE=success
+      - GITHUB_DESCRIPTION=Deployed to ${{FEATURE}} namespace
+      - GITHUB_TARGET_URL=http://${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}
+
+  send-slack-notification:
+    title: Send notification to Slack channel
+    image: cloudposse/slack-notifier
+    environment:
+      - SLACK_WEBHOOK_URL=${{SLACK_WEBHOOK_URL}}
+      - SLACK_USER_NAME=CodeFresh
+      - "SLACK_ICON_EMOJI=:rocket:"
+      - SLACK_FALLBACK=Deployed to Staging environment
+      - SLACK_COLOR=good
+      - SLACK_PRETEXT=${{CF_COMMIT_MESSAGE}}
+      - SLACK_AUTHOR_NAME=Auto Deploy Robot
+      - SLACK_AUTHOR_LINK=https://cloudposse.com/
+      - SLACK_AUTHOR_ICON=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/small-cute-robot-square.png
+      - SLACK_TITLE=Environment Updated
+      - SLACK_TITLE_LINK=${{CF_BUILD_URL}}
+      - "SLACK_TEXT=The latest changes have been deployed to\n :point_right: ${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}"
+      - SLACK_THUMB_URL=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/SquareLogo2.png
+      - SLACK_FOOTER=Helm Deployment
+      - SLACK_FOOTER_ICON=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/kubernetes.png
+      - SLACK_FIELD1_TITLE=Environment
+      - SLACK_FIELD1_VALUE=Staging
+      - SLACK_FIELD1_SHORT=true
+      - SLACK_FIELD2_TITLE=Namespace
+      - SLACK_FIELD2_VALUE=${{FEATURE}}
+      - SLACK_FIELD2_SHORT=true
+      - SLACK_FIELD3_TITLE=Author
+      - SLACK_FIELD3_VALUE=@${{CF_COMMIT_AUTHOR}}
+      - SLACK_FIELD3_SHORT=true
+      - SLACK_FIELD4_TITLE=Branch
+      - SLACK_FIELD4_VALUE=${{CF_BRANCH}}
+      - SLACK_FIELD4_SHORT=true
