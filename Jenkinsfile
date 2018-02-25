@@ -12,15 +12,11 @@ node {
     }
     
     stage('Destroy running one') {
-        steps {
             sh "docker-compose -f /home/cloud/microservices-demo/deploy/docker-compose/docker-compose.yml down -v"
-        }
     } 
     
     stage('Deploy latest') {
-        steps {
             sh "docker-compose -f /home/cloud/microservices-demo/deploy/docker-compose/docker-compose.yml up -d"
-        }
     }     
     /*
     stage('Push image') {
