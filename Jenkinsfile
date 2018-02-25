@@ -6,9 +6,22 @@ node {
 
         checkout scm
     }
+    
     stage('Build image') {
         app = docker.build("stevenzhou2006/front-end")
     }
+    
+    stage('Destroy running one') {
+        steps {
+            sh "docker-compose -f /home/cloud/microservices-demo/deploy/docker-compose/docker-compose.yml down -v"
+        }
+    } 
+    
+    stage('Deploy latest') {
+        steps {
+            sh "docker-compose -f /home/cloud/microservices-demo/deploy/docker-compose/docker-compose.yml up -d"
+        }
+    }     
     /*
     stage('Push image') {
         docker.withRegistry('http://localhost', '') {
