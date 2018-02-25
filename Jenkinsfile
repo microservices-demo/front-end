@@ -10,7 +10,7 @@ node {
         app = docker.build("stevenzhou2006/front-end")
     }
     stage('Push image') {
-        docker.withRegistry('https://registry.ocbi.com', '') {
+        docker.withRegistry('https://localhost', '') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
