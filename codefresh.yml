@@ -6,7 +6,7 @@ steps:
     title: Init variables
     image: alpine
     commands:
-      - cf_export BUILD_HARNESS_VERSION=feature-helm-chart-ops
+      - cf_export BUILD_HARNESS_VERSION=0.4.0
       - cf_export GIT_BRANCH=${{CF_BRANCH}}
       - cf_export BASE_HOST=cloudposse.org
 
