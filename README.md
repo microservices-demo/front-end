@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/microservices-demo/front-end.svg?branch=master)](https://travis-ci.org/microservices-demo/front-end)
-[![](https://images.microbadger.com/badges/image/weaveworksdemos/front-end.svg)](http://microbadger.com/images/weaveworksdemos/front-end "Get your own image badge on microbadger.com")
-
-
-Front-end app
----
+Front-end app [![Build Status](https://travis-ci.org/microservices-demo/front-end.svg?branch=master)](https://travis-ci.org/microservices-demo/front-end)
+[![](https://images.microbadger.com/badges/image/weaveworksdemos/front-end.svg)](http://microbadger.com/images/weaveworksdemos/front-end "Get your own image badge on microbadger.com") [![Codefresh build status]( https://g.codefresh.io/api/badges/build?repoOwner=cloudposse-demo&repoName=demo-front-end&branch=master&pipelineName=demo-front-end&accountName=osterman&type=cf-1)]( https://g.codefresh.io/repositories/cloudposse-demo/demo-front-end/builds?filter=trigger:build;branch:master;service:5a5094ea6a4c2600017e610a~demo-front-end)
+--- 
 Front-end application written in [Node.js](https://nodejs.org/en/) that puts together all of the microservices under [microservices-demo](https://github.com/microservices-demo/microservices-demo).
+
+
+[![Codefresh Helm Release Status]( https://g.codefresh.io/api/badges/release?type=cf-1&key=eyJhbGciOiJIUzI1NiJ9.NWEwMTJmNWM3Yjg3YTQwMDAxYTlkMjU0.UwxTSXZGXq3wPQjj3O1k71kQsGuWGlzgkp9V2-llce8&selector=cluster-4&name=frontend-master&tillerNamespace=kube-system)]( https://g.codefresh.io/helm/releases/cluster-4/kube-system/frontend-master/services)
 
 # Build
 
