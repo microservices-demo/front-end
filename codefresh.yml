@@ -1,0 +1,193 @@
+# Build a service with environment variables
+version: '1.0'
+
+steps:
+  init-variables:
+    title: Init variables
+    image: alpine
+    commands:
+      - cf_export BUILD_HARNESS_VERSION=0.4.0
+      - cf_export GIT_BRANCH=${{CF_BRANCH}}
+      - cf_export BASE_HOST=cloudposse.org
+
+  build-image:
+    title: Build image
+    type: build
+    description: Build frontend
+    image-name: cloudpossedemo/frontend
+    dockerfile: Dockerfile
+
+  semver:
+    title: Export semantic version
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ${{build-image}}
+    commands:
+      - make git:show
+      - make semver:show
+      - make semver:export >> ${{CF_VOLUME_PATH}}/env_vars_to_export
+      - make stages:export
+      - make stages:export >> ${{CF_VOLUME_PATH}}/env_vars_to_export
+
+  build-chart:
+    title: Build Charts
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ${{build-image}}
+    commands:
+      - REPO_NAME=cloudpossedemo REPO_ENDPOINT=${{REPO_ENDPOINT}} make helm:repo:add
+      - make helm:repo:add-remote
+      - make helm:chart:clean
+      - make helm:chart:build-all
+      - make helm:chart:publish
+
+  push-image-commit:
+    title: Push image with commit based semver tags
+    type: push
+    candidate: ${{build-image}}
+    tags:
+      - "${{SEMVERSION_COMMIT_SHORT}}"
+      - "${{SEMVERSION_COMMIT}}"
+
+  push-image-branch:
+    title: Push image with branch based semver tags
+    type: push
+    candidate: ${{build-image}}
+    tags:
+      - "${{SEMVERSION_BRANCH}}"
+      - "${{SEMVERSION_BRANCH_COMMIT_SHORT}}"
+      - "${{SEMVERSION_BRANCH_COMMIT}}"
+    when:
+      condition:
+        all:
+          executeForBranch: "'${{SEMVERSION_BRANCH}}' != ''"
+
+  push-image-tag:
+    title: Push image with tag based semver tags
+    type: push
+    candidate: ${{build-image}}
+    tag: "${{SEMVERSION_TAG}}"
+    when:
+      condition:
+        all:
+          executeForTag: "'${{SEMVERSION_TAG}}' != ''"
+
+  push-image-latest:
+    title: Push image with latest tag
+    type: push
+    candidate: ${{build-image}}
+    tag: latest
+    when:
+      condition:
+        all:
+          executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
+
+  update-github-branch-protection:
+    title: Add "Staging Environment" status check to the branch
+    image: cloudposse/github-status-updater
+    environment:
+      - GITHUB_ACTION=update_branch_protection
+      - GITHUB_TOKEN=${{GITHUB_TOKEN}}
+      - GITHUB_OWNER=${{CF_REPO_OWNER}}
+      - GITHUB_REPO=${{CF_REPO_NAME}}
+      - GITHUB_REF=${{CF_BRANCH}}
+      - GITHUB_CONTEXT=Staging Environment
+    when:
+      condition:
+        all:
+          executeForBranch: "'${{SEMVERSION_BRANCH}}' != ''"
+
+  set-github-deployment-status-to-pending:
+    title: Set GitHub "Staging Environment" deployment status to "pending"
+    image: cloudposse/github-status-updater
+    environment:
+      - GITHUB_ACTION=update_state
+      - GITHUB_TOKEN=${{GITHUB_TOKEN}}
+      - GITHUB_OWNER=${{CF_REPO_OWNER}}
+      - GITHUB_REPO=${{CF_REPO_NAME}}
+      - GITHUB_REF=${{CF_REVISION}}
+      - GITHUB_CONTEXT=Staging Environment
+      - GITHUB_STATE=pending
+      - GITHUB_DESCRIPTION=Deploying changes to ${{FEATURE}} namespace
+      - GITHUB_TARGET_URL=http://${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}
+
+  generate-helm-values:
+    title: Generate helm values
+    image: alpine
+    commands:
+      - |-
+        cat > ./.${CF_BUILD_ID}.yaml <<EOL
+        ingress:
+        - name: "default"
+          labels:
+            dns: "route53"
+          annotations:
+            domainName: "${INGRESS_HOST}"
+          hosts:
+            "${INGRESS_HOST}": "/"
+        EOL
+    environment:
+      - INGRESS_HOST=${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}
+
+  deploy-helm:
+    title: Deploy helm chart
+    image: cloudposse/cf-plugin-helm:0.2.0-fix-working-with-repo
+    working_directory: ${{build-image}}
+    commands:
+      - cat ./.${CF_BUILD_ID}.yaml
+      - /opt/bin/release_chart
+    environment:
+      - CHART_NAME=frontend
+      - RELEASE_NAME=frontend-${{FEATURE}}
+      - KUBE_CONTEXT=cluster-4
+      - NAMESPACE=${{NAMESPACE}}
+      - CHART_VERSION=${{SEMVERSION_BRANCH}}
+      - CHART_REPO_URL=${{REPO_ENDPOINT}}
+      - WAIT=false
+      - TIMEOUT=1200
+      - ARGS=-f ./.${{CF_BUILD_ID}}.yaml
+      - DEBUG_CHART=true
+
+  set-github-deployment-status-to-success:
+    title: Set GitHub "Staging Environment" deployment status to "success"
+    image: cloudposse/github-status-updater
+    environment:
+      - GITHUB_ACTION=update_state
+      - GITHUB_TOKEN=${{GITHUB_TOKEN}}
+      - GITHUB_OWNER=${{CF_REPO_OWNER}}
+      - GITHUB_REPO=${{CF_REPO_NAME}}
+      - GITHUB_REF=${{CF_REVISION}}
+      - GITHUB_CONTEXT=Staging Environment
+      - GITHUB_STATE=success
+      - GITHUB_DESCRIPTION=Deployed to ${{FEATURE}} namespace
+      - GITHUB_TARGET_URL=http://${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}
+
+  send-slack-notification:
+    title: Send notification to Slack channel
+    image: cloudposse/slack-notifier
+    environment:
+      - SLACK_WEBHOOK_URL=${{SLACK_WEBHOOK_URL}}
+      - SLACK_USER_NAME=CodeFresh
+      - "SLACK_ICON_EMOJI=:rocket:"
+      - SLACK_FALLBACK=Deployed to Staging environment
+      - SLACK_COLOR=good
+      - SLACK_PRETEXT=${{CF_COMMIT_MESSAGE}}
+      - SLACK_AUTHOR_NAME=Auto Deploy Robot
+      - SLACK_AUTHOR_LINK=https://cloudposse.com/
+      - SLACK_AUTHOR_ICON=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/small-cute-robot-square.png
+      - SLACK_TITLE=Environment Updated
+      - SLACK_TITLE_LINK=${{CF_BUILD_URL}}
+      - "SLACK_TEXT=The latest changes have been deployed to\n :point_right: ${{FEATURE}}.${{PROJECT}}.${{BASE_HOST}}"
+      - SLACK_THUMB_URL=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/SquareLogo2.png
+      - SLACK_FOOTER=Helm Deployment
+      - SLACK_FOOTER_ICON=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/kubernetes.png
+      - SLACK_FIELD1_TITLE=Environment
+      - SLACK_FIELD1_VALUE=Staging
+      - SLACK_FIELD1_SHORT=true
+      - SLACK_FIELD2_TITLE=Namespace
+      - SLACK_FIELD2_VALUE=${{FEATURE}}
+      - SLACK_FIELD2_SHORT=true
+      - SLACK_FIELD3_TITLE=Author
+      - SLACK_FIELD3_VALUE=@${{CF_COMMIT_AUTHOR}}
+      - SLACK_FIELD3_SHORT=true
+      - SLACK_FIELD4_TITLE=Branch
+      - SLACK_FIELD4_VALUE=${{CF_BRANCH}}
+      - SLACK_FIELD4_SHORT=true
