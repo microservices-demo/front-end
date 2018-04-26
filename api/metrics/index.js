@@ -1,6 +1,6 @@
 (function (){
   'use strict';
-
+  const apiRoutes = ['cart', 'catalogue', 'orders', 'user'];
   var express = require("express")
     , client  = require('prom-client')
     , app     = express()
@@ -31,7 +31,12 @@
     var start = process.hrtime();
 
     response.on('finish', function() {
-      observe(request.method, request.path, response.statusCode, start);
+      // Only log API routes, and only record the backend service name (no unique identifiers)
+      var model = request.path.split('/')[1];
+      if (apiRoutes.indexOf(model) !== -1) {
+        observe(request.method, model, response.statusCode, start);
+      }
+
     });
 
     return done();
