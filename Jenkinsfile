@@ -1,4 +1,4 @@
-node {
+node ('lilychu.cn.host') {
     def app
 
     stage('Clone repository') {
