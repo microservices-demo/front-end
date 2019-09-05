@@ -7,6 +7,10 @@ node ('') {
         checkout scm
     }
     
+    stage('Start Docker') {
+            sh "service docker start"
+    } 
+    
     stage('Build image') {
         app = docker.build("stevenzhou2006/front-end")
     }
