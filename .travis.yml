@@ -16,7 +16,7 @@ install:
   - npm install
 
 env:
-  - GROUP=kenazk COMMIT="${TRAVIS_COMMIT}" TAG=latest REPO=front-end;
+  - GROUP=kenazk COMMIT="${TRAVIS_COMMIT}" TAG=latest REPO=front-end NEBULA_WORKFLOW=puppetize-demo-app-1;
 
 script:
   - make test
