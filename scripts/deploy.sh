@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-if [ -z "${NEBULA_EMAIL:-}" ] || [ -z "${NEBULA_PASSWORD:-}" ] || [ -z "${NEBULA_WORKFLOW:-}" ] || [ -z "${DOCKER_TAG:-}" ] || [ "${NO_DOCKER_PUSH:-}" == "yes" ]; then
+if [ -z "${NEBULA_EMAIL:-}" ] || [ -z "${NEBULA_PASSWORD:-}" ] || [ -z "${NEBULA_WORKFLOW:-}" ]; then
     exit 0
 fi
 
