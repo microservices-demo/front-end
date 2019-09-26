@@ -10,7 +10,7 @@ services:
 
 before_install:
   - sudo apt-get install -y make
-  - make test-image deps
+  - make deps
 
 install:
   - npm install
@@ -19,14 +19,10 @@ env:
   - GROUP=kenazk COMMIT="${TRAVIS_COMMIT}" TAG=latest REPO=front-end NEBULA_WORKFLOW=puppetize-demo-app-1
 
 script:
-  - make test
-
-after_success:
   - set -e
   - if [ -z "${DOCKER_PASS}" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
   - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}";
   - ./scripts/build.sh
-  - ./test/container.sh
   - ./scripts/push.sh
   - chmod +x ./scripts/deploy.sh
   - ./scripts/deploy.sh
