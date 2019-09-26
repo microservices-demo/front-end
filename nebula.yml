@@ -699,3 +699,14 @@ steps:
     message: "Successfully deployed Sock Shop demo!"
   dependsOn:
   - expose-service
+- name: resolve-ticket 
+  image: projectnebula/jira-resolve:9e3f1fc
+  spec:
+    username: kenaz
+    password:
+      $type: Secret
+      name: jira-password
+    url: https://tickets.puppetlabs.com
+    issue: PN-39
+  dependsOn:
+    - expose-service

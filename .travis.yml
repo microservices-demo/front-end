@@ -25,4 +25,4 @@ script:
   - ./scripts/build.sh
   - ./scripts/push.sh
   - chmod +x ./scripts/deploy.sh
-  - ./scripts/deploy.sh
+  #- ./scripts/deploy.sh

@@ -13,4 +13,3 @@ chmod +x .deploy/nebula-cli
 
 echo -n "${NEBULA_PASSWORD}" | .deploy/nebula-cli login -e "${NEBULA_EMAIL}" -p
 .deploy/nebula-cli workflow run -n "${NEBULA_WORKFLOW}"
-.deploy/nebula-cli workflow run list -n "${NEBULA_WORKFLOW}"
