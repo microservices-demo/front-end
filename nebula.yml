@@ -689,14 +689,14 @@ steps:
       repository: https://github.com/kenazk/front-end.git
   dependsOn:
     - front-end-service
-- name: slack-notify
+- name: notify-team
   image: projectnebula/slack-notification:bf8ecb9
   spec:
     apitoken:
       $type: Secret
       name: slack-token
     channel: "#nebula-workflows"
-    message: "Successfully deployed Puppetize Bike Shop! 🚲🚲🚲"
+    message: "Successfully deployed Puppetize Bike Shop! 🚲🚲"
   dependsOn:
   - expose-service
 - name: resolve-ticket 
