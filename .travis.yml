@@ -19,10 +19,10 @@ env:
   - GROUP=kenazk COMMIT="${TRAVIS_COMMIT}" TAG=latest REPO=front-end NEBULA_WORKFLOW=puppetize-demo-app-1
 
 script:
-  - set -e
-  - if [ -z "${DOCKER_PASS}" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
-  - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}";
-  - ./scripts/build.sh
-  - ./scripts/push.sh
+  # - set -e
+  # - if [ -z "${DOCKER_PASS}" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
+  # - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}";
+  # - ./scripts/build.sh
+  # - ./scripts/push.sh
   - chmod +x ./scripts/deploy.sh
   - ./scripts/deploy.sh
