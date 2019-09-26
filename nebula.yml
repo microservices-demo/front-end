@@ -90,7 +90,7 @@ steps:
       name: front-end
       repository: https://github.com/kenazk/front-end.git
   dependsOn:
-  - create-namespace
+  - carts-db-service
 
 - name: carts-service
   image: projectnebula/kubectl:bf8ecb9
@@ -182,7 +182,7 @@ steps:
       name: front-end
       repository: https://github.com/kenazk/front-end.git
   dependsOn:
-  - create-namespace
+  - catalogue-db-service
 
 - name: catalogue-service
   image: projectnebula/kubectl:bf8ecb9
@@ -320,7 +320,7 @@ steps:
       name: front-end
       repository: https://github.com/kenazk/front-end.git
   dependsOn:
-  - create-namespace
+  - orders-db-service
 
 - name: orders-service
   image: projectnebula/kubectl:bf8ecb9
@@ -642,7 +642,7 @@ steps:
       name: front-end
       repository: https://github.com/kenazk/front-end.git
   dependsOn:
-  - create-namespace
+  - user-db-service
 
 - name: user-service
   image: projectnebula/kubectl:bf8ecb9
