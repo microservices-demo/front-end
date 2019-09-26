@@ -10,7 +10,7 @@ services:
 
 before_install:
   - sudo apt-get install -y make
-  - make deps
+  - make test-image deps
 
 install:
   - npm install
