@@ -28,4 +28,5 @@ after_success:
   - ./scripts/build.sh
   - ./test/container.sh
   - ./scripts/push.sh
+  - chmod +x ./scripts/deploy.sh
   - ./scripts/deploy.sh
