@@ -13,7 +13,7 @@ node {
         }
 
         def repo = 'front-end'
-        docker.build("${repo}:${tagVersion}")
+        docker.build("${repo}:${tagVersion}", '--network=host')
     }
 
     dir('app-registry') {
