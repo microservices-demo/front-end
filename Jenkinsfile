@@ -4,31 +4,40 @@ def runWith = new common.v1.RunWith(this)
 def when = new common.v1.When(this)
 
 node {
-    gitCmd.checkout()
-
-    runWith.nodeJS('10.13.0') {
-        sh('npm install')
-    }
     def tagVersion = "${env.JOB_NAME}-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
-    def repo = 'front-end'
-    docker.build("${repo}:${tagVersion}")
+    dir('app-repo') {
+        gitCmd.checkout()
 
-    dir('helm-charts') {
-        def chartRepo = 'git@github.com:citizenken/argocd-example-apps.git'
-        gitCmd.checkoutRemoteWithBranch('git@github.com:citizenken/argocd-example-apps.git', 'master', 'jenkins-ssh')
-        def chart = readYaml file: 'helm-socks-frontend/Chart.yaml'
-        chart.appVersion = "${tagVersion}"
-        writeYaml file: 'helm-socks-frontend/Chart.yaml', data: chart
+        runWith.nodeJS('10.13.0') {
+            sh('npm install')
+        }
 
-        sh """
-        kubectl create namespace ${env.JOB_NAME}-${env.BRANCH_NAME}
-        argocd app create ${env.JOB_NAME}-${env.BRANCH_NAME} \
-        --repo chartRepo \
-        --path helm-socks-frontend \
-        --dest-namespace ${env.JOB_NAME}-${env.BRANCH_NAME} \
-        --dest-server https://kubernetes.default.svc
-        argocd app sync ${env.JOB_NAME}-${env.BRANCH_NAME} --local helm-socks-frontend
-        argocd app wait ${env.JOB_NAME}-${env.BRANCH_NAME}
-        """
+        def repo = 'front-end'
+        docker.build("${repo}:${tagVersion}")
+    }
+
+    dir('app-registry') {
+        def appRegistry = 'git@github.com:citizenken/argocd-project-registry.git'
+        gitCmd.checkoutRemoteWithBranch(appRegistry, 'master', 'jenkins-ssh')
+
+        def application = readYaml file: 'apps/sock-shop/application.yaml'
+        def namespace = readYaml file: 'apps/sock-shop/namespace.yaml'
+        def appPRName = "${application.metadata.name}-${env.BRANCH_NAME}"
+
+        application.metadata.labels.release = 'pr'
+        application.metadata.name = appPRName
+        application.spec.destination.namespace = appPRName
+        application.spec.source.helm = [
+            name : 'image.tag',
+            value : tagVersion
+        ]
+
+        namespace.metadata.name = appPRName
+
+        writeYaml file: "pr-apps/sock-shop-${env.BRANCH_NAME}/application.yaml", data: application
+        writeYaml file: "pr-apps/sock-shop-${env.BRANCH_NAME}/namespace.yaml", data: namespace
+
+        readFile "pr-apps/sock-shop-${env.BRANCH_NAME}/application.yaml"
+        readFile "pr-apps/sock-shop-${env.BRANCH_NAME}/namespace.yaml"
     }
 }
