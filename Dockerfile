@@ -7,11 +7,11 @@ RUN addgroup mygroup && adduser -D -G mygroup myuser && mkdir -p /usr/src/app &&
 # Prepare app directory
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
-COPY yarn.lock /usr/src/app/
-RUN chown myuser /usr/src/app/yarn.lock
+COPY package-lock.json /usr/src/app/
+RUN chown myuser /usr/src/app/package-lock.json
 
 USER myuser
-RUN yarn install
+RUN npm install
 
 COPY . /usr/src/app
 

@@ -4,7 +4,7 @@ def runWith = new common.v1.RunWith(this)
 def when = new common.v1.When(this)
 
 node {
-    def tagVersion = "${env.JOB_NAME}-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+    def tagVersion = "${env.JOB_NAME}-${env.GIT_BRANCH_NAME}-${env.BUILD_NUMBER}"
     dir('app-repo') {
         gitCmd.checkout()
 
