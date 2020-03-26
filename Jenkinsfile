@@ -39,15 +39,17 @@ node('p2-team-jenkins-slave-14.ctct.net') {
         application.metadata.labels.release = 'pr'
         application.metadata.name = appPRName
         application.spec.destination.namespace = appPRName
-        application.spec.source.helm.parameters = [
-            [
-                name : 'image.tag',
-                value : tagVersion
-                ],
-            [
-                name : 'image.repository',
-                value : containerInRepo
-                ]
+        application.spec.source.helm = [
+            parameters : [
+                [
+                    name : 'image.tag',
+                    value : tagVersion
+                    ],
+                [
+                    name : 'image.repository',
+                    value : containerInRepo
+                    ]
+            ]
         ]
 
         namespace.metadata.name = appPRName
