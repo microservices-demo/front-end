@@ -6,7 +6,8 @@ def awsTools = new ctct.v1.AwsTools(this)
 
 node('p2-team-jenkins-slave-14.ctct.net') {
     def tagVersion = "${env.JOB_NAME}-${env.GIT_BRANCH_NAME}-${env.BUILD_NUMBER}"
-    def containerInRepo = "428791060841.dkr.ecr.us-east-1.amazonaws.com/argocd-test-repo:${tagVersion}"
+    def ecrRepo = '428791060841.dkr.ecr.us-east-1.amazonaws.com/argocd-test-repo'
+    def containerInRepo = "${ecrRepo}:${tagVersion}"
     dir('app-repo') {
         gitCmd.checkout()
 
@@ -18,9 +19,11 @@ node('p2-team-jenkins-slave-14.ctct.net') {
 
         withAWS(credentials: 'jesnkins-bfa-user', role: 'ctct-deploy-qa-ecr-access', roleAccount: '428791060841') {
             def login = ecrLogin()
-            sh login
-            docker.build(containerInRepo, '. --network=host')
-                .push()
+            sh """"
+            ${login}
+            docker build -t ${containerInRepo} .
+            docker push ${containerInRepo}
+            """
         }
 
     }
