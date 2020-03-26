@@ -16,12 +16,14 @@ node('p2-team-jenkins-slave-14.ctct.net') {
 
         def repo = 'front-end'
 
-        awsTools.setupAWS('arn:aws:iam::428791060841:role/ctct-deploy-qa-ecr-access', 'cn=aws_apikey_670163990008_ctct-deploy-qa,ou=Services,dc=roving,dc=com')
+        // awsTools.setupAWS('arn:aws:iam::428791060841:role/ctct-deploy-qa-ecr-access', 'cn=aws_apikey_670163990008_ctct-deploy-qa,ou=Services,dc=roving,dc=com')
+        withAWS(credentials: 'jesnkins-bfa-user') {
+            sh '$(aws ecr get-login --no-include-email --region us-east-1)'
+            docker.build("${repo}:${tagVersion}", '. --network=host')
+                .tag(containerInRepo)
+                .push()
+        }
 
-        sh '$(aws ecr get-login --no-include-email --region us-east-1)'
-        docker.build("${repo}:${tagVersion}", '. --network=host')
-            .tag(containerInRepo)
-            .push()
     }
 
     dir('app-registry') {
