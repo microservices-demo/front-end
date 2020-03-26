@@ -4,7 +4,7 @@ def runWith = new common.v1.RunWith(this)
 def when = new common.v1.When(this)
 def awsTools = new ctct.v1.AwsTools(this)
 
-node('p2-team-jenkins-slave-14') {
+node('p2-team-jenkins-slave-14.ctct.net') {
     def tagVersion = "${env.JOB_NAME}-${env.GIT_BRANCH_NAME}-${env.BUILD_NUMBER}"
     def containerInRepo = "428791060841.dkr.ecr.us-east-1.amazonaws.com/argocd-test-repo:${tagVersion}"
     dir('app-repo') {
