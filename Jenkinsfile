@@ -25,7 +25,7 @@ node('p2-team-jenkins-slave-14') {
     }
 
     dir('app-registry') {
-        def appRegistry = 'git@github.com:citizenken/argocd-project-registry.git'
+        def appRegistry = 'https://github.com/citizenken/argocd-project-registry.git'
         gitCmd.checkoutRemoteWithBranch(appRegistry, 'master', 'jenkins-ssh')
 
         def application = readYaml file: 'apps/sock-shop/application.yaml'
