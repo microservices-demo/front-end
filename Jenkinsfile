@@ -22,11 +22,8 @@ node('p2-team-jenkins-slave-14.ctct.net') {
                 roleAccount: '428791060841',
                 region: 'us-east-1') {
             def login = ecrLogin()
-            sh """
-            ${login}
-            docker build -t ${containerInRepo} .
-            docker push ${containerInRepo}
-            """
+            sh login
+            docker.build(containerInRepo, '. --network=host').push()
         }
 
     }
