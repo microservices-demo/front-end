@@ -17,9 +17,12 @@ node('p2-team-jenkins-slave-14.ctct.net') {
 
         def repo = 'front-end'
 
-        withAWS(credentials: 'jesnkins-bfa-user', role: 'ctct-deploy-qa-ecr-access', roleAccount: '428791060841') {
+        withAWS(credentials: 'jesnkins-bfa-user',
+                role: 'ctct-deploy-qa-ecr-access',
+                roleAccount: '428791060841',
+                region: 'us-east-1') {
             def login = ecrLogin()
-            sh """"
+            sh """
             ${login}
             docker build -t ${containerInRepo} .
             docker push ${containerInRepo}
