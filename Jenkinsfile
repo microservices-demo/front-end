@@ -16,7 +16,7 @@ node('p2-team-jenkins-slave-14.ctct.net') {
 
         def repo = 'front-end'
 
-        awsTools.setupAWS('arn:aws:iam::428791060841:role/_deploy-qa', 'cn=aws_apikey_670163990008_ctct-deploy-qa,ou=Services,dc=roving,dc=com')
+        awsTools.setupAWS('arn:aws:iam::428791060841:role/ctct-deploy-qa-ecr-access', 'cn=aws_apikey_670163990008_ctct-deploy-qa,ou=Services,dc=roving,dc=com')
 
         sh '$(aws ecr get-login --no-include-email --region us-east-1)'
         docker.build("${repo}:${tagVersion}", '. --network=host')
