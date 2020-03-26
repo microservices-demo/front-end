@@ -60,5 +60,11 @@ node('p2-team-jenkins-slave-14.ctct.net') {
 
         readFile "pr-apps/sock-shop-${env.BRANCH_NAME}/application.yaml"
         readFile "pr-apps/sock-shop-${env.BRANCH_NAME}/namespace.yaml"
+
+        sh """
+        git add ./pr-apps
+        git commit -m "adding sock-shop-${env.BRANCH_NAME}"
+        git push
+        """
     }
 }
