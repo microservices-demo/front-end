@@ -19,10 +19,10 @@
     tagsUrl:       util.format("http://%s/tags", domain),
     cartsUrl:      util.format("http://%s/carts", domain),
     ordersUrl:     util.format("http://%s", domain),
-    customersUrl:  util.format("http://%s/customers", domain),
-    addressUrl:    util.format("http://%s/addresses", domain),
-    cardsUrl:      util.format("http://%s/cards", domain),
-    loginUrl:      util.format("http://%s/login", domain),
-    registerUrl:   util.format("http://%s/register", domain),
+    customersUrl:  util.format("http://%s/users/customers", domain),
+    addressUrl:    util.format("http://%s/users/addresses", domain),
+    cardsUrl:      util.format("http://%s/users/cards", domain),
+    loginUrl:      util.format("http://%s/users/login", domain),
+    registerUrl:   util.format("http://%s/users/register", domain),
   };
 }());
