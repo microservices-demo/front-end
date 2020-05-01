@@ -12,8 +12,10 @@ RUN chown myuser /usr/src/app/yarn.lock
 
 USER myuser
 RUN yarn install
+RUN cp /usr/src/app/node_modules/newrelic/newrelic.js /usr/src/app
 
 COPY . /usr/src/app
+RUN node newrelic_setup.js
 
 # Start the app
 CMD ["/usr/local/bin/npm", "start"]

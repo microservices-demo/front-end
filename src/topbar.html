@@ -1,0 +1,149 @@
+<!-- *** TOPBAR ***
+_________________________________________________________ -->
+<div id="top">
+    <div class="container">
+        <div class="col-md-6 offer" data-animate="fadeInDown">
+            <a href="#" class="btn btn-success btn-sm"
+               data-animate-hover="shake">Offer of the day</a> <a href="#">Buy
+            1000 socks, get a shoe for free!</a>
+        </div>
+        <div class="col-md-6" data-animate="fadeInDown">
+            <ul class="menu">
+                <li id="login"><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                <li id="howdy"></li>
+                <li id="logout"><a href="index.html" onclick="logout()">Logout</a></li>
+                <li id="register"><a href="#" data-toggle="modal" data-target="#register-modal">Register</a></li>
+                <!--<li><a href="contact.html">Contact</a></li>-->
+                <!--<li><a href="#">Recently viewed</a></li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog"
+         aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="Login">Customer login</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div id="login-message"> </div>
+
+                    <form action="index.html" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control"
+                                   name="username"
+                                   id="username-modal" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control"
+                                   name="password"
+                                   id="password-modal" placeholder="password">
+                        </div>
+
+                        <p class="text-center">
+                            <button class="btn btn-primary" href="#" onclick="return login()"><i
+                                    class="fa fa-sign-in"></i> Log in
+                            </button>
+                        </p>
+
+                    </form>
+
+                    <!--<p class="text-center text-muted">Not registered yet?</p>-->
+                    <!--<p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="register-modal" tabindex="-1" role="dialog"
+         aria-labelledby="Register" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="Login">Register</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div id="registration-message"> </div>
+
+                    <form action="index.html" method="get">
+
+                        <div class="form-group">
+                            <label for="name">Username</label>
+                            <input type="text" class="form-control" name="username"
+			    	id="register-username-modal" placeholder="username"required>
+                        </div>
+                        <div class="form-group">
+                            <label for="first-name">First name</label>
+                            <input type="text" class="form-control" name="first-name"
+			    	id="register-first-modal" placeholder="first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last name</label>
+                            <input type="text" class="form-control" name="last-name"
+			    	id="register-last-modal" placeholder="last name"required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" name="email"
+			    	id="register-email-modal" placeholder="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password"
+			    	id="register-password-modal"required>
+                        </div>
+                        <p class="text-center">
+                            <button class="btn btn-primary" href="#" onclick="return register()"><i
+                                    class="fa fa-sign-in"></i> Register
+                            </button>
+                        </p>
+
+                    </form>
+
+                    <!--<p class="text-center text-muted">Not registered yet?</p>-->
+                    <!--<p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- *** TOP BAR END *** -->
+
+<script>
+
+    $(document).ready(function () {
+        $.ajaxSetup({
+            contentType: "application/json; charset=utf-8"
+        });
+
+        if ($.cookie('logged_in') != null && $.cookie('logged_in') != "") {
+
+            username($.cookie('logged_in'), function (username) {
+                if (typeof username !== 'undefined') {
+                    $("#login").remove();
+                    $("#register").remove();
+                    $("#howdy").append('<a href="#">Logged in as ' + username + '<\/a>').hide().fadeIn(200);
+                    $("#logout").hide().fadeIn(200);
+                } else {
+                    $("#howdy").remove()
+                    $("#logout").remove()
+                }
+            });
+        } else {
+            $("#howdy").remove()
+            $("#logout").remove()
+        }
+
+    })
+</script>

@@ -14,6 +14,8 @@ var request      = require("request")
   , user         = require("./api/user")
   , metrics      = require("./api/metrics")
   , app          = express()
+  , newrelic = require('newrelic')
+  , require('./newrelic_setup')
 
 
 app.use(helpers.rewriteSlash);
