@@ -6,7 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      name: check out code
     - uses: mr-smithers-excellent/docker-build-push@v3
+      name: docker images
       with:
         image: artipfw/front-end
         registry: docker.io
