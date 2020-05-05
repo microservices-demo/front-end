@@ -219,6 +219,7 @@ _________________________________________________________ -->
                             numItemsInCart = numItemsInCart + element.quantity;
                         }).always(function () {
                             $('#numItemsInCart').text(numItemsInCart + ' item(s) in cart');
+                            $.data($('#numItemsInCart'), "num", numItemsInCartyy);
                         });
                     }
                 });
@@ -230,6 +231,7 @@ _________________________________________________________ -->
         //Add Hover effect to menus
         jQuery('ul.nav li.dropdown').hover(function () {
             jQuery(this).find('.dropdown-menu').stop(true, true).delay(100).fadeIn();
+            newrelic.addPageAction("showCatalogue", { referer: location.pathname, numInCart: $.data($('#numItemsInCart'), "num")});
         }, function () {
             jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
         });

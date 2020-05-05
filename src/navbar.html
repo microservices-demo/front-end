@@ -230,6 +230,7 @@ _________________________________________________________ -->
         //Add Hover effect to menus
         jQuery('ul.nav li.dropdown').hover(function () {
             jQuery(this).find('.dropdown-menu').stop(true, true).delay(100).fadeIn();
+            newrelic.addPageAction("showCatalogueInNavbar", { referer: location.pathname, numInCart: $.data($('#numItemsInCart'), "num")});
         }, function () {
             jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
         });

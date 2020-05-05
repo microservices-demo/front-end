@@ -77,6 +77,7 @@ function setNewPage(value) {
 }
 
 function setNewTags(value) {
+    newrelic.addPageAction("searchInCatalog", { tags: value, referer: location.pathname, numInCart: $.data($('#numItemsInCart'), "num")});
     location.search = $.query.set("tags", value);
 }
 
