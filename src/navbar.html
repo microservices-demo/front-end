@@ -234,7 +234,7 @@ _________________________________________________________ -->
             catalogueStartTime=(new Date()).getTime();
         }, function () {
             jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
-            newrelic.addToTrace({ name: 'showCatalogue': start: catalogueStartTime, end: (new Date()).getTime(), type: 'showCatalogueInNavbar'});
+            newrelic.addToTrace({ name: 'showCatalogue', start: catalogueStartTime, end: (new Date()).getTime(), type: 'showCatalogueInNavbar'});
        });
 
         // Set active tabs
