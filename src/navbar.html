@@ -226,14 +226,16 @@ _________________________________________________________ -->
         }).error(function () {
             $('#basket-overview').remove();
         });
-
+        var catalogueStartTime=0;
         //Add Hover effect to menus
         jQuery('ul.nav li.dropdown').hover(function () {
             jQuery(this).find('.dropdown-menu').stop(true, true).delay(100).fadeIn();
             newrelic.addPageAction("showCatalogueInNavbar", { referer: location.pathname, numInCart: $.data($('#numItemsInCart'), "num")});
+            catalogueStartTime=(new Date()).getTime();
         }, function () {
             jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
-        });
+            newrelic.addToTrace({ name: 'showCatalogue': start: catalogueStartTime, end: (new Date()).getTime(), type: 'showCatalogueInNavbar'});
+       });
 
         // Set active tabs
         if (window.location.toString().indexOf("category.html") > -1) {
