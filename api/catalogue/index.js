@@ -6,6 +6,9 @@
     , endpoints = require("../endpoints")
     , helpers   = require("../../helpers")
     , app       = express()
+    , newrelic     = require('newrelic')
+  
+  app.locals.newrelic = newrelic;
 
   app.get("/catalogue/images*", function (req, res, next) {
     var url = endpoints.catalogueUrl + req.url.toString();

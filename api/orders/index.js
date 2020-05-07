@@ -7,6 +7,9 @@
     , endpoints = require("../endpoints")
     , helpers   = require("../../helpers")
     , app       = express()
+    , newrelic     = require('newrelic')
+  
+  app.locals.newrelic = newrelic;
 
   app.get("/orders", function (req, res, next) {
     console.log("Request received with body: " + JSON.stringify(req.body));
