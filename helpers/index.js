@@ -1,7 +1,7 @@
 (function (){
   'use strict';
 
-  var request = require("request");
+  var request = require("request"), newrelic=require("newrelic");
   var helpers = {};
 
   /* Public: errorHandler is a middleware that handles your errors
@@ -99,7 +99,7 @@
       // Use Session ID instead
       return req.session.id;
     }
-
+    newrelic.addCustomAttribute('customerId', req.session.customerId);
     return req.session.customerId;
   }
   module.exports = helpers;
