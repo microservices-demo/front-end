@@ -1,4 +1,6 @@
-var request      = require("request")
+var
+  newrelic     = require('newrelic')
+  , request      = require("request")
   , express      = require("express")
   , morgan       = require("morgan")
   , path         = require("path")
@@ -14,7 +16,6 @@ var request      = require("request")
   , user         = require("./api/user")
   , metrics      = require("./api/metrics")
   , app          = express()
-  , newrelic     = require('newrelic')
   , nrsetup      = require('./newrelic_setup')
 
 app.locals.newrelic = newrelic;
