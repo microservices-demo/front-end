@@ -1,13 +1,13 @@
 (function (){
   'use strict';
 
-  var async     = require("async")
+  var newrelic     = require('newrelic')
+    , async     = require("async")
     , express   = require("express")
     , request   = require("request")
     , helpers   = require("../../helpers")
     , endpoints = require("../endpoints")
     , app       = express()
-    , newrelic     = require('newrelic')
   
   app.locals.newrelic = newrelic;
   // List items in cart for current logged in user.

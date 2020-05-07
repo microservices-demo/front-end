@@ -1,13 +1,13 @@
 (function (){
   'use strict';
 
-  var async     = require("async")
+  var newrelic  = require('newrelic')
+    , async     = require("async")
     , express   = require("express")
     , request   = require("request")
     , endpoints = require("../endpoints")
     , helpers   = require("../../helpers")
     , app       = express()
-    , newrelic     = require('newrelic')
   
   app.locals.newrelic = newrelic;
 
