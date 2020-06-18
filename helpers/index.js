@@ -102,5 +102,26 @@
 
     return req.session.customerId;
   }
+
+  helpers.getValFromEnv = function(envName) {
+    if (envName in process.env) {
+      return process.env[envName];
+    } else {
+      console.error("Fatal error: environment variable '" + envName + "' not found");
+      process.exit(1);
+    }
+  };
+  
+  helpers.addHeader = function(outVar, httpRequest, httpHeader) {
+    if (httpRequest.header(httpHeader)) {
+      var httpHeaderValue = httpRequest.header(httpHeader);
+      console.log("Found '" + httpHeader + "' header, value: " + httpHeaderValue);
+
+      var h = {};
+      h[httpHeader] = httpHeaderValue;
+      outVar.headers = h;
+    }
+  };
+
   module.exports = helpers;
 }());
