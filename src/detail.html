@@ -41,7 +41,10 @@
 </head>
 
 <body>
-
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJ89VFJ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="topbar"></div>
 <div id="navbar"></div>
 
@@ -244,7 +247,7 @@ _________________________________________________________ -->
                                         <h3><a href="detail.html?id=' + element.id + '">' + element.name + '</a></h3>\
                                         <p class="price">$' + element.price + '</p>\
                                         <p class="buttons">\
-                                            <a href="detail.html?id=' + element.id + '" class="btn btn-default">View detail</a>\
+                                            <a id=detail-item-'+ element.id +' href="detail.html?id=' + element.id + '" class="btn btn-default">View detail</a>\
                                             <a href="#" onclick="addToCart(\'' + element.id + '\')" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>\
                                         </p>\
                                     </div>\

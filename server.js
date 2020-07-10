@@ -15,13 +15,38 @@ var
   , orders       = require("./api/orders")
   , user         = require("./api/user")
   , metrics      = require("./api/metrics")
+  , attack       = require("./api/attack")
   , app          = express()
   , nrsetup      = require('./newrelic_setup')
+  , winston      = require('winston')
+  , newrelicFormatter = require('@newrelic/winston-enricher')
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.label({label: 'microservice'}),
+    newrelicFormatter()
+  ),
+  defaultMeta: { service: 'ec2-micro-front-end' },
+  transports: [
+    //
+    // - Write all logs with level `error` and below to `error.log`
+    // - Write all logs with level `info` and below to `combined.log`
+    //
+    new winston.transports.File({ filename: '/var/log/front/error.log', level: 'error' }),
+    new winston.transports.File({ filename: '/var/log/front/combined.log' }),
+  ],
+});
 
 app.locals.newrelic = newrelic;
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);
+app.use(function (req, res, next) {
+    var filename = path.basename(req.url);
+    logger.info("Access log: " + filename);
+    next();
+});
 app.use(express.static("public"));
 if(process.env.SESSION_REDIS) {
     console.log('Using the redis based session manager');
@@ -53,6 +78,7 @@ app.use(cart);
 app.use(catalogue);
 app.use(orders);
 app.use(user);
+app.use(attack);
 
 app.use(helpers.errorHandler);
 

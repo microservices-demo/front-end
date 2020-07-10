@@ -41,6 +41,10 @@
 </head>
 
 <body>
+	<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJ89VFJ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="topbar"></div>
 <div id="navbar"></div>
 
@@ -388,7 +392,7 @@ _________________________________________________________ -->
                                                 <td>$0.00</td>\
                                                 <td>$' + (element.quantity * data.price).toFixed(2) + '</td>\
                                                 <td>\
-                                                    <a href="#" onclick="deleteFromCart(\'' + data.id + '\')"><i class="fa fa-trash-o"></i></a>\
+                                                    <a id=delete-item-' + data.id + ' href="#" onclick="deleteFromCart(\'' + data.id + '\')"><i class="fa fa-trash-o"></i></a>\
                                                 </td>\
                                             </tr>');
                             cartTotal = cartTotal + element.quantity * data.price;
@@ -461,12 +465,12 @@ _________________________________________________________ -->
                                     <div class="flip-container">\
                                         <div class="flipper">\
                                             <div class="front">\
-                                                <a href="detail.html?id=' + element.id + '">\
+                                                <a id=detail-item-' + element.id + ' href="detail.html?id=' + element.id + '">\
                                                     <img src="' + element.imageUrl[0] + '" alt="" class="img-responsive">\
                                                 </a>\
                                             </div>\
                                             <div class="back">\
-                                                <a href="detail.html?id=' + element.id + '">\
+                                                <a id=detail-item-' + element.id + ' href="detail.html?id=' + element.id + '">\
                                                     <img src="' + element.imageUrl[1] + '" alt="" class="img-responsive">\
                                                 </a>\
                                             </div>\

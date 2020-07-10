@@ -259,6 +259,7 @@
                         },
                         uri: endpoints.loginUrl
                     };
+	            console.log(options);
                     request(options, function(error, response, body) {
                         if (error) {
                             callback(error);

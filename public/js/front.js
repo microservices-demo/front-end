@@ -8,6 +8,7 @@ $(function() {
     productDetailGallery(4000);
     carousels();
     utils();
+    nractions();
 });
 
 
@@ -23,6 +24,27 @@ $(window).resize(function() {
 
 /* product detail gallery */
 
+function nractions() {
+	var interaction;
+	$('#btn1').click(()=>{
+		newrelic.addToTrace({ name: "clickBtn1", start: (new Date()).getTime() });
+		newrelic.addPageAction("clickBtn1", { tags: 'ClickButton', referer: location.pathname, sampleNum: 1, sampleTxt: 'btn1' });
+		interaction = newrelic.interaction()
+	});
+	$('#btn2').click(()=>{
+		newrelic.addToTrace({ name: "clickBtn2", start: (new Date()).getTime() });
+		newrelic.addPageAction("clickBtn2", { tags: 'ClickButton', referer: location.pathname, sampleNum: 2, sampleTxt: 'btn2' });
+	});
+	$('#btn3').click(()=>{
+		newrelic.addToTrace({ name: "clickBtn3", start: (new Date()).getTime() });
+		newrelic.addPageAction("clickBtn3", { tags: 'ClickButton', referer: location.pathname, sampleNum: 3, sampleTxt: 'btn3' });
+	});
+	$('#btn4').click(()=>{
+		newrelic.addToTrace({ name: "clickBtn4", start: (new Date()).getTime() });
+		newrelic.addPageAction("clickBtn4", { tags: 'ClickButton', referer: location.pathname, sampleNum: 4, sampleTxt: 'btn4' });
+	        var { DataDoesNotExist } = DataDoesNotExist;
+	});
+}
 function productDetailGallery(confDetailSwitch) {
     $('.thumb:first').addClass('active');
     timer = setInterval(autoSwitch, confDetailSwitch);

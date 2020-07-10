@@ -41,7 +41,10 @@
 </head>
 
 <body>
-
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJ89VFJ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="topbar"></div>
 <div id="navbar"></div>
 
@@ -83,7 +86,7 @@ _________________________________________________________ -->
                             <div class="icon"><i class="fa fa-heart"></i>
                             </div>
 
-                            <h3><a href="#">We love socks!</a></h3>
+                            <h3><a id=welovesocks href="#">We love socks!</a></h3>
                             <p>Fun fact: Socks were invented by woolly mammoths
                                 to keep warm. They died out because stupid
                                 humans had to cut their legs off to get their
@@ -151,6 +154,10 @@ _________________________________________________________ -->
     </div>
     <!-- /#content -->
 
+    <button id=btn1>Button1</button>
+    <button id=btn2>Button2</button>
+    <button id=btn3>Button3</button>
+    <button id=btn4>Button4</button>
     <div id="footer"></div>
 
 </div>
@@ -207,7 +214,7 @@ _________________________________________________________ -->
                                 <img src="' + element.imageUrl[0] + '" alt="" class="img-responsive">\
                             </a>\
                             <div class="text">\
-                                <h3><a href="detail.html?id=' + element.id + '">' + element.name + '</a></h3>\
+                                <h3><a id=' + element.name + ' href="detail.html?id=' + element.id + '">' + element.name + '</a></h3>\
                                 <p class="price">$' + element.price + '</p>\
                             </div>\
                         </div>\

@@ -22,8 +22,10 @@
     var custId = req.session.customerId;
     async.waterfall([
         function (callback) {
+	  console.log(endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId);
           request(endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId, function (error, response, body) {
             if (error) {
+	      console.log(error);
               return callback(error);
             }
             console.log("Received response: " + JSON.stringify(body));
@@ -60,6 +62,7 @@
 
     async.waterfall([
         function (callback) {
+          console.log(endpoints.customersUrl + "/" + custId);
           request(endpoints.customersUrl + "/" + custId, function (error, response, body) {
             if (error || body.status_code === 500) {
               callback(error);
@@ -67,15 +70,19 @@
             }
             console.log("Received response: " + JSON.stringify(body));
             var jsonBody = JSON.parse(body);
+            //var customerlink = endpoints.customersUrl+'/'+custId;//jsonBody._links.customer.href;
+            //var addressLink = endpoints.customersUrl+'/'+custId+'/addresses';//jsonBody._links.addresses.href;
+            //var cardLink = endpoints.customersUrl+'/'+custId+'/cards';//jsonBody._links.cards.href;
             var customerlink = jsonBody._links.customer.href;
             var addressLink = jsonBody._links.addresses.href;
             var cardLink = jsonBody._links.cards.href;
             var order = {
               "customer": customerlink,
-              "address": null,
-              "card": null,
+              "address": addressLink,
+              "card": cardLink,
               "items": endpoints.cartsUrl + "/" + custId + "/items"
             };
+		  console.log(order);
             callback(null, order, addressLink, cardLink);
           });
         },
@@ -116,7 +123,7 @@
               callback(err);
               return;
             }
-            console.log(result);
+            console.log(order);
             callback(null, order);
           });
         },
