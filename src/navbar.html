@@ -17,55 +17,55 @@ _________________________________________________________ -->
         <div class="navbar-collapse collapse" id="navigation">
 
             <ul class="nav navbar-nav navbar-left">
-                <li id="tabIndex"><a href="index.html">Home</a>
+                <li id="tabIndex"><a href="index.html">ホーム</a>
                 </li>
                 <li id="tabCatalogue" class="dropdown yamm-fw">
-                    <a id="tabCatalogueA" href="category.html" class="dropdown-toggle">Catalogue <b
+                    <a id="tabCatalogueA" href="category.html" class="dropdown-toggle">カタログ <b
                             class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <div class="yamm-content">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h5>Colours</h5>
+                                        <h5>色</h5>
                                         <ul>
                                             <li>
-                                                <a id=tab-blue href="category.html?tags=blue">Blue</a>
+                                                <a id=tab-blue href="category.html?tags=blue">青色</a>
                                             </li>
                                             <li>
-                                                <a id=tab-brown href="category.html?tags=brown">Brown</a>
+                                                <a id=tab-brown href="category.html?tags=brown">茶色</a>
                                             </li>
                                             <li>
-                                                <a id=tab-green href="category.html?tags=green">Green</a>
+                                                <a id=tab-green href="category.html?tags=green">緑色</a>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-3">
-                                        <h5>Size</h5>
+                                        <h5>サイズ</h5>
                                         <ul>
                                             <li>
-                                                <a id=tab-large href="category.html?tags=large">Large</a>
+                                                <a id=tab-large href="category.html?tags=large">大きめ</a>
                                             </li>
                                             <li>
-                                                <a id=tab-short href="category.html?tags=short">Short</a>
+                                                <a id=tab-short href="category.html?tags=short">短め</a>
                                             </li>
                                         </ul>
-                                        <h5>Function</h5>
+                                        <h5>機能性</h5>
                                         <ul>
                                             <li>
-                                                <a id=tab-toes href="category.html?tags=toes">Toes</a>
+                                                <a id=tab-toes href="category.html?tags=toes">爪先</a>
                                             </li>
                                             <li>
-                                                <a id=tab-magic href="category.html?tags=magic">Magic</a>
+                                                <a id=tab-magic href="category.html?tags=magic">マジック</a>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-3">
-                                        <h5>Featured</h5>
+                                        <h5>特徴</h5>
                                         <ul>
-                                            <li><a id=tab-formal href="category.html?tags=formal">Formal</a>
+                                            <li><a id=tab-formal href="category.html?tags=formal">フォーマル</a>
                                             </li>
-                                            <li><a id=tab-smelly href="category.html?tags=smelly">Smelly</a>
+                                            <li><a id=tab-smelly href="category.html?tags=smelly">匂い</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -163,7 +163,7 @@ _________________________________________________________ -->
             <div class="navbar-collapse collapse right" id="basket-overview">
                 <a href="basket.html" class="btn btn-primary navbar-btn"><i
                         class="fa fa-shopping-cart"></i><span class="hidden-sm"
-                                                              id="numItemsInCart">0 items in cart</span></a>
+                                                              id="numItemsInCart">0</span></a>
             </div>
             <!--/.nav-collapse -->
 
@@ -218,7 +218,7 @@ _________________________________________________________ -->
                         $.getJSON('/catalogue/' + element.itemId, function (data) {
                             numItemsInCart = numItemsInCart + element.quantity;
                         }).always(function () {
-                            $('#numItemsInCart').text(numItemsInCart + ' item(s) in cart');
+                            $('#numItemsInCart').text(numItemsInCart);
                             $('#numItemsInCart').data('num', numItemsInCart);
                         });
                     }

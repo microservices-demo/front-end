@@ -55,9 +55,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <div class="col-md-12">
                 <ul class="breadcrumb">
-                    <li><a href="index.html">Home</a>
+                    <li><a href="index.html">ホーム</a>
                     </li>
-                    <li>Catalogue</li>
+                    <li>カタログ</li>
                 </ul>
             </div>
 
@@ -67,10 +67,10 @@ _________________________________________________________ -->
                 <div class="panel panel-default sidebar-menu">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title">Filters <a
+                        <h3 class="panel-title">フィルタ <a
                                 class="btn btn-xs btn-danger pull-right"
                                 href="#" onclick='resetTags()'><i class="fa fa-times-circle"></i>
-                            Clear</a></h3>
+                            フィルタをクリア</a></h3>
                     </div>
 
                     <div class="panel-body">
@@ -81,7 +81,7 @@ _________________________________________________________ -->
 
                             <a class="btn btn-default btn-sm btn-primary" href="#"
                                onclick='setNewTags($("input:checkbox:checked").map(function () {return this.value;}).get().join(","));'>
-                                <i class="fa fa-pencil"></i> Apply
+                                <i class="fa fa-pencil"></i> 絞り込む
                             </a>
 
                         </form>
@@ -108,12 +108,12 @@ _________________________________________________________ -->
                                     </div>
                                     <div class="col-md-6 col-sm-6">
                                         <div class="products-sort-by">
-                                            <strong>Sort by</strong>
+                                            <strong>並び順</strong>
                                             <select name="sort-by"
                                                     class="form-control">
-                                                <option>Price</option>
-                                                <option>Name</option>
-                                                <option>Sales first</option>
+                                                <option>金額</option>
+                                                <option>名前</option>
+                                                <option>納品期間</option>
                                             </select>
                                         </div>
                                     </div>

@@ -60,7 +60,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <ul class="breadcrumb">
                     <li><a href="index.html">Home</a>
                     </li>
-                    <li>Shopping cart</li>
+                    <li>カート</li>
                 </ul>
             </div>
 
@@ -69,24 +69,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="box">
 
                     <form action="customer-orders.html">
-                        <h1>Shopping cart</h1>
+                        <h1>カート</h1>
                         <p class="text-muted" id="numItemsInCart"></p>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th colspan="2">Product</th>
-                                    <th>Quantity</th>
-                                    <th>Unit price</th>
-                                    <th>Discount</th>
-                                    <th colspan="2">Total</th>
+                                    <th colspan="2">商品</th>
+                                    <th>数量</th>
+                                    <th>単価</th>
+                                    <th>値引き</th>
+                                    <th colspan="2">合計</th>
                                 </tr>
                                 </thead>
                                 <tbody id="cart-list">
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th colspan="5">Total</th>
+                                    <th colspan="5">合計</th>
                                     <th colspan="2" id="cartTotal"></th>
                                 </tr>
                                 </tfoot>
@@ -99,15 +99,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="box-footer">
                             <div class="pull-left">
                                 <a href="category.html" class="btn btn-default"><i
-                                        class="fa fa-chevron-left"></i> Continue
-                                    shopping</a>
+                                        class="fa fa-chevron-left"></i> 買い物を続ける</a>
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-default" onclick="updateCart()"><i
-                                        class="fa fa-refresh"></i> Update basket
+                                        class="fa fa-refresh"></i>カート更新
                                 </a>
                                 <button id="orderButton" type="submit" class="btn btn-primary" disabled>
-                                    Proceed to checkout <i class="fa fa-chevron-right"></i>
+                                    支払いに進む <i class="fa fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
@@ -122,9 +121,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="col-md-6">
                         <div class="box">
                             <div class="box-header">
-                                <h4 style="display: inline;">Shipping Address</h4>
+                                <h4 style="display: inline;">送り先</h4>
                                 <p id="add_shipping" style="display: inline; float: right;">
-                                    <a data-toggle="modal" data-target="#address-modal" href="#add">Add</a>
+                                    <a data-toggle="modal" data-target="#address-modal" href="#add">追加</a>
                                 </p>
                             </div>
                             <p id="address"></p>
@@ -134,33 +133,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal"
                                                     aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title" id="Login">Address</h4>
+                                            <h4 class="modal-title" id="Login">住所</h4>
                                         </div>
                                         <div class="modal-body">
                                             <form action="" id="form-address">
                                                 <div class="form-group">
-                                                    <label for="house-number">House Number</label>
-                                                    <input type="text" class="form-control" name="house-number" id="form-number" placeholder="Number">
+                                                    <label for="country">国</label>
+                                                    <input type="text" class="form-control" name="country" id="form-country" placeholder="Country">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="street">Street Name</label>
-                                                    <input type="text" class="form-control" name="street" id="form-street" placeholder="Street">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="city">City</label>
-                                                    <input type="text" class="form-control" name="city" id="form-city" placeholder="City">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="post-code">Post Code</label>
+                                                    <label for="post-code">郵便番号</label>
                                                     <input type="text" class="form-control" name="post-code" id="form-post-code" placeholder="Post Code">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="country">Country</label>
-                                                    <input type="text" class="form-control" name="country" id="form-country" placeholder="Country">
+                                                    <label for="city">市区町村</label>
+                                                    <input type="text" class="form-control" name="city" id="form-city" placeholder="City">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="street">住所</label>
+                                                    <input type="text" class="form-control" name="street" id="form-street" placeholder="Street">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="house-number">番地</label>
+                                                    <input type="text" class="form-control" name="house-number" id="form-number" placeholder="Number">
                                                 </div>
                                                     <p class="text-center">
                                                         <button class="btn btn-primary" href="#" onclick="return address()"><i
-                                                                class="fa fa-refresh"></i> Update
+                                                                class="fa fa-refresh"></i> 更新
                                                         </button>
                                                     </p>
                                             </form>
@@ -173,9 +172,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="col-md-6">
                         <div class="box">
                             <div class="box-header">
-                                <h4 style="display: inline;">Payment</h4>
+                                <h4 style="display: inline;">お支払い方法</h4>
                                 <p id="add_payment" style="display: inline; float: right;">
-                                    <a data-toggle="modal" data-target="#card-modal" href="#add">Add</a>
+                                    <a data-toggle="modal" data-target="#card-modal" href="#add">追加</a>
                                 </p>
                             </div>
                             <p id="number"></p>
@@ -185,26 +184,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal"
                                                     aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title" id="credit-card">Credit Card</h4>
+                                            <h4 class="modal-title" id="credit-card">クレジットカード</h4>
                                         </div>
                                         <div class="modal-body">
                                             <form action="" id="form-card">
                                                 <div class="form-group">
-                                                    <label for="card-number">Card Number</label>
+                                                    <label for="card-number">カード番号</label>
                                                     <input type="text" class="form-control" name="card-number" id="form-card-number" placeholder="Card Number">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="expires">Expires</label>
+                                                    <label for="expires">有効期限</label>
                                                     <input type="text" class="form-control" name="expires" id="form-expires" placeholder="MM/YY">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="ccv">CCV</label>
+                                                    <label for="ccv">セキュリティコード</label>
                                                     <input type="text" class="form-control" name="ccv" id="form-ccv" placeholder="CCV">
                                                 </div>
                                             </form>
                                             <p class="text-right">
                                                 <button class="btn btn-primary" href="#" onclick="return card()"><i
-                                                        class="fa fa-refresh"></i> Update
+                                                        class="fa fa-refresh"></i> 更新
                                                 </button>
                                             </p>
                                         </div>
@@ -218,7 +217,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="row same-height-row" id="youMayAlsoLike">
                     <div class="col-md-3 col-sm-6">
                         <div class="box same-height">
-                            <h3>You may also like these products</h3>
+                            <h3>こちらの商品も合わせていかがですか？</h3>
                         </div>
                     </div>
 
@@ -233,27 +232,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="box-header">
                         <h3>Order summary</h3>
                     </div>
-                    <p class="text-muted">Shipping and additional costs are
-                        calculated based on the values you have entered.</p>
+                    <p class="text-muted">送料及び追加費用は入力された値によって計算されます。</p>
 
                     <div class="table-responsive">
                         <table class="table">
                             <tbody>
                             <tr>
                                 <td>Order subtotal</td>
-                                <th id="orderSubtotal">$0.00</th>
+                                <th id="orderSubtotal">¥0.00</th>
                             </tr>
                             <tr>
                                 <td>Shipping and handling</td>
-                                <th id="orderShipping">$0.00</th>
+                                <th id="orderShipping">¥0.00</th>
                             </tr>
                             <tr>
                                 <td>Tax</td>
-                                <th id="orderTax">$0.00</th>
+                                <th id="orderTax">¥0.00</th>
                             </tr>
                             <tr class="total">
                                 <td>Total</td>
-                                <th id="orderGrandTotal">$0.00</th>
+                                <th id="orderGrandTotal">¥0.00</th>
                             </tr>
                             </tbody>
                         </table>
@@ -266,8 +264,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="box-header">
                         <h4>Coupon code</h4>
                     </div>
-                    <p class="text-muted">If you have a coupon code, please
-                        enter it in the box below.</p>
+                    <p class="text-muted">クーポンをご利用されるお客様はクーポンコードの入力をお願いします。</p>
                     <form>
                         <div class="input-group">
 
