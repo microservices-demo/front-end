@@ -1,4 +1,5 @@
 IMAGE=front-end
+DOCKER_IFLAG := $(if $(GITHUB_ACTIONS),"-i","-it")
 
 .PHONY: test coverage
 
@@ -46,7 +47,7 @@ test-image:
 test: test-image
 	@docker run              \
 		--rm                   \
-		-it                    \
+		$(DOCKER_IFLAG)                    \
 		-v $$PWD:/usr/src/app  \
 		$(IMAGE) /usr/local/bin/npm test
 
