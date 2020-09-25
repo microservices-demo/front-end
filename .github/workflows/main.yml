@@ -47,7 +47,6 @@ jobs:
     # Build docker image for service
     - name: Build docker image
       uses: docker/build-push-action@v1
-      if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master'
       with:
         push: false
         repository: ${{ env.GROUP }}/${{ env.REPO }}
@@ -59,7 +58,6 @@ jobs:
     #
     # Run simple test against built container
     - name: Test docker image
-      if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master'
       env:
         DOCKER_BUILDKIT: 1
       run: ./test/container.sh
