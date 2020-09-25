@@ -6,6 +6,11 @@ on:
     - "*"  # run for branches
     tags:
     - "*"  # run for tags
+  pull_request:
+    branches:
+    - "*"  # run for branches
+    tags:
+    - "*"  # run for tags
 
 jobs:
   test:
