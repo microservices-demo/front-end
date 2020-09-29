@@ -9,8 +9,16 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      PR_NUMBER: ${{ github.event.client_payload.pull_number }}
+      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_REPOSITORY }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag $DOCKERHUB_REPOSITORY/front-end:PR-$PR_NUMBER
+    - name: Docker Login
+      run: docker login -u ${{ env.DOCKERHUB_USERNAME }} -p ${{ env.DOCKERHUB_PASSWORD }}
+    - name: Push the Docker image
+      run: docker push $DOCKERHUB_REPOSITORY/front-end:PR-$PR_NUMBER
