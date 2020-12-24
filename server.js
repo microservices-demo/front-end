@@ -1,31 +1,32 @@
-var request      = require("request")
-  , express      = require("express")
-  , morgan       = require("morgan")
-  , path         = require("path")
-  , bodyParser   = require("body-parser")
-  , async        = require("async")
+const tracer = require('./tracer')("test-tracer");
+var request = require("request")
+  , express = require("express")
+  , morgan = require("morgan")
+  , path = require("path")
+  , bodyParser = require("body-parser")
+  , async = require("async")
   , cookieParser = require("cookie-parser")
-  , session      = require("express-session")
-  , config       = require("./config")
-  , helpers      = require("./helpers")
-  , cart         = require("./api/cart")
-  , catalogue    = require("./api/catalogue")
-  , orders       = require("./api/orders")
-  , user         = require("./api/user")
-  , metrics      = require("./api/metrics")
-  , app          = express()
+  , session = require("express-session")
+  , config = require("./config")
+  , helpers = require("./helpers")
+  , cart = require("./api/cart")
+  , catalogue = require("./api/catalogue")
+  , orders = require("./api/orders")
+  , user = require("./api/user")
+  , metrics = require("./api/metrics")
+  , app = express()
 
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);
 app.use(express.static("public"));
-if(process.env.SESSION_REDIS) {
-    console.log('Using the redis based session manager');
-    app.use(session(config.session_redis));
+if (process.env.SESSION_REDIS) {
+  console.log('Using the redis based session manager');
+  app.use(session(config.session_redis));
 }
 else {
-    console.log('Using local session manager');
-    app.use(session(config.session));
+  console.log('Using local session manager');
+  app.use(session(config.session));
 }
 
 app.use(bodyParser.json());
