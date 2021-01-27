@@ -27,7 +27,7 @@
     "request": "^2.72.0",
     "serve-static": "^1.10.2",
     "prom-client": "^6.3.0",
-    "morgan": "^1.7.0",
+    "morgan": "^1.9.1",
     "connect-redis": "^3.2.0"
   },
   "devDependencies": {
