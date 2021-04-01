@@ -32,7 +32,7 @@ jobs:
     #
     #
     # Install dependencies
-    - run: npm ci
+    - run: npm install
 
     #
     #
