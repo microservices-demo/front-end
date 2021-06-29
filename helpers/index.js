@@ -76,8 +76,10 @@
    * });
    */
   helpers.simpleHttpRequest = function(url, res, next) {
+    console.log(`[Debug] Request : ${url}`);
     request.get(url, function(error, response, body) {
       if (error) return next(error);
+      console.log(body);
       helpers.respondSuccessBody(res, body);
     }.bind({res: res}));
   }

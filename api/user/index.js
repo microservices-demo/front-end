@@ -6,6 +6,7 @@
     app.locals.newrelic = newrelic;
 
     app.get("/customers/:id", function(req, res, next) {
+        console.log(`[Debug] customer id: ${endpoints.customersUrl + "/" + req.session.customerId}`);
         helpers.simpleHttpRequest(endpoints.customersUrl + "/" + req.session.customerId, res, next);
     });
     app.get("/cards/:id", function(req, res, next) {

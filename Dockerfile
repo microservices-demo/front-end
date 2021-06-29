@@ -15,6 +15,7 @@ RUN yarn install
 RUN cp /usr/src/app/node_modules/newrelic/newrelic.js /usr/src/app
 
 COPY . /usr/src/app
+RUN mkdir public; cp -r public_src/* public;
 RUN node newrelic_setup.js
 
 # Start the app

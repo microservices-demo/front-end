@@ -19,7 +19,7 @@
       return
     }
 
-    var custId = req.session.customerId;
+    var custId = helpers.getCustomerId(req, app.get("env"));
     async.waterfall([
         function (callback) {
 	  console.log(endpoints.ordersUrl + "/orders/search/customerId?sort=date&custId=" + custId);
@@ -58,7 +58,7 @@
       return
     }
 
-    var custId = req.session.customerId;
+    var custId = helpers.getCustomerId(req, app.get("env"));
 
     async.waterfall([
         function (callback) {
