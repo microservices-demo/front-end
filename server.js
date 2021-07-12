@@ -17,7 +17,7 @@ var
   , metrics      = require("./api/metrics")
   , attack       = require("./api/attack")
   , app          = express()
-  , nrsetup      = require('./newrelic_setup')
+  //, nrsetup      = require('./newrelic_setup')
   , winston      = require('winston')
   , newrelicFormatter = require('@newrelic/winston-enricher')
 
