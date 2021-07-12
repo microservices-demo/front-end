@@ -9,13 +9,15 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 COPY yarn.lock /usr/src/app/
 RUN chown myuser /usr/src/app/yarn.lock
+RUN mkdir /var/log/front
+RUN chown myuser /var/log/front
 
 USER myuser
 RUN yarn install
 RUN cp /usr/src/app/node_modules/newrelic/newrelic.js /usr/src/app
 
 COPY . /usr/src/app
-RUN mkdir public; cp -r public_src/* public;
+RUN mkdir public; cp -r public_src/* public
 RUN node newrelic_setup.js
 
 # Start the app
