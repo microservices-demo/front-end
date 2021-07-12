@@ -11,10 +11,9 @@
       resave: false,
       saveUninitialized: true
     },
-
     session_redis: {
-      store: new RedisStore({host: "microservice-cache.vxwa1j.ng.0001.apne1.cache.amazonaws.com"}),
-      name: 'microservice-cache',
+      store: new RedisStore({host: "session-db"}),
+      name: 'md.sid',
       secret: 'sooper secret',
       resave: false,
       saveUninitialized: true
