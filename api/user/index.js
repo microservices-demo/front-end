@@ -6,7 +6,7 @@
     app.locals.newrelic = newrelic;
 
     app.get("/customers/:id", function(req, res, next) {
-        console.log(`[Debug] customer id: ${endpoints.customersUrl + "/" + req.session.customerId}`);
+        req.session && console.log(`[Debug] customer id: ${endpoints.customersUrl + "/" + req.session.customerId}`);
         helpers.simpleHttpRequest(endpoints.customersUrl + "/" + req.session.customerId, res, next);
     });
     app.get("/cards/:id", function(req, res, next) {
@@ -271,6 +271,7 @@
                             console.log(body);
                             var customerId = JSON.parse(body).user.id;
                             console.log(customerId);
+                            req.session = req.session || {};
                             req.session.customerId = customerId;
                             callback(null, customerId);
                             return;
