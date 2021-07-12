@@ -204,6 +204,7 @@
                             console.log(body);
                             var customerId = body.id;
                             console.log(customerId);
+                            req.session = req.session || {};
                             req.session.customerId = customerId;
                             callback(null, customerId);
                             return;
