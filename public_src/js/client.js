@@ -6,6 +6,7 @@ function login() {
         type: "GET",
         async: false,
         success: function (data, textStatus, jqXHR) {
+            newrelic.setCustomAttribute("userid", $.cookie('logged_in'));
             $("#login-message").html('<div class="alert alert-success">Login successful.</div>');
             console.log('posted: ' + textStatus);
             console.log("logged_in cookie: " + $.cookie('logged_in'));
@@ -92,11 +93,13 @@ function order() {
     }
 
     var success = false;
+    orderGrandTotal
     $.ajax({
         url: "orders",
         type: "POST",
         async: false,
         success: function (data, textStatus, jqXHR) {
+            newrelic.addPageAction("order", { userid: $.cookie('logged_in'), total: Math.round(parseFloat($("#orderGrandTotal").text().substr(1)) * 110), });
             if (jqXHR.status == 201) {
                 console.log("Order placed.");
                 $("#user-message").html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Order placed.</div>');
@@ -133,6 +136,9 @@ function deleteCart() {
 
 function addToCart(id) {
     console.log("Sending request to add to cart: " + id);
+    newrelic.addPageAction("addToCart", {
+      itemId: id
+    });
     $.ajax({
         url: "cart",
         type: "POST",
@@ -150,8 +156,10 @@ function addToCart(id) {
 // function update To Cart(itemId, quantity, callback)
 // cart/update request sent to frontend server (index.js - app.post("/cart/update" function...)
 function updateToCart(id, quantity, next) {
-
-	console.log("Sending request to update cart: item: " + id + " quantity: " + quantity);
+    console.log("Sending request to update cart: item: " + id + " quantity: " + quantity);
+    newrelic.addPageAction("updateCart", {
+      itemId: id, quantity: quantity
+    });
     $.ajax({
         url: "cart/update",
         type: "POST",
@@ -174,6 +182,10 @@ function username(id, callback) {
         type: "GET",
         success: function (data, textStatus, jqXHR) {
             json = JSON.parse(data);
+            newrelic.setCustomAttribute("username", json.firstName);
+            newrelic.setCustomAttribute("company", json.lastName);
+            newrelic.setCustomAttribute("grade", parseInt(json.username.substr(-2))%13 < 3 ? 'Prime' : 'Free');
+
             if (json.status_code !== 500) {
                 callback(json.firstName + " " + json.lastName);
             } else {
