@@ -27,9 +27,12 @@ app.locals.newrelic = newrelic;
 app.use(helpers.rewriteSlash);
 app.use(metrics);
 app.use(function (req, res, next) {
-    var filename = path.basename(req.url);
-    logger.info("Access log: " + filename);
-    next();
+    var wait = Math.floor(Math.random()*5) === 0 ? 3 : 0;
+    setTimeout(()=>{
+      var filename = path.basename(req.url);
+      logger.info("Access log: " + filename);
+      next();
+    }, wait);
 });
 app.use(express.static("public"));
 if(process.env.SESSION_REDIS) {
