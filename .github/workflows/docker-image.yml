@@ -52,6 +52,7 @@ jobs:
       - name: Notify an update of new image version
         uses: peter-evans/repository-dispatch@v1
         with:
+          repository: fgauna12/gitops-workshop
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: updated-image
           client-payload: '{ "repository": "${{ env.REGISTRY }}", "image": "${{ env.IMAGE_NAME }}", "tag": "${{ steps.meta.outputs.tags }}" }'
