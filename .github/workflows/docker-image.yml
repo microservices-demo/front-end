@@ -48,3 +48,11 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      
+      - name: Notify an update of new image version
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          event-type: updated-image
+          client-payload: '{"repository": "${{ env.REGISTRY }}", "image": "${{ env.IMAGE_NAME }}"}, "tag": "${{ github.sha }}"}'
+
