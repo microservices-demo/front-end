@@ -55,5 +55,5 @@ jobs:
           repository: fgauna12/gitops-workshop
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: updated-image
-          client-payload: '{ "repository": "${{ env.REGISTRY }}", "image": "${{ env.IMAGE_NAME }}", "tag": "${{ steps.meta.outputs.tags }}" }'
+          client-payload: '{ "full_image_tag": "${{ steps.meta.outputs.tags }}" }'
 
