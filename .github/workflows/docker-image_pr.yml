@@ -48,12 +48,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       
-      - name: 'Comment PR'
-        uses: actions/github-script@0.3.0
-        if: github.event_name == 'pull_request'
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-            github.issues.createComment({ issue_number, owner, repo, body: 'Hello world ! 👋' });
+          message: 'Example of message !'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
