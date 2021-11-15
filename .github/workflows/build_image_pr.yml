@@ -1,19 +1,14 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Create and publish a Docker image
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [opened, edited]
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  MANIFESTS_REPO: 'socks-shop-k8s'
 
 jobs:
   build-and-push-image:
@@ -49,11 +44,23 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: 'New container published to $${{ steps.meta.outputs.tags }} '
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Notify an update of new image version
         uses: peter-evans/repository-dispatch@v1
         with:
-          repository: fgauna12/gitops-workshop
+          repository: fgauna12/previews
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          event-type: updated-image
-          client-payload: '{ "full_image_tag": "${{ steps.meta.outputs.tags }}" }'
+          event-type: on-preview-needed
+          client-payload: >- 
+            {
+                "manifests_repo": "${{ env.MANIFESTS_REPO }}",
+                "pull_request_id": "${{ github.event.number }}",
+                "full_image_tag": "${{ steps.meta.outputs.tags }}"
+            }
+
 
