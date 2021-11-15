@@ -62,10 +62,10 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: on-preview-needed
           client-payload: >- 
-            '{
+            {
                 "manifests_repo": "${{ env.MANIFESTS_REPO }}",
                 "pull_request_id": "${{ github.event.number }}",
                 "full_image_tag": "${{ steps.meta.outputs.tags }}"
-            }'
+            }
 
 
