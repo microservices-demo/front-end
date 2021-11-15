@@ -1,0 +1,23 @@
+name: Close Pull Request
+
+# only trigger on pull request closed events
+on:
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  close-preview-environment:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Notify when a pull-request is closed and preview environment is not needed
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          repository: fgauna12/previews
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          event-type: on-preview-closed
+          client-payload: >- 
+            {
+                "manifests_repo": "${{ env.MANIFESTS_REPO }}",
+                "pull_request_id": "${{ github.event.number }}"
+            }
