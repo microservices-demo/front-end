@@ -5,6 +5,9 @@ on:
   pull_request:
     types: [ closed ]
 
+env: 
+  MANIFESTS_REPO: 'socks-shop-k8s'
+
 jobs:
   close-preview-environment:
     runs-on: ubuntu-latest
