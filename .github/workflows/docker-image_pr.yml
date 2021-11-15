@@ -13,6 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  MANIFESTS_REPO: 'socks-shop-k8s'
 
 jobs:
   build-and-push-image:
@@ -53,4 +54,18 @@ jobs:
         with:
           message: 'New container published to $${{ steps.meta.outputs.tags }} '
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Notify an update of new image version
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          repository: fgauna12/previews
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          event-type: on-preview-needed
+          client-payload: >- 
+            '{
+                "manifests_repo": "${{ env.MANIFESTS_REPO }}",
+                "pull_request_id": "${{ github.event.number }}",
+                "full_image_tag": "${{ steps.meta.outputs.tags }}"
+            }'
+
 
