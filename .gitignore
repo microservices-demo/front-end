@@ -5,3 +5,7 @@
 /coverage
 
 .idea
+
+.env
+
+newrelic_agent.log
