@@ -109,11 +109,7 @@
 // Update cart item
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
-    
-    if (parseInt(req.body.quantity) > 10) {
-      throw new Error("10 items is too much");
-    }
-    
+
     if (req.body.id == null) {
       next(new Error("Must pass id of item to update"), 400);
       return;

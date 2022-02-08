@@ -6,6 +6,6 @@
 
 .idea
 
-.env
+.DS_Store
 
 newrelic_agent.log
