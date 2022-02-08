@@ -110,7 +110,7 @@
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
     
-    if (req.body.quantity > 10) {
+    if (parseInt(req.body.quantity) > 10) {
       throw new Error("10 items is too much");
     }
     
