@@ -1,4 +1,3 @@
-require('dotenv').config();
 require('newrelic');
 
 var request = require("request")
