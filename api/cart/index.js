@@ -114,6 +114,11 @@
       next(new Error("Must pass id of item to update"), 400);
       return;
     }
+
+    if (parseInt(req.body.quantity) > 10) {
+      throw new Error("You can't purchase more than 10 items at a time");
+    }
+
     if (req.body.quantity == null) {
       next(new Error("Must pass quantity to update"), 400);
       return;
