@@ -115,9 +115,7 @@
       return;
     }
 
-    if (parseInt(req.body.quantity) > 10) {
-      throw new Error("You can't purchase more than 10 items at a time");
-    }
+    // making some changes here
 
     if (req.body.quantity == null) {
       next(new Error("Must pass quantity to update"), 400);
