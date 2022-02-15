@@ -119,6 +119,11 @@
       next(new Error("Must pass quantity to update"), 400);
       return;
     }
+
+    if (parseInt(req.body.quantity) > 10) {
+      throw new Error("Quantity more than 10 is not accepted")
+    }
+
     var custId = helpers.getCustomerId(req, app.get("env"));
 
     async.waterfall([
