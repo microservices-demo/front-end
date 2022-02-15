@@ -115,10 +115,6 @@
       return;
     }
 
-    if (parseInt(req.body.quantity) > 10) {
-      throw new Error("You can't add more than 10 items to cart at the moment, please try again");
-    }
-
     if (req.body.quantity == null) {
       next(new Error("Must pass quantity to update"), 400);
       return;
