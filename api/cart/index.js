@@ -119,10 +119,6 @@
       next(new Error("Must pass quantity to update"), 400);
       return;
     }
-    
-    if (parseInt(req.body.quantity) > 100) {
-      throw new Error("Qantity cannot be greater than 100");
-    }
 
     var custId = helpers.getCustomerId(req, app.get("env"));
 

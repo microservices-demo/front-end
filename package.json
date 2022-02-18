@@ -18,6 +18,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@newrelic/winston-enricher": "^2.1.0",
     "async": "^1.5.2",
     "body-parser": "^1.15.1",
     "connect-redis": "^3.2.0",

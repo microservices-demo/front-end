@@ -17,6 +17,12 @@ var request = require("request")
   , metrics = require("./api/metrics")
   , app = express()
 
+// index.js
+require('newrelic')
+const newrelicFormatter = require('@newrelic/winston-enricher')
+
+const { logger } = helpers;
+global.console.log = (...args) => logger.info.call(logger, ...args);
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);

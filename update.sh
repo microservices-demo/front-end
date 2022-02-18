@@ -1,5 +1,5 @@
 COMMIT_SHA=$(git log -1 --format="%H")
-IMAGENAME=nvhoanganh1909/sock-shop-frontend:noerror
+IMAGENAME=nvhoanganh1909/sock-shop-frontend:winstonlogger
 
 echo "Updating front-end to use image $IMAGENAME with GIT SHA $COMMIT_SHA"
 
