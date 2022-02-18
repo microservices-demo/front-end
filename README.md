@@ -5,7 +5,7 @@
 
 Front-end app
 ---
-Front-end application written in [Node.js](https://nodejs.org/en/) that puts together all of the microservices under [microservices-demo](https://github.com/microservices-demo/microservices-demo).
+Front-end application written in [Node.js](https://nodejs.org/en/) that puts together all of the microservices under [microservices-demo](https://github.com/microservices-demo/microservices-demo)
 
 # Build
 
@@ -96,3 +96,7 @@ make e2e
 # Push
 
 `GROUP=weaveworksdemos COMMIT=test ./scripts/push.sh`
+
+this is new changes
+
+some changes
