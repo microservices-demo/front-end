@@ -18,10 +18,8 @@ var request = require("request")
   , app = express()
 
 // index.js
-require('newrelic')
-const newrelicFormatter = require('@newrelic/winston-enricher')
-
 const { logger } = helpers;
+// overrwrite global console.log object
 global.console.log = (...args) => logger.info.call(logger, ...args);
 
 app.use(helpers.rewriteSlash);
