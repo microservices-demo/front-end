@@ -36,6 +36,8 @@ Front-end application written in [Node.js](https://nodejs.org/en/) that puts tog
 
 ## Node
 
+`npm install`
+
 ## Docker
 
 `make test-image`
@@ -53,8 +55,6 @@ Front-end application written in [Node.js](https://nodejs.org/en/) that puts tog
 ```
 make test
 ```
-
-`npm install`
 
 ## End-to-End tests:
   
