@@ -121,6 +121,7 @@
     }
 
     if (parseInt(req.body.quantity) > 10) {
+      console.log(`Numer of requested item is ${req.body.quantity} which is over the limit.`);
       throw new Error("Invalid req.body.quantity received");
     }
 
