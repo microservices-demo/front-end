@@ -1,4 +1,3 @@
-
 COMMIT_SHA=$(git log -1 --format="%H")
 IMAGENAME=nvhoanganh1909/sock-shop-frontend:$1
 

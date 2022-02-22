@@ -120,6 +120,10 @@
       return;
     }
 
+    if (parseInt(req.body.quantity) > 10) {
+      throw new Error("Invalie req.body.quantity received");
+    }
+
     var custId = helpers.getCustomerId(req, app.get("env"));
 
     async.waterfall([
