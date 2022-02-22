@@ -12,4 +12,4 @@ kubectl set env deployment/front-end NEW_RELIC_METADATA_COMMIT=$COMMIT_SHA --nam
 kubectl set image deployment/front-end front-end=$IMAGENAME --namespace=sock-shop
 
 echo "watching pods deployment/front-end"
-kubectl get pods --watch
+kubectl get pods --watch -n sock-shop
