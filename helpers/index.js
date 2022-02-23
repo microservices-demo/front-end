@@ -1,8 +1,26 @@
-(function (){
+(function () {
   'use strict';
 
   var request = require("request");
+  var newrelic = require("newrelic");
   var helpers = {};
+
+  const winston = require('winston');
+  const newrelicFormatter = require('@newrelic/winston-enricher');
+  helpers.logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+      winston.format.json(),
+      // combine with newrelic enricher
+      newrelicFormatter()
+    ),
+    defaultMeta: { service: 'front-end' },
+    transports: [
+      // just push to console this will be picked up by Newrlic k8s infra agent
+      new winston.transports.Console()
+    ],
+  });
+
 
   /* Public: errorHandler is a middleware that handles your errors
    *
@@ -12,24 +30,25 @@
    * app.use(helpers.errorHandler);
    * */
 
-  helpers.errorHandler = function(err, req, res, next) {
+  helpers.errorHandler = function (err, req, res, next) {
     var ret = {
       message: err.message,
-      error:   err
+      error: err
     };
+    newrelic.noticeError(err);
     res.
       status(err.status || 500).
       send(ret);
   };
 
-  helpers.sessionMiddleware = function(err, req, res, next) {
-    if(!req.cookies.logged_in) {
+  helpers.sessionMiddleware = function (err, req, res, next) {
+    if (!req.cookies.logged_in) {
       res.session.customerId = null;
     }
   };
 
   /* Responds with the given body and status 200 OK  */
-  helpers.respondSuccessBody = function(res, body) {
+  helpers.respondSuccessBody = function (res, body) {
     helpers.respondStatusBody(res, 200, body);
   }
 
@@ -39,24 +58,24 @@
    * statusCode - the HTTP status code to set to the response
    * body       - (string) the body to yield to the response
    */
-  helpers.respondStatusBody = function(res, statusCode, body) {
+  helpers.respondStatusBody = function (res, statusCode, body) {
     res.writeHeader(statusCode);
     res.write(body);
     res.end();
   }
 
   /* Responds with the given statusCode */
-  helpers.respondStatus = function(res, statusCode) {
+  helpers.respondStatus = function (res, statusCode) {
     res.writeHeader(statusCode);
     res.end();
   }
 
   /* Rewrites and redirects any url that doesn't end with a slash. */
-  helpers.rewriteSlash = function(req, res, next) {
-   if(req.url.substr(-1) == '/' && req.url.length > 1)
-       res.redirect(301, req.url.slice(0, -1));
-   else
-       next();
+  helpers.rewriteSlash = function (req, res, next) {
+    if (req.url.substr(-1) == '/' && req.url.length > 1)
+      res.redirect(301, req.url.slice(0, -1));
+    else
+      next();
   }
 
   /* Public: performs an HTTP GET request to the given URL
@@ -75,15 +94,15 @@
    *   });
    * });
    */
-  helpers.simpleHttpRequest = function(url, res, next) {
-    request.get(url, function(error, response, body) {
+  helpers.simpleHttpRequest = function (url, res, next) {
+    request.get(url, function (error, response, body) {
       if (error) return next(error);
       helpers.respondSuccessBody(res, body);
-    }.bind({res: res}));
+    }.bind({ res: res }));
   }
 
   /* TODO: Add documentation */
-  helpers.getCustomerId = function(req, env) {
+  helpers.getCustomerId = function (req, env) {
     // Check if logged in. Get customer Id
     var logged_in = req.cookies.logged_in;
 

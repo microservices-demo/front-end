@@ -109,15 +109,17 @@
 // Update cart item
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
-    
+
     if (req.body.id == null) {
       next(new Error("Must pass id of item to update"), 400);
       return;
     }
+
     if (req.body.quantity == null) {
       next(new Error("Must pass quantity to update"), 400);
       return;
     }
+
     var custId = helpers.getCustomerId(req, app.get("env"));
 
     async.waterfall([
