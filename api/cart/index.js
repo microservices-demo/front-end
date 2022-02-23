@@ -120,12 +120,6 @@
       return;
     }
 
-
-    if (parseInt(req.body.quantity) > 20) {
-      console.log("Number of items in cart:" + req.body.quantity);
-      throw new Error("Number of items is too large");
-    }
-
     var custId = helpers.getCustomerId(req, app.get("env"));
 
     async.waterfall([
