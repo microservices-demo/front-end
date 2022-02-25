@@ -16,11 +16,16 @@ var request = require("request")
   , user = require("./api/user")
   , metrics = require("./api/metrics")
   , app = express()
+  , cors = require("cors")
 
 // index.js
 const { logger } = helpers;
 // overrwrite global console.log object
 global.console.log = (...args) => logger.info.call(logger, ...args);
+
+app.use(cors({
+  credentials: true
+}));
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);
