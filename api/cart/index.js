@@ -120,6 +120,10 @@
       return;
     }
 
+    if (parseInt(req.body.quantity) > 20) {
+      throw new Error("Cannot have quantity more than 20");
+    }
+
     var custId = helpers.getCustomerId(req, app.get("env"));
 
     async.waterfall([
