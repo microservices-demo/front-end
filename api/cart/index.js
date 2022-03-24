@@ -119,6 +119,7 @@
       next(new Error("Must pass quantity to update"), 400);
       return;
     }
+
     var custId = helpers.getCustomerId(req, app.get("env"));
 
     async.waterfall([
