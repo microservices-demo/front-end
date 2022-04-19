@@ -5,9 +5,9 @@ Class: PRO690
 
 Final Exam Demo
 
-Text Added: ["HELLO WORLD"]
+Text Added: ["HELLO HELLO"]
 
-Number of changes: 1
+Number of changes: 2
 
 ---------------------------------------
 [![Build Status](https://travis-ci.org/microservices-demo/front-end.svg?branch=master)](https://travis-ci.org/microservices-demo/front-end)
