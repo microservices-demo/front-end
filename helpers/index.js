@@ -2,6 +2,7 @@
   'use strict';
 
   var request = require("request");
+  var newrelic = require("newrelic");
   var helpers = {};
 
   /* Public: errorHandler is a middleware that handles your errors
@@ -17,6 +18,7 @@
       message: err.message,
       error:   err
     };
+    newrelic.noticeError(err);
     res.
       status(err.status || 500).
       send(ret);
