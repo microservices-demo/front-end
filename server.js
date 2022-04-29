@@ -20,7 +20,7 @@ var request = require("request")
 
 // index.js
 const { logger } = helpers;
-// overrwrite global console.log object
+// overrwrite global console.log object so that Logs in Context works
 global.console.log = (...args) => logger.info.call(logger, ...args);
 
 app.use(cors({
