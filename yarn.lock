@@ -152,11 +152,6 @@
   "resolved" "https://registry.npmjs.org/buffer-shims/-/buffer-shims-1.0.0.tgz"
   "version" "1.0.0"
 
-"bytes@~0.2.0":
-  "integrity" "sha512-odbk8/wGazOuC1v8v4phoV285/yx8UN5kfQhhuxaVcceig4OUiCZQBtaEtmA1Q78QSTN9iXOQ7X2EViybrEvtQ=="
-  "resolved" "https://registry.npmjs.org/bytes/-/bytes-0.2.1.tgz"
-  "version" "0.2.1"
-
 "bytes@2.4.0":
   "integrity" "sha512-SvUX8+c/Ga454a4fprIdIUzUN9xfd1YTvYh7ub5ZPJ+ZJ/+K2Bp6IpWGmnw8r3caLTsmhvJAKZz3qjIo9+XuCQ=="
   "resolved" "https://registry.npmjs.org/bytes/-/bytes-2.4.0.tgz"
@@ -988,13 +983,6 @@
     "es6-promise" "3.2.1"
     "mongodb-core" "2.1.2"
     "readable-stream" "2.1.5"
-
-"morgan@1.0.0":
-  "integrity" "sha512-k9QzPEjwMIi8fKmY5LB3sQNk3J7yo7ERjxDrE6Aj2o6Wg/o/ZFU+zw5WNxz5X0jH6cWUzMY37bFMvvWEXanjeA=="
-  "resolved" "https://registry.npmjs.org/morgan/-/morgan-1.0.0.tgz"
-  "version" "1.0.0"
-  dependencies:
-    "bytes" "~0.2.0"
 
 "ms@^2.1.1":
   "integrity" "sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w=="
