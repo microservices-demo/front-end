@@ -21,6 +21,7 @@ var request = require("request")
 // index.js
 const { logger } = helpers;
 // overrwrite global console.log object
+// add some comment
 global.console.log = (...args) => logger.info.call(logger, ...args);
 
 app.use(cors({
