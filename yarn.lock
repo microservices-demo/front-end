@@ -127,14 +127,14 @@ buffer-shims@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
 
+bytes@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/bytes/-/bytes-1.0.0.tgz#3569ede8ba34315fab99c3e92cb04c7220de1fa8"
+  integrity sha512-/x68VkHLeTl3/Ll8IvxdwzhrT+IyKc52e/oyHhA2RwqPqswSnjVbSddfPRwAsJtbilMAPSRWwAlpxdYsSWOTKQ==
+
 bytes@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-2.4.0.tgz#7d97196f9d5baf7f6935e25985549edd2a6c2339"
-
-bytes@~0.2.0:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/bytes/-/bytes-0.2.1.tgz#555b08abcb063f8975905302523e4cd4ffdfdf31"
-  integrity sha512-odbk8/wGazOuC1v8v4phoV285/yx8UN5kfQhhuxaVcceig4OUiCZQBtaEtmA1Q78QSTN9iXOQ7X2EViybrEvtQ==
 
 caseless@~0.11.0:
   version "0.11.0"
@@ -843,12 +843,12 @@ mongodb@^2.2.5:
     mongodb-core "2.1.2"
     readable-stream "2.1.5"
 
-morgan@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.0.0.tgz#83cf74b9f2d841901f1a9a6b8fa7a468d2e47a8d"
-  integrity sha512-k9QzPEjwMIi8fKmY5LB3sQNk3J7yo7ERjxDrE6Aj2o6Wg/o/ZFU+zw5WNxz5X0jH6cWUzMY37bFMvvWEXanjeA==
+morgan@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.1.0.tgz#621a67a51c8eac09348d90f23bb7e4bb9c2c5ef6"
+  integrity sha512-p2OGkhJvQMtGk0MaQ6ODUEgocxiQF2ALfrYycpFa/85kfze/W6k7kqNVkoVRdyIbpRtISu0fwegkR51fByH3sw==
   dependencies:
-    bytes "~0.2.0"
+    bytes "1.0.0"
 
 ms@0.7.1:
   version "0.7.1"
