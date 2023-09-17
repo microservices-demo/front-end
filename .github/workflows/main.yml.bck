@@ -14,12 +14,11 @@ on:
 
 jobs:
   test:
-    # if: ${{ false }}  # disable for now
     runs-on: ubuntu-latest
     env:
-      GROUP: uoyak 
+      GROUP: weaveworksdemos 
       COMMIT: ${{ github.sha }}
-      REPO: dtst-sockshop-front-end
+      REPO: front-end
     steps:
     - uses: actions/checkout@v2
 
