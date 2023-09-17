@@ -17,7 +17,7 @@ else
 fi
 
 PASS=1
-REPO=${GROUP}/$(basename front-end);
+REPO=${GROUP}/$(basename dtst-sockshop-front-end);
 
 CID=$($DOCKER_CMD run -d --name testcontainer -p 8080:8079 ${REPO}:${COMMIT})
 

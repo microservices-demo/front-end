@@ -1,4 +1,4 @@
-IMAGE=front-end
+IMAGE=dtst-sockshop-front-end
 DOCKER_IFLAG := $(if $(GITHUB_ACTIONS),"-i","-it")
 
 .PHONY: test coverage
