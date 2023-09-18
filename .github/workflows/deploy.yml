@@ -1,0 +1,38 @@
+name: trigger-deploy
+on:
+  workflow_dispatch:
+     inputs:
+      workflow_02:
+        description: 'ًWorkflow 2 which will be triggered'
+        required: true
+        default: 'deploy'
+
+      workflow2_github_account:
+        description: 'GitHub Account Owner'
+        required: true
+        default: ':Uoyak'
+
+      workflow2_repo_github:
+        description: 'repo-name'
+        required: true
+        default: ':dtst-sockshop' 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test
+        # run: |
+        #   curl -X POST https://api.github.com/repos/Uoyak/dtst-sockshop/dispatches \
+        #   -H 'Accept: application/vnd.github.everest-preview+json' \
+        #   -u ${{ secrets.ACTIONS_KEY }} \
+        #   --data '{"event_type": "Trigger Workflow", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+        run: |
+          curl -X POST https://api.github.com/repos/Uoyak/dtst-sockshop/actions/workflows/deploy.yaml/dispatches \
+          -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Content-Type: application/json" \
+          --data '{"ref": "master"}'
+      - uses: actions/checkout@v3
+
