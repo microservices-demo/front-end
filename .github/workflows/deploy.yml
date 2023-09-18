@@ -40,5 +40,5 @@ jobs:
           -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Content-Type: application/json" \
           --data '{"ref": "master"}'
-      - uses: actions/checkout@v3
+      # - uses: actions/checkout@v3
 
