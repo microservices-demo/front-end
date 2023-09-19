@@ -39,25 +39,21 @@ jobs:
       env:
         DOCKER_BUILDKIT: 1
       run: ./test/container.sh
-    
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USER }}
-        password: ${{ secrets.DOCKER_PASS }}
 
     - name: Set image tag
       id: set-tag
       run: |
         echo ${{ github.sha }}
         ls -l
-        id=$(echo sha-${{ github.sha }} | cut -c 1-11)
+        id=$(echo ${{ github.sha }} | cut -c 1-11)
         echo "id=$id" >> $GITHUB_OUTPUT
 
     - name: Push to Docker Hub
       uses: docker/build-push-action@v2
       # if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master'
       with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
         push: true
         tags: ${{ env.GROUP }}/${{ env.REPO }}:${{ steps.set-tag.outputs.id }}
         # repository: ${{ env.GROUP }}/${{ env.REPO }}
