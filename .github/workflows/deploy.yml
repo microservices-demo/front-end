@@ -11,7 +11,7 @@ on:
         - prod
       sha:
         description: "Enter Sha"
-        default: ${{ github.sha }}
+        default: "sha-ae479a0"
 
 
       # workflow_02:
