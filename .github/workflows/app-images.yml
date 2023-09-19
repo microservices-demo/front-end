@@ -48,10 +48,9 @@ jobs:
 
     - name: Set image tag
       run: |
-        echo ${{ github.event.env }}
-        echo ${{ github.event.inputs.sha }}
+        echo ${{ github.sha }}
         ls -l
-        id=$(echo ${{ github.event.inputs.sha }} | cut -c 1-11)
+        id=$(echo ${{ github.sha }} | cut -c 1-11)
         echo "id=$id" >> $GITHUB_OUTPUT
 
     - name: Push to Docker Hub
