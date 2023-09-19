@@ -47,20 +47,19 @@ jobs:
         password: ${{ secrets.DOCKER_PASS }}
 
     - name: Set image tag
+      id: set-tag
       run: |
         echo ${{ github.sha }}
         ls -l
-        id=$(echo ${{ github.sha }} | cut -c 1-11)
+        id=$(echo sha-${{ github.sha }} | cut -c 1-11)
         echo "id=$id" >> $GITHUB_OUTPUT
 
     - name: Push to Docker Hub
-      uses: docker/build-push-action@v1
+      uses: docker/build-push-action@v2
       # if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master'
       with:
         push: true
-        tags: ${{ env.GROUP }}/${{ env.REPO }}:${{ steps.get-id.outputs.id }}
+        tags: ${{ env.GROUP }}/${{ env.REPO }}:${{ steps.set-tag.outputs.id }}
         # repository: ${{ env.GROUP }}/${{ env.REPO }}
         # tag_with_ref: true
         # tag_with_sha: true
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
