@@ -54,6 +54,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USER }}
         password: ${{ secrets.DOCKER_PASS }}
+        repository: ${{ env.GROUP }}/${{ env.REPO }}
         push: true
         tags: ${{ env.GROUP }}/${{ env.REPO }}:${{ steps.set-tag.outputs.id }}
         # repository: ${{ env.GROUP }}/${{ env.REPO }}
