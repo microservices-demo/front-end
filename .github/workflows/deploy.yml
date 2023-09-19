@@ -39,6 +39,6 @@ jobs:
           -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
           -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Content-Type: application/json" \
-          --data '{"ref": "master", "client_payload": { "sha": "${{ github.sha }}" }}'
+          --data '{"ref": "master", "inputs": { "sha": "${{ github.sha }}" }}'
       # - uses: actions/checkout@v3
 
