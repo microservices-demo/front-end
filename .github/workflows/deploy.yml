@@ -2,12 +2,17 @@ name: trigger-deploy
 on:
   workflow_dispatch:
     inputs:
-      namespaces:
+      environnement:
         type: choice
-        description: Choose namespace
+        description: "Choose environnement"
+        default: prod
         options:
         - dev
         - prod
+      sha:
+        description: "Choose environnement"
+        default: ${{ github.sha }}
+
 
       # workflow_02:
       #   description: 'ًWorkflow 2 which will be triggered'
@@ -39,6 +44,6 @@ jobs:
           -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
           -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Content-Type: application/json" \
-          --data '{"ref": "master", "inputs": { "sha": "${{ github.sha }}" }}'
+          --data '{"ref": "master", "inputs": { "environnement": "${{ inputs.environnement }}", "sha": "${{ inputs.sha }}" }}'
       # - uses: actions/checkout@v3
 
