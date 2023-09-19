@@ -2,7 +2,7 @@ name: trigger-deploy
 on:
   workflow_dispatch:
     inputs:
-      environnement:
+      env:
         type: choice
         description: "Choose environnement"
         default: prod
@@ -50,6 +50,6 @@ jobs:
           -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
           -H "Accept: application/vnd.github+json" \
           -H "Content-Type: application/json" \
-          --data '{"ref": "master", "inputs": { "name": "${{ inputs.environnement }}", "home": "${{ github.sha }}" }}'
+          --data '{"ref": "master", "inputs": { "env": "${{ inputs.env }}", "sha": "${{ github.sha }}" }}'
       # - uses: actions/checkout@v3
 
