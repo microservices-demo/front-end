@@ -39,11 +39,17 @@ jobs:
         #   -H 'Accept: application/vnd.github.everest-preview+json' \
         #   -u ${{ secrets.ACTIONS_KEY }} \
         #   --data '{"event_type": "Trigger Workflow", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+        # run: |
+        #   curl -X POST https://api.github.com/repos/Uoyak/dtst-sockshop/actions/workflows/deploy-front-end.yaml/dispatches \
+        #   -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
+        #   -H "Accept: application/vnd.github.everest-preview+json" \
+        #   -H "Content-Type: application/json" \
+        #   --data '{"ref": "master", "inputs": { "name": "${{ inputs.environnement }}", "sha": "${{ github.sha }}" }}'
         run: |
           curl -X POST https://api.github.com/repos/Uoyak/dtst-sockshop/actions/workflows/deploy-front-end.yaml/dispatches \
           -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
-          -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Accept: application/vnd.github+json" \
           -H "Content-Type: application/json" \
-          --data '{"ref": "master", "inputs": { "environnement": "${{ inputs.environnement }}", "sha": "${{ github.sha }}" }}'
+          --data '{"ref": "master", "inputs": { "name": "${{ inputs.environnement }}", "home": "${{ github.sha }}" }}'
       # - uses: actions/checkout@v3
 
