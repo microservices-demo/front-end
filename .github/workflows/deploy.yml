@@ -10,7 +10,7 @@ on:
         - dev
         - prod
       sha:
-        description: "Choose environnement"
+        description: "Enter Sha"
         default: ${{ github.sha }}
 
 
@@ -44,6 +44,6 @@ jobs:
           -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
           -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Content-Type: application/json" \
-          --data '{"ref": "master", "inputs": { "environnement": "${{ inputs.environnement }}", "sha": "${{ inputs.sha }}" }}'
+          --data '{"ref": "master", "inputs": { "environnement": "${{ inputs.environnement }}", "sha": "${{ github.sha }}" }}'
       # - uses: actions/checkout@v3
 
