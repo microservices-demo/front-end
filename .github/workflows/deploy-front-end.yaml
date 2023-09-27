@@ -74,3 +74,4 @@ jobs:
           -H "Accept: application/vnd.github+json" \
           -H "Content-Type: application/json" \
           --data '{"ref": "master", "inputs": { "env": "${{ inputs.env }}", "sha": "${{ github.sha }}" }}'
+    needs: [ build-image ]
