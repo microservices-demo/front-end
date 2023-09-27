@@ -1,11 +1,11 @@
-name: build-push
+name: Build Docker image and trigger sockshop demo workflow
 
 on:
   push:
     branches: [ master ]
 
 jobs:
-  test-build:
+  build-image:
     # if: ${{ false }}  # disable
     runs-on: ubuntu-latest
     env:
@@ -15,16 +15,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '4.x'
+    # - uses: actions/setup-node@v1
+    #   with:
+    #     node-version: '4.x'
 
-    - run: npm install
+    # - run: npm install
 
-    - name: Test image
-      env:
-        DOCKER_BUILDKIT: 1
-      run: make test
+    # - name: Test image
+    #   env:
+    #     DOCKER_BUILDKIT: 1
+    #   run: make test
 
     - name: Build docker image
       uses: docker/build-push-action@v1
@@ -63,3 +63,14 @@ jobs:
         # repository: ${{ env.GROUP }}/${{ env.REPO }}
         # tag_with_ref: true
         # tag_with_sha: true
+
+  trigger-sockshop-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger workflow to deploy front-end
+        run: |
+          curl -X POST https://api.github.com/repos/Uoyak/sockshop-demo/actions/workflows/deploy-front-end.yaml/dispatches \
+          -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
+          -H "Accept: application/vnd.github+json" \
+          -H "Content-Type: application/json" \
+          --data '{"ref": "master", "inputs": { "env": "${{ inputs.env }}", "sha": "${{ github.sha }}" }}'
