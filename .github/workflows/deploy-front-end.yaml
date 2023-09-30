@@ -1,77 +1,59 @@
 name: Build Docker image and trigger sockshop demo workflow
-
 on:
   push:
     branches: [ master ]
 
 jobs:
   build-image:
-    # if: ${{ false }}  # disable
     runs-on: ubuntu-latest
     env:
-      GROUP: uoyak 
-      COMMIT: ${{ github.sha }}
-      REPO: dtst-sockshop-front-end
+      DOCKERHUB_USER: uoyak
+      DOCKERHUB_IMAGE: dtst-sockshop-front-end
+      GIT_USER: Uoyak
+      GIT_REPO: sockshop-demo
+      GIT_WF_FILENAME: deploy-front-end.yaml
     steps:
-    - uses: actions/checkout@v2
-
-    # - uses: actions/setup-node@v1
-    #   with:
-    #     node-version: '4.x'
-
-    # - run: npm install
-
-    # - name: Test image
-    #   env:
-    #     DOCKER_BUILDKIT: 1
-    #   run: make test
-
-    - name: Build docker image
-      uses: docker/build-push-action@v1
-      with:
-        push: false
-        repository: ${{ env.GROUP }}/${{ env.REPO }}
-        tag_with_ref: true
-        tag_with_sha: true
-        tags: ${{ github.sha }}
-
-    # - name: Test docker image
-    #   env:
-    #     DOCKER_BUILDKIT: 1
-    #   run: ./test/container.sh
-    
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USER }}
-        password: ${{ secrets.DOCKER_PASS }}
+    - uses: actions/checkout@v3
 
     - name: Set image tag
       id: set-tag
       run: |
-        echo ${{ github.sha }}
+        echo event.env = ${{ github.event.env }}
+        echo event.inputs.sha = ${{ github.event.inputs.sha }}
         ls -l
         id=$(echo ${{ github.sha }} | cut -c 1-11)
         echo "id=$id" >> $GITHUB_OUTPUT
 
+    - name: Build docker image
+      uses: docker/build-push-action@v5
+      with:
+        push: false
+        tags:  ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }}
+        
+    - name: Test docker image
+        run: |
+          docker run --rm ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }}         
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ env.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
+
     - name: Push to Docker Hub
       uses: docker/build-push-action@v5
-      # if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master'
       with:
         push: true
-        tags: ${{ env.GROUP }}/${{ env.REPO }}:${{ steps.set-tag.outputs.id }}
-        # repository: ${{ env.GROUP }}/${{ env.REPO }}
-        # tag_with_ref: true
-        # tag_with_sha: true
+        tags: ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }}
 
-  trigger-sockshop-demo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger workflow to deploy front-end
-        run: |
-          curl -X POST https://api.github.com/repos/Uoyak/sockshop-demo/actions/workflows/deploy-front-end.yaml/dispatches \
-          -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
-          -H "Accept: application/vnd.github+json" \
-          -H "Content-Type: application/json" \
-          --data '{"ref": "master", "inputs": { "env": "${{ inputs.env }}", "sha": "${{ github.sha }}" }}'
-    needs: [ build-image ]
+  # trigger-sockshop-demo:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Trigger workflow to deploy front-end
+  #       run: |
+  #         curl -X POST https://api.github.com/repos/${{ env.GIT_USER }}/${{ env.GIT_REPO }}/actions/workflows/${{ env.GIT_WF_FILENAME }}/dispatches \
+  #         -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
+  #         -H "Accept: application/vnd.github+json" \
+  #         -H "Content-Type: application/json" \
+  #         --data '{"ref": "master", "inputs": { "env": "${{ inputs.env }}", "sha": "${{ github.sha }}" }}'
+  #   needs: [ build-image ]
