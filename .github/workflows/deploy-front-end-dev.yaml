@@ -1,0 +1,63 @@
+name: Build Docker image and trigger sockshop demo workflow
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_USER: uoyak # Lowercase !
+      DOCKERHUB_IMAGE: dtst-sockshop-front-end
+      DISPATCHED_GIT_USER: Uoyak
+      DISPATCHED_GIT_REPO: sockshop-demo
+      DISPATCHED_GIT_WORKFLOW_FILENAME: deploy-front-end-dev.yaml
+
+    steps:
+    - uses: actions/checkout@v3
+
+    # Build Docker Image
+    - name: Set image tag
+      id: set-tag
+      run: |
+        echo event.env = ${{ github.event.env }}
+        echo event.inputs.sha = ${{ github.event.inputs.sha }}
+        ls -l
+        id=$(echo ${{ github.sha }} | cut -c 1-11)
+        echo "id=$id" >> $GITHUB_OUTPUT
+
+    - name: Build docker image
+      uses: docker/build-push-action@v5
+      with:
+        push: false
+        tags:  ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }}
+
+    # Test Docker Image
+    - name: Test docker image
+      run: |
+        docker run --rm ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }} -e SESSION_REDIS='true'    
+
+    # Push Docker Image to DockerHub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ env.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
+
+    - name: Push to Docker Hub
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }}
+
+  trigger-sockshop-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger workflow to deploy front-end
+        run: |
+          curl -X POST https://api.github.com/repos/${{ env.DISPATCHED_GIT_USER }}/${{ env.DISPATCHED_GIT_REPO }}/actions/workflows/${{ env.DISPATCHED_GIT_WORKFLOW_FILENAME }}/dispatches \
+          -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
+          -H "Accept: application/vnd.github+json" \
+          -H "Content-Type: application/json" \
+          --data '{"ref": "master", "inputs": { "sha": "${{ github.sha }}" }}'
+    needs: [ build-image ]
