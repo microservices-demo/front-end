@@ -11,7 +11,7 @@ jobs:
       DOCKERHUB_IMAGE: dtst-sockshop-front-end
       GIT_USER: Uoyak
       GIT_REPO: sockshop-demo
-      GIT_WF_FILENAME: deploy-front-end.yaml
+      GIT_WORKFLOW_FILENAME: deploy-front-end.yaml
     steps:
 
     - uses: actions/checkout@v3
@@ -38,7 +38,7 @@ jobs:
       uses: docker/setup-buildx-action@v3
     - name: Test docker image
       run: |
-        docker run --rm ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }}         
+        docker run --rm ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_IMAGE }}:${{ steps.set-tag.outputs.id }} -e SESSION_REDIS='true'    
 
     # Push to DockerHub
     - name: Login to Docker Hub
@@ -58,7 +58,7 @@ jobs:
   #   steps:
   #     - name: Trigger workflow to deploy front-end
   #       run: |
-  #         curl -X POST https://api.github.com/repos/${{ env.GIT_USER }}/${{ env.GIT_REPO }}/actions/workflows/${{ env.GIT_WF_FILENAME }}/dispatches \
+  #         curl -X POST https://api.github.com/repos/${{ env.GIT_USER }}/${{ env.GIT_REPO }}/actions/workflows/${{ env.GIT_WORKFLOW_FILENAME }}/dispatches \
   #         -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
   #         -H "Accept: application/vnd.github+json" \
   #         -H "Content-Type: application/json" \
