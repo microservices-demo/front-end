@@ -1,98 +1,60 @@
-[![Build Status](https://travis-ci.org/microservices-demo/front-end.svg?branch=master)](https://travis-ci.org/microservices-demo/front-end)
-[![](https://images.microbadger.com/badges/image/weaveworksdemos/front-end.svg)](http://microbadger.com/images/weaveworksdemos/front-end "Get your own image badge on microbadger.com")
-[![Actions Status](https://github.com/microservices-demo/front-end/workflows/ci/badge.svg)](https://github.com/microservices-demo/front-end/workflows/ci/badge.svg)
+<p align="center">
+  <a href="https://yarnpkg.com/">
+    <img alt="Yarn" src="https://github.com/yarnpkg/assets/blob/master/yarn-kitten-full.png?raw=true" width="546">
+  </a>
+</p>
 
+<p align="center">
+  Fast, reliable, and secure dependency management.
+</p>
 
-Front-end app
+<p align="center">
+  <a href="https://circleci.com/gh/yarnpkg/yarn"><img alt="Circle Status" src="https://circleci.com/gh/yarnpkg/yarn.svg?style=shield&circle-token=5f0a78473b0f440afb218bf2b82323cc6b3cb43f"></a>
+  <a href="https://ci.appveyor.com/project/kittens/yarn/branch/master"><img alt="Appveyor Status" src="https://ci.appveyor.com/api/projects/status/0xdv8chwe2kmk463?svg=true"></a>
+  <a href="https://dev.azure.com/yarnpkg/yarn/_build"><img alt="Azure Pipelines status" src="https://dev.azure.com/yarnpkg/yarn/_apis/build/status/Yarn%20Acceptance%20Tests"></a>
+  <a href="https://discord.gg/yarnpkg"><img alt="Discord Chat" src="https://img.shields.io/discord/226791405589233664.svg"></a>
+  <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
+</p>
+
 ---
-Front-end application written in [Node.js](https://nodejs.org/en/) that puts together all of the microservices under [microservices-demo](https://github.com/microservices-demo/microservices-demo).
 
-# Build
+**Fast:** Yarn caches every package it has downloaded, so it never needs to download the same package again. It also does almost everything concurrently to maximize resource utilization. This means even faster installs.
 
-## Dependencies
+**Reliable:** Using a detailed but concise lockfile format and a deterministic algorithm for install operations, Yarn is able to guarantee that any installation that works on one system will work exactly the same on another system.
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Version</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="https://docker.com">Docker</a></td>
-      <td>>= 1.12</td>
-    </tr>
-    <tr>
-      <td><a href="https://docs.docker.com/compose/">Docker Compose</a></td>
-      <td>>= 1.8.0</td>
-    </tr>
-    <tr>
-      <td><a href="gnu.org/s/make">Make</a>&nbsp;(optional)</td>
-      <td>>= 4.1</td>
-    </tr>
-  </tbody>
-</table>
+**Secure:** Yarn uses checksums to verify the integrity of every installed package before its code is executed.
 
-## Node
+## Features
 
-`npm install`
+* **Offline Mode.** If you've installed a package before, then you can install it again without an internet connection.
+* **Deterministic.** The same dependencies will be installed in the same exact way on any machine, regardless of installation order.
+* **Network Performance.** Yarn efficiently queues requests and avoids request waterfalls in order to maximize network utilization.
+* **Network Resilience.** A single request that fails will not cause the entire installation to fail. Requests are automatically retried upon failure.
+* **Flat Mode.** Yarn resolves mismatched versions of dependencies to a single version to avoid creating duplicates.
+* **More emojis.** 🐈
 
-## Docker
+## Installing Yarn
 
-`make test-image`
+Read the [Installation Guide](https://yarnpkg.com/en/docs/install) on our website for detailed instructions on how to install Yarn.
 
-## Docker Compose
+## Using Yarn
 
-`make up`
+Read the [Usage Guide](https://yarnpkg.com/en/docs/usage) on our website for detailed instructions on how to use Yarn.
 
-# Test
+## Contributing to Yarn
 
-**Make sure that the microservices are up & running**
+Contributions are always welcome, no matter how large or small. Substantial feature requests should be proposed as an [RFC](https://github.com/yarnpkg/rfcs). Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 
-## Unit & Functional tests:
+See [Contributing](https://yarnpkg.com/org/contributing/).
 
-```
-make test
-```
+## Prior art
 
-## End-to-End tests:
-  
-To make sure that the test suite is running against the latest (local) version with your changes, you need to manually build
-the image, run the container and attach it to the proper Docker networks.
-There is a make task that will do all this for you:
+Yarn wouldn't exist if it wasn't for excellent prior art. Yarn has been inspired by the following projects:
 
-```
-make dev
-```
+ - [Bundler](https://github.com/bundler/bundler)
+ - [Cargo](https://github.com/rust-lang/cargo)
+ - [npm](https://github.com/npm/cli)
 
-That will also tail the logs of the container to make debugging easy.
-Then you can run the tests with:
+## Credits
 
-```
-make e2e
-```
-
-# Run
-
-## Node
-
-`npm start`
-
-## Docker
-
-`make server`
-
-# Use
-
-## Node
-
-`curl http://localhost:8081`
-
-## Docker Compose
-
-`curl http://localhost:8080`
-
-# Push
-
-`GROUP=weaveworksdemos COMMIT=test ./scripts/push.sh`
+Thanks to [Sam Holmes](https://github.com/samholmes) for donating the npm package name!
