@@ -22,6 +22,36 @@
       app.use(bodyParser.json());
     });
 
+    describe("#redirectHandler", function() {
+      it("should return bad request if invalid redirection", function(done) {
+        app.use(function(req, res) {
+          helpers.rewriteSlash(req, res, done);
+        });
+
+        chai.request(app).
+        get("//category.html/").
+        end(function(err, res) {
+          expect(res).to.have.status(400);
+          done();
+        });
+      });
+
+      it("should redirect if valid redirection", function(done) {
+        app.use(function(req, res) {
+          helpers.rewriteSlash(req, res, done);
+        });
+
+        chai.request(app).
+        get("/category.html/").
+        end(function(err, res) {
+          expect(res).to.have.status(301);
+          done();
+        });
+      });
+
+    });
+
+
     describe("#errorHandler", function() {
       var message, code, error, res, resErr;
 
