@@ -51,10 +51,25 @@
     res.end();
   }
 
+  // list of invalid redirect paths
+  const denylist = ['//'];
+
+  const isInvalidRedirectPath = (redirectPath) => {
+    return denylist.some((denylistItem) => redirectPath.includes(denylistItem));
+  }
+
   /* Rewrites and redirects any url that doesn't end with a slash. */
   helpers.rewriteSlash = function(req, res, next) {
-   if(req.url.substr(-1) == '/' && req.url.length > 1)
-       res.redirect(301, req.url.slice(0, -1));
+    if(req.url.substr(-1) == '/' && req.url.length > 1){
+     var redirectPath = req.url.slice(0, -1);
+
+     if (isInvalidRedirectPath(redirectPath)) {
+       res.status(400).send('invalid URL to redirect to');
+     }else {
+       console.log("redirecting")
+       res.redirect(301, redirectPath );
+     }
+   }
    else
        next();
   }
